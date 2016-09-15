@@ -118,7 +118,7 @@ var Bot = function (_EventEmitter) {
     var debug = arguments.length <= 2 || arguments[2] === undefined ? false : arguments[2];
     (0, _classCallCheck3.default)(this, Bot);
 
-    var _this = (0, _possibleConstructorReturn3.default)(this, (0, _getPrototypeOf2.default)(Bot).call(this));
+    var _this = (0, _possibleConstructorReturn3.default)(this, (Bot.__proto__ || (0, _getPrototypeOf2.default)(Bot)).call(this));
 
     _this._token = token;
     _this._debug = debug;
@@ -461,16 +461,17 @@ var Bot = function (_EventEmitter) {
                 return _context7.abrupt('return');
 
               case 23:
-                if (!message.quick_reply) {
+                if (!(message.quick_reply && !message.is_echo)) {
                   _context7.next = 29;
                   break;
                 }
 
+                // when the bot sends messages with quick_replies, the echoes will fuck up
                 _postback = {};
 
 
                 try {
-                  _postback = JSON.parse(message.quick_reply.payload);
+                  _postback = JSON.parse(message.quick_reply.payload); //echoes: payload is null -> postback is null
                 } catch (e) {
                   // ignore
                 }
@@ -478,6 +479,7 @@ var Bot = function (_EventEmitter) {
                 message.isQuickReply = true;
 
                 if (_postback.hasOwnProperty('data')) {
+                  //echoes: error thrown here due to accessing function of null object
                   message.postback = _postback;
                   message.data = _postback.data;
                   message.event = _postback.event;
