@@ -35,13 +35,14 @@ var Buttons = function () {
       var text = _ref.text;
       var data = _ref.data;
       var url = _ref.url;
+      var phone = _ref.phone;
       var event = _ref.event;
 
-      if (!data && !url && !event) {
+      if (!data && !url && !event && !phone) {
         throw Error('Must provide a url or data i.e. {data: null} or {url: \'https://facebook.com\'}');
       }
 
-      this._buttons.push({ text: text || 'Button', event: event, data: data, url: url });
+      this._buttons.push({ text: text || 'Button', event: event, data: data, phone: phone, url: url });
       return this;
     }
   }, {
@@ -61,6 +62,8 @@ var Buttons = function () {
           } else if (button.data) {
             var payload = (0, _stringify2.default)({ data: button.data, event: button.event });
             buttons.push({ type: 'postback', payload: payload, title: button.text });
+          } else if (button.phone) {
+            buttons.push({ type: 'phone_number', payload: button.phone, title: button.text });
           }
         }
       } catch (err) {
