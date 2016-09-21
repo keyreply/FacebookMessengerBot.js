@@ -3,19 +3,22 @@ class Buttons {
     this._buttons = [];
   }
 
-  add({text, data, url, phone, event}) {
+  add({text, data, url, phone, event, account_linking}) {
     if (!data && !url && !event && !phone) {
       throw Error('Must provide a url or data i.e. {data: null} or {url: \'https://facebook.com\'}');
     }
 
-    this._buttons.push({text: text || 'Button', event, data, phone, url});
+    this._buttons.push({text: text || 'Button', event, data, phone, url, account_linking});
     return this;
   }
 
   toJSON() {
     const buttons = [];
     for (const button of this._buttons) {
-      if (button.url) {
+      if (button.account_linking) {
+        buttons.push({type: 'account_link', url: button.url});
+      }
+      else if (button.url) {
         buttons.push({type: 'web_url', url: button.url, title: button.text});
       } else if (button.data) {
         const payload = JSON.stringify({data: button.data, event: button.event});

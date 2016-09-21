@@ -37,12 +37,13 @@ var Buttons = function () {
       var url = _ref.url;
       var phone = _ref.phone;
       var event = _ref.event;
+      var account_linking = _ref.account_linking;
 
       if (!data && !url && !event && !phone) {
         throw Error('Must provide a url or data i.e. {data: null} or {url: \'https://facebook.com\'}');
       }
 
-      this._buttons.push({ text: text || 'Button', event: event, data: data, phone: phone, url: url });
+      this._buttons.push({ text: text || 'Button', event: event, data: data, phone: phone, url: url, account_linking: account_linking });
       return this;
     }
   }, {
@@ -57,7 +58,9 @@ var Buttons = function () {
         for (var _iterator = (0, _getIterator3.default)(this._buttons), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
           var button = _step.value;
 
-          if (button.url) {
+          if (button.account_linking) {
+            buttons.push({ type: 'account_link', url: button.url });
+          } else if (button.url) {
             buttons.push({ type: 'web_url', url: button.url, title: button.text });
           } else if (button.data) {
             var payload = (0, _stringify2.default)({ data: button.data, event: button.event });
