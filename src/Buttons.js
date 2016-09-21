@@ -16,7 +16,15 @@ class Buttons {
     const buttons = [];
     for (const button of this._buttons) {
       if (button.account_linking) {
-        buttons.push({type: 'account_link', url: button.url});
+        if (!button.account_linking.linking) {
+          buttons.push({type: 'account_unlink'})
+        }
+        else if (button.url) {
+          buttons.push({type: 'account_link', url: button.url});
+        }
+        else {
+          console.log('[fb-msger-bot] Missing url for account linking');
+        }
       }
       else if (button.url) {
         buttons.push({type: 'web_url', url: button.url, title: button.text});

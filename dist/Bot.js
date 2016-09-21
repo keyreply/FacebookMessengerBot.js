@@ -466,12 +466,11 @@ var Bot = function (_EventEmitter) {
                   break;
                 }
 
-                // when the bot sends messages with quick_replies, the echoes will fuck up
                 _postback = {};
 
 
                 try {
-                  _postback = JSON.parse(message.quick_reply.payload); //echoes: payload is null -> postback is null
+                  _postback = JSON.parse(message.quick_reply.payload);
                 } catch (e) {
                   // ignore
                 }
@@ -479,7 +478,6 @@ var Bot = function (_EventEmitter) {
                 message.isQuickReply = true;
 
                 if (_postback.hasOwnProperty('data')) {
-                  //echoes: error thrown here due to accessing function of null object
                   message.postback = _postback;
                   message.data = _postback.data;
                   message.event = _postback.event;
