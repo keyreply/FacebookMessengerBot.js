@@ -184,18 +184,18 @@ class Bot extends EventEmitter {
     }
 
     // QUICK_REPLY
-    if (message.quick_reply && !message.is_echo) {  // when the bot sends messages with quick_replies, the echoes will fuck up
+    if (message.quick_reply && !message.is_echo) {
       let postback = {};
 
       try {
-        postback = JSON.parse(message.quick_reply.payload); //echoes: payload is null -> postback is null
+        postback = JSON.parse(message.quick_reply.payload);
       } catch (e) {
         // ignore
       }
 
       message.isQuickReply = true;
 
-      if (postback.hasOwnProperty('data')) {  //echoes: error thrown here due to accessing function of null object
+      if (postback.hasOwnProperty('data')) { 
         message.postback = postback;
         message.data = postback.data;
         message.event = postback.event;
