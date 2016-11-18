@@ -146,10 +146,17 @@ bot.on('message', async message => {
     out = new Elements();
     out.add({text: 'search engines', subtext: 'click to get redirected', buttons}); // add a card
     await bot.send(to, out);
+    
+    // ---- send share/call buttons
+    buttons = new Buttons();
+    buttons.add({text: 'Call us', phone: '+808 863718243'});
+    buttons.add({share: true});
+    out = new Elements();
+    out.add({text: 'ABC Flower shop', subtext: 'Office hours 10am - 6pm', buttons}); // add a card
+    await bot.send(to, out);
 
     await bot.wait(2000);
 
-<<<<<<< HEAD
   	// ---- send list
   	out = new Elements();
     out.setListStyle('compact'); // or 'large'
@@ -157,8 +164,6 @@ bot.on('message', async message => {
   	out.add({text: 'Item 2', subtext: 'Subtitle'}); // add list item
   	await bot.send(sender.id, out);
 
-=======
->>>>>>> 69cf10e89b5cf2b9e946157f25c4399740c2d3ac
     // ---- send image + buttons (multiple cards)
     buttons = new Buttons();
     buttons.add({text: 'Google', url: 'http://google.com'});
