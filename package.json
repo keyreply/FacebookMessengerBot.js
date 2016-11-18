@@ -15,8 +15,8 @@
     "eslint": "node ./node_modules/eslint/bin/eslint.js --config ./.eslintrc.json",
     "grunt": "node ./node_modules/grunt-cli/bin/grunt",
     "start": "node index.compiled.js",
-    "test": "node ./node_modules/mocha/bin/mocha ./dist/tests/*-test.js",
-    "lint": "npm run eslint --no-color --quiet --ext js,.es6,.jsx ./",
+    "test": "set -e; node ./node_modules/mocha/bin/mocha ./dist/tests/*-test.js; npm run lint",
+    "lint": "set -e; npm run eslint --no-color --quiet --ext js,.es6,.jsx ./",
     "build": "npm run grunt build"
   },
   "repository": {
