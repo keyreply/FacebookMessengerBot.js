@@ -20,6 +20,8 @@ class Buttons {
       } else if (button.data) {
         const payload = JSON.stringify({data: button.data, event: button.event});
         buttons.push({type: 'postback', payload, title: button.text});
+      } else if (button.share) {
+        buttons.push({type: 'element_share'});
       }
     }
 
