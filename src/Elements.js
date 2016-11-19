@@ -62,7 +62,7 @@ class Elements {
           if (e.text) element.title = e.text;
           if (e.image) element.image_url = e.image;
           if (e.subtext) element.subtitle = e.subtext;
-          if (e.url) element.url = e.url;
+          if (e.url) element.item_url = e.url;
           if (e.buttons && e.buttons.length) element.buttons = e.buttons.toJSON();
           elements.push(element);
         }
