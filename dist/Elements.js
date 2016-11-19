@@ -45,6 +45,7 @@ var Elements = function () {
       var text = _ref.text,
           image = _ref.image,
           subtext = _ref.subtext,
+          url = _ref.url,
           buttons = _ref.buttons;
 
       if (buttons) {
@@ -57,7 +58,7 @@ var Elements = function () {
         }
       }
 
-      this._elements.push({ text: text, image: image, subtext: subtext, buttons: buttons });
+      this._elements.push({ text: text, image: image, subtext: subtext, url: url, buttons: buttons });
       return this;
     }
   }, {
@@ -109,6 +110,7 @@ var Elements = function () {
               if (e.text) element.title = e.text;
               if (e.image) element.image_url = e.image;
               if (e.subtext) element.subtitle = e.subtext;
+              if (e.url) element.url = e.url;
               if (e.buttons && e.buttons.length) element.buttons = e.buttons.toJSON();
               elements.push(element);
             }
