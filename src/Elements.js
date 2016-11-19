@@ -8,7 +8,7 @@ class Elements {
     this._listStyle = null;
   }
 
-  add({text, image, subtext, buttons}) {
+  add({text, image, subtext, url, buttons}) {
     if (buttons) {
       if (!(buttons instanceof Buttons)) {
         if (Array.isArray(buttons)) {
@@ -19,7 +19,7 @@ class Elements {
       }
     }
 
-    this._elements.push({text, image, subtext, buttons});
+    this._elements.push({text, image, subtext, url, buttons});
     return this;
   }
 
@@ -62,6 +62,7 @@ class Elements {
           if (e.text) element.title = e.text;
           if (e.image) element.image_url = e.image;
           if (e.subtext) element.subtitle = e.subtext;
+          if (e.url) element.url = e.url;
           if (e.buttons && e.buttons.length) element.buttons = e.buttons.toJSON();
           elements.push(element);
         }
