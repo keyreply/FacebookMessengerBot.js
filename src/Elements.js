@@ -6,9 +6,16 @@ class Elements {
     this._elements = [];
     this._quickreplies = null;
     this._listStyle = null;
+    this._buttons = null;
   }
 
-  add({text, image, subtext, url, buttons}) {
+  add({
+    text,
+    image,
+    subtext,
+    url,
+    buttons
+  }) {
     if (buttons) {
       if (!(buttons instanceof Buttons)) {
         if (Array.isArray(buttons)) {
@@ -19,7 +26,13 @@ class Elements {
       }
     }
 
-    this._elements.push({text, image, subtext, url, buttons});
+    this._elements.push({
+      text,
+      image,
+      subtext,
+      url,
+      buttons
+    });
     return this;
   }
 
@@ -37,11 +50,21 @@ class Elements {
     this._quickreplies = quickreplies;
   }
 
-  setListStyle(listStyle) {
+  setListStyle(listStyle, buttons) {
     if (listStyle === 'large' || listStyle === 'compact') {
       this._listStyle = listStyle;
     } else {
       throw Error('Valid values for list styles are "large" or "compact"');
+    }
+
+    if (buttons) {
+      if (!(buttons instanceof Buttons)) {
+        if (Array.isArray(buttons)) {
+          this._buttons = Buttons.from(buttons);
+        } else {
+          throw Error('Unable to parse buttons');
+        }
+      }
     }
   }
 
@@ -66,15 +89,34 @@ class Elements {
           if (e.buttons && e.buttons.length) element.buttons = e.buttons.toJSON();
           elements.push(element);
         }
+
+        let buttons;
+        if (this._buttons && e._buttons.length) {
+          buttons = this._buttons.toJSON();
+        }
+
         if (this._listStyle) {
           return {
             attachment: {
               type: 'template',
-              payload: {template_type: 'list', top_element_style: this._listStyle, elements}
+              payload: {
+                template_type: 'list',
+                top_element_style: this._listStyle,
+                elements,
+                buttons
+              }
             }
           };
         } else if (!this._listStyle) {
-          return {attachment: {type: 'template', payload: {template_type: 'generic', elements}}};
+          return {
+            attachment: {
+              type: 'template',
+              payload: {
+                template_type: 'generic',
+                elements
+              }
+            }
+          };
         }
       } else if (this._elements.length === 1) {
         const e = this._elements[0];
@@ -84,16 +126,41 @@ class Elements {
           if (e.image) element.image_url = e.image;
           if (e.subtext) element.subtitle = e.subtext;
           element.buttons = e.buttons.toJSON();
-          return {attachment: {type: 'template', payload: {template_type: 'generic', elements: [element]}}};
+          return {
+            attachment: {
+              type: 'template',
+              payload: {
+                template_type: 'generic',
+                elements: [element]
+              }
+            }
+          };
         } else if (e.text && e.buttons && e.buttons.length) {
           element.text = e.text;
           if (e.image) element.image_url = e.image;
           element.buttons = e.buttons.toJSON();
-          return {attachment: {type: 'template', payload: {template_type: 'button', ...element}}};
+          return {
+            attachment: {
+              type: 'template',
+              payload: {
+                template_type: 'button',
+                ...element
+              }
+            }
+          };
         } else if (e.text) {
-          return {text: e.text};
+          return {
+            text: e.text
+          };
         } else if (e.image) {
-          return {attachment: {type: 'image', payload: {url: e.image}}};
+          return {
+            attachment: {
+              type: 'image',
+              payload: {
+                url: e.image
+              }
+            }
+          };
         }
       }
 
