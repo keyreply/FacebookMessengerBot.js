@@ -121,14 +121,14 @@ var Elements = function () {
 
           try {
             for (var _iterator = (0, _getIterator3.default)(_this._elements), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-              var _e = _step.value;
+              var e = _step.value;
 
               var element = {};
-              if (_e.text) element.title = _e.text;
-              if (_e.image) element.image_url = _e.image;
-              if (_e.subtext) element.subtitle = _e.subtext;
-              if (_e.url) element.item_url = _e.url;
-              if (_e.buttons && _e.buttons.length) element.buttons = _e.buttons.toJSON();
+              if (e.text) element.title = e.text;
+              if (e.image) element.image_url = e.image;
+              if (e.subtext) element.subtitle = e.subtext;
+              if (e.url) element.item_url = e.url;
+              if (e.buttons && e.buttons.length) element.buttons = e.buttons.toJSON();
               elements.push(element);
             }
           } catch (err) {
@@ -147,7 +147,7 @@ var Elements = function () {
           }
 
           var buttons = void 0;
-          if (_this._buttons && e._buttons.length) {
+          if (_this._buttons && _this._buttons.length) {
             buttons = _this._buttons.toJSON();
           }
 
@@ -175,13 +175,13 @@ var Elements = function () {
             };
           }
         } else if (_this._elements.length === 1) {
-          var _e2 = _this._elements[0];
+          var _e = _this._elements[0];
           var _element = {};
-          if (_e2.text && _e2.buttons && _e2.buttons.length && (_e2.image || _e2.subtext)) {
-            _element.title = _e2.text;
-            if (_e2.image) _element.image_url = _e2.image;
-            if (_e2.subtext) _element.subtitle = _e2.subtext;
-            _element.buttons = _e2.buttons.toJSON();
+          if (_e.text && _e.buttons && _e.buttons.length && (_e.image || _e.subtext)) {
+            _element.title = _e.text;
+            if (_e.image) _element.image_url = _e.image;
+            if (_e.subtext) _element.subtitle = _e.subtext;
+            _element.buttons = _e.buttons.toJSON();
             return {
               attachment: {
                 type: 'template',
@@ -191,10 +191,10 @@ var Elements = function () {
                 }
               }
             };
-          } else if (_e2.text && _e2.buttons && _e2.buttons.length) {
-            _element.text = _e2.text;
-            if (_e2.image) _element.image_url = _e2.image;
-            _element.buttons = _e2.buttons.toJSON();
+          } else if (_e.text && _e.buttons && _e.buttons.length) {
+            _element.text = _e.text;
+            if (_e.image) _element.image_url = _e.image;
+            _element.buttons = _e.buttons.toJSON();
             return {
               attachment: {
                 type: 'template',
@@ -203,16 +203,16 @@ var Elements = function () {
                 }, _element)
               }
             };
-          } else if (_e2.text) {
+          } else if (_e.text) {
             return {
-              text: _e2.text
+              text: _e.text
             };
-          } else if (_e2.image) {
+          } else if (_e.image) {
             return {
               attachment: {
                 type: 'image',
                 payload: {
-                  url: _e2.image
+                  url: _e.image
                 }
               }
             };
