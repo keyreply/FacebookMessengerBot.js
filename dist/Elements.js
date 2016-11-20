@@ -37,6 +37,7 @@ var Elements = function () {
     this._elements = [];
     this._quickreplies = null;
     this._listStyle = null;
+    this._buttons = null;
   }
 
   (0, _createClass3.default)(Elements, [{
@@ -58,7 +59,13 @@ var Elements = function () {
         }
       }
 
-      this._elements.push({ text: text, image: image, subtext: subtext, url: url, buttons: buttons });
+      this._elements.push({
+        text: text,
+        image: image,
+        subtext: subtext,
+        url: url,
+        buttons: buttons
+      });
       return this;
     }
   }, {
@@ -78,11 +85,21 @@ var Elements = function () {
     }
   }, {
     key: 'setListStyle',
-    value: function setListStyle(listStyle) {
+    value: function setListStyle(listStyle, buttons) {
       if (listStyle === 'large' || listStyle === 'compact') {
         this._listStyle = listStyle;
       } else {
         throw Error('Valid values for list styles are "large" or "compact"');
+      }
+
+      if (buttons) {
+        if (!(buttons instanceof _Buttons2.default)) {
+          if (Array.isArray(buttons)) {
+            this._buttons = _Buttons2.default.from(buttons);
+          } else {
+            throw Error('Unable to parse buttons');
+          }
+        }
       }
     }
   }, {
@@ -104,14 +121,14 @@ var Elements = function () {
 
           try {
             for (var _iterator = (0, _getIterator3.default)(_this._elements), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-              var e = _step.value;
+              var _e = _step.value;
 
               var element = {};
-              if (e.text) element.title = e.text;
-              if (e.image) element.image_url = e.image;
-              if (e.subtext) element.subtitle = e.subtext;
-              if (e.url) element.item_url = e.url;
-              if (e.buttons && e.buttons.length) element.buttons = e.buttons.toJSON();
+              if (_e.text) element.title = _e.text;
+              if (_e.image) element.image_url = _e.image;
+              if (_e.subtext) element.subtitle = _e.subtext;
+              if (_e.url) element.item_url = _e.url;
+              if (_e.buttons && _e.buttons.length) element.buttons = _e.buttons.toJSON();
               elements.push(element);
             }
           } catch (err) {
@@ -129,34 +146,76 @@ var Elements = function () {
             }
           }
 
+          var buttons = void 0;
+          if (_this._buttons && e._buttons.length) {
+            buttons = _this._buttons.toJSON();
+          }
+
           if (_this._listStyle) {
             return {
               attachment: {
                 type: 'template',
-                payload: { template_type: 'list', top_element_style: _this._listStyle, elements: elements }
+                payload: {
+                  template_type: 'list',
+                  top_element_style: _this._listStyle,
+                  elements: elements,
+                  buttons: buttons
+                }
               }
             };
           } else if (!_this._listStyle) {
-            return { attachment: { type: 'template', payload: { template_type: 'generic', elements: elements } } };
+            return {
+              attachment: {
+                type: 'template',
+                payload: {
+                  template_type: 'generic',
+                  elements: elements
+                }
+              }
+            };
           }
         } else if (_this._elements.length === 1) {
-          var _e = _this._elements[0];
+          var _e2 = _this._elements[0];
           var _element = {};
-          if (_e.text && _e.buttons && _e.buttons.length && (_e.image || _e.subtext)) {
-            _element.title = _e.text;
-            if (_e.image) _element.image_url = _e.image;
-            if (_e.subtext) _element.subtitle = _e.subtext;
-            _element.buttons = _e.buttons.toJSON();
-            return { attachment: { type: 'template', payload: { template_type: 'generic', elements: [_element] } } };
-          } else if (_e.text && _e.buttons && _e.buttons.length) {
-            _element.text = _e.text;
-            if (_e.image) _element.image_url = _e.image;
-            _element.buttons = _e.buttons.toJSON();
-            return { attachment: { type: 'template', payload: (0, _extends3.default)({ template_type: 'button' }, _element) } };
-          } else if (_e.text) {
-            return { text: _e.text };
-          } else if (_e.image) {
-            return { attachment: { type: 'image', payload: { url: _e.image } } };
+          if (_e2.text && _e2.buttons && _e2.buttons.length && (_e2.image || _e2.subtext)) {
+            _element.title = _e2.text;
+            if (_e2.image) _element.image_url = _e2.image;
+            if (_e2.subtext) _element.subtitle = _e2.subtext;
+            _element.buttons = _e2.buttons.toJSON();
+            return {
+              attachment: {
+                type: 'template',
+                payload: {
+                  template_type: 'generic',
+                  elements: [_element]
+                }
+              }
+            };
+          } else if (_e2.text && _e2.buttons && _e2.buttons.length) {
+            _element.text = _e2.text;
+            if (_e2.image) _element.image_url = _e2.image;
+            _element.buttons = _e2.buttons.toJSON();
+            return {
+              attachment: {
+                type: 'template',
+                payload: (0, _extends3.default)({
+                  template_type: 'button'
+                }, _element)
+              }
+            };
+          } else if (_e2.text) {
+            return {
+              text: _e2.text
+            };
+          } else if (_e2.image) {
+            return {
+              attachment: {
+                type: 'image',
+                payload: {
+                  url: _e2.image
+                }
+              }
+            };
           }
         }
 

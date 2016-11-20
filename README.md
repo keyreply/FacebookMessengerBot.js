@@ -159,7 +159,10 @@ bot.on('message', async message => {
 
   	// ---- send list
   	out = new Elements();
-    out.setListStyle('compact'); // or 'large'
+    buttons = new Buttons(); //Optional button (limit: 1)
+    buttons.add({text: 'Read more', event: 'page', data: 2});
+
+    out.setListStyle('compact', buttons); // or 'large'
   	out.add({text: 'Item 1', subtext: 'Subtitle'}); // add list item
   	out.add({text: 'Item 2', subtext: 'Subtitle'}); // add list item
   	await bot.send(sender.id, out);
