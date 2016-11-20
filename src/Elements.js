@@ -91,7 +91,7 @@ class Elements {
         }
 
         let buttons;
-        if (this._buttons && e._buttons.length) {
+        if (this._buttons && this._buttons.length) {
           buttons = this._buttons.toJSON();
         }
 
