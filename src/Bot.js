@@ -99,6 +99,19 @@ class Bot extends EventEmitter {
     return result;
   }
 
+  async setTyping(to, state) {
+    const action = state ? 'typing_on' : 'typing_off';
+    
+    const {body: {result}} = await fetch('https://graph.facebook.com/v2.6/me/messages', {
+      method: 'post',
+      json: true,
+      query: {access_token: this._token},
+      body: {recipient: {id: to}, sender_action: action}
+    });
+
+    return result;
+  }
+
 
   async send(to, message) {
     if (this._debug) {

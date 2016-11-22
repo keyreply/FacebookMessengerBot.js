@@ -190,6 +190,11 @@ bot.on('message', async message => {
     out.add({text: 'Send us your location'});
     out.setQuickReplies(replies);
     await bot.send(to, out);
+
+    // ---- set typing indicator on/off
+    // Typing indicators are automatically turned off after 20 seconds
+    bot.setTyping(to, true);
+    bot.setTyping(to, false);
 });
 ```
 ### Handle Postbacks
