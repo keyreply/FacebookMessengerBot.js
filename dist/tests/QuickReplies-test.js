@@ -13,7 +13,7 @@ describe('QuickReplies', function () {
     var quickReplies = new _.QuickReplies();
     quickReplies.add({ text: 'Google', data: 'http://google.com' });
     quickReplies.add({ text: 'Address', isLocation: true });
-    quickReplies.add({ text: 'Bing', data: 'http://bing.com' });
+    quickReplies.add({ text: 'Microsoft', data: 'http://bing.com', image: 'http://emojipedia-us.s3.amazonaws.com/cache/67/4c/674c07586a355f19682722ac443c77b7.png' });
 
     _assert2.default.deepEqual([{
       payload: '{"data":"http://google.com"}',
@@ -25,7 +25,8 @@ describe('QuickReplies', function () {
       content_type: 'location'
     }, {
       payload: '{"data":"http://bing.com"}',
-      title: 'Bing',
+      image: 'http://emojipedia-us.s3.amazonaws.com/cache/67/4c/674c07586a355f19682722ac443c77b7.png',
+      title: 'Microsoft',
       content_type: 'text'
     }], quickReplies.toJSON());
   });

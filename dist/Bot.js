@@ -331,14 +331,14 @@ var Bot = function (_EventEmitter) {
   }, {
     key: 'send',
     value: function () {
-      var _ref12 = (0, _bluebird.coroutine)(_regenerator2.default.mark(function _callee6(to, message) {
+      var _ref12 = (0, _bluebird.coroutine)(_regenerator2.default.mark(function _callee6(to, message, notification_type) {
         var text, err;
         return _regenerator2.default.wrap(function _callee6$(_context6) {
           while (1) {
             switch (_context6.prev = _context6.next) {
               case 0:
                 if (this._debug) {
-                  console.log({ recipient: { id: to }, message: message ? message.toJSON() : message });
+                  console.log({ recipient: { id: to }, message: message ? message.toJSON() : message, notification_type: notification_type });
                 }
 
                 _context6.prev = 1;
@@ -347,7 +347,7 @@ var Bot = function (_EventEmitter) {
                   method: 'post',
                   json: true,
                   query: { access_token: this._token },
-                  body: { recipient: { id: to }, message: message }
+                  body: { recipient: { id: to }, message: message, notification_type: notification_type }
                 });
 
               case 4:
@@ -386,7 +386,7 @@ var Bot = function (_EventEmitter) {
         }, _callee6, this, [[1, 6]]);
       }));
 
-      function send(_x8, _x9) {
+      function send(_x8, _x9, _x10) {
         return _ref12.apply(this, arguments);
       }
 
@@ -447,7 +447,7 @@ var Bot = function (_EventEmitter) {
         }, _callee7, this);
       }));
 
-      function fetchUser(_x10, _x11, _x12) {
+      function fetchUser(_x11, _x12, _x13) {
         return _ref13.apply(this, arguments);
       }
 
@@ -497,7 +497,7 @@ var Bot = function (_EventEmitter) {
                     }, _callee8, _this2);
                   }));
 
-                  return function (_x16, _x17) {
+                  return function (_x17, _x18) {
                     return _ref16.apply(this, arguments);
                   };
                 }();
@@ -636,7 +636,7 @@ var Bot = function (_EventEmitter) {
         }, _callee9, this);
       }));
 
-      function handleMessage(_x15) {
+      function handleMessage(_x16) {
         return _ref15.apply(this, arguments);
       }
 

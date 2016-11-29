@@ -113,9 +113,9 @@ class Bot extends EventEmitter {
   }
 
 
-  async send(to, message) {
+  async send(to, message, notification_type) {
     if (this._debug) {
-      console.log({recipient: {id: to}, message: message ? message.toJSON() : message});
+      console.log({recipient: {id: to}, message: message ? message.toJSON() : message, notification_type});
     }
 
     try {
@@ -123,7 +123,7 @@ class Bot extends EventEmitter {
         method: 'post',
         json: true,
         query: {access_token: this._token},
-        body: {recipient: {id: to}, message}
+        body: {recipient: {id: to}, message, notification_type}
       });
     } catch (e) {
       if (e.text) {

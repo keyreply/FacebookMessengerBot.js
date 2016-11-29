@@ -128,6 +128,9 @@ bot.on('message', async message => {
     out.add({text: 'hey! what up'});
     await bot.send(sender.id, out);
 
+    // --- send with custom notification type (REGULAR, SILENT_PUSH, or NO_PUSH)    
+    await bot.send(sender.id, out, "NO_PUSH");
+
     // wait for 1s
     await bot.wait(1000);
 
@@ -186,6 +189,7 @@ bot.on('message', async message => {
     // ---- send quick reply for location
     let replies = new QuickReplies();
     replies.add({text: 'location', isLocation: true});
+    replies.add({text: 'Downtown', event: "search", data: "downtown", image:"https://example.com/map.png"});
     out = new Elements();
     out.add({text: 'Send us your location'});
     out.setQuickReplies(replies);
