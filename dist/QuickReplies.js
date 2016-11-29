@@ -69,7 +69,7 @@ var QuickReplies = function () {
           }
           var pill = { payload: payload, title: (0, _utils.cut)(String(reply.text), 20), content_type: contentType };
           if (reply.image) {
-            pill.image = reply.image;
+            pill.image_url = reply.image;
           }
           quickReplies.push(pill);
         }

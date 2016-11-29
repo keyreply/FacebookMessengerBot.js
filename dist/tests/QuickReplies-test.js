@@ -25,7 +25,7 @@ describe('QuickReplies', function () {
       content_type: 'location'
     }, {
       payload: '{"data":"http://bing.com"}',
-      image: 'http://emojipedia-us.s3.amazonaws.com/cache/67/4c/674c07586a355f19682722ac443c77b7.png',
+      image_url: 'http://emojipedia-us.s3.amazonaws.com/cache/67/4c/674c07586a355f19682722ac443c77b7.png',
       title: 'Microsoft',
       content_type: 'text'
     }], quickReplies.toJSON());
