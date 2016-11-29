@@ -331,7 +331,8 @@ var Bot = function (_EventEmitter) {
   }, {
     key: 'send',
     value: function () {
-      var _ref12 = (0, _bluebird.coroutine)(_regenerator2.default.mark(function _callee6(to, message, notification_type) {
+      var _ref12 = (0, _bluebird.coroutine)(_regenerator2.default.mark(function _callee6(to, message) {
+        var notification_type = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : "REGULAR";
         var text, err;
         return _regenerator2.default.wrap(function _callee6$(_context6) {
           while (1) {
@@ -447,7 +448,7 @@ var Bot = function (_EventEmitter) {
         }, _callee7, this);
       }));
 
-      function fetchUser(_x11, _x12, _x13) {
+      function fetchUser(_x12, _x13, _x14) {
         return _ref13.apply(this, arguments);
       }
 
@@ -497,7 +498,7 @@ var Bot = function (_EventEmitter) {
                     }, _callee8, _this2);
                   }));
 
-                  return function (_x17, _x18) {
+                  return function (_x18, _x19) {
                     return _ref16.apply(this, arguments);
                   };
                 }();
@@ -636,7 +637,7 @@ var Bot = function (_EventEmitter) {
         }, _callee9, this);
       }));
 
-      function handleMessage(_x16) {
+      function handleMessage(_x17) {
         return _ref15.apply(this, arguments);
       }
 

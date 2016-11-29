@@ -113,7 +113,7 @@ class Bot extends EventEmitter {
   }
 
 
-  async send(to, message, notification_type) {
+  async send(to, message, notification_type = "REGULAR") {
     if (this._debug) {
       console.log({recipient: {id: to}, message: message ? message.toJSON() : message, notification_type});
     }
