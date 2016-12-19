@@ -44,7 +44,7 @@ var QuickReplies = function () {
         throw Error('Must provide data i.e. {data: null}');
       }
 
-      this._quickReplies.push({ text: text || 'QuickReply', event: event, data: data, image: image, isLocation: isLocation });
+      this._quickReplies.push({ text: text, event: event, data: data, image: image, isLocation: isLocation });
       return this;
     }
   }, {

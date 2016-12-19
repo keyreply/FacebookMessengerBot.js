@@ -38,13 +38,14 @@ var Buttons = function () {
           phone = _ref.phone,
           event = _ref.event,
           share = _ref.share,
-          account_linking = _ref.account_linking;
+          account_linking = _ref.account_linking,
+          webview_height_ratio = _ref.webview_height_ratio;
 
       if (!data && !url && !event && !phone && !share) {
         throw Error('Must provide a url or data i.e. {data: null} or {url: \'https://facebook.com\'}');
       }
 
-      this._buttons.push({ text: text || 'Button', event: event, data: data, phone: phone, share: share, url: url, account_linking: account_linking });
+      this._buttons.push({ text: text || 'Button', event: event, data: data, phone: phone, share: share, url: url, account_linking: account_linking, webview_height_ratio: webview_height_ratio });
       return this;
     }
   }, {
@@ -68,7 +69,7 @@ var Buttons = function () {
               throw Error('Missing url for account linking');
             }
           } else if (button.url) {
-            buttons.push({ type: 'web_url', url: button.url, title: button.text });
+            buttons.push({ type: 'web_url', url: button.url, title: button.text, webview_height_ratio: button.webview_height_ratio || 'full' });
           } else if (button.data != null) {
             var payload = (0, _stringify2.default)({ data: button.data, event: button.event });
             buttons.push({ type: 'postback', payload: payload, title: button.text });
