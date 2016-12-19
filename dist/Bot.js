@@ -571,7 +571,7 @@ var Bot = function (_EventEmitter) {
 
 
                 try {
-                  _postback = JSON.parse(message.quick_reply.payload);
+                  _postback = JSON.parse(message.quick_reply.payload) || {};
                 } catch (e) {
                   // ignore
                 }
