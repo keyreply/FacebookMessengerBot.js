@@ -31,7 +31,7 @@ var _QuickReplies2 = _interopRequireDefault(_QuickReplies);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var Elements = function () {
-  function Elements() {
+  function Elements(elements) {
     (0, _classCallCheck3.default)(this, Elements);
 
     this._elements = [];
@@ -82,6 +82,7 @@ var Elements = function () {
       }
 
       this._quickreplies = quickreplies;
+      return this;
     }
   }, {
     key: 'setListStyle',
@@ -101,6 +102,7 @@ var Elements = function () {
           }
         }
       }
+      return this;
     }
   }, {
     key: 'getQuickReplies',
@@ -234,6 +236,19 @@ var Elements = function () {
     key: 'length',
     get: function get() {
       return this._elements.length;
+    }
+  }], [{
+    key: 'from',
+    value: function from(array) {
+      var element = new Elements();
+      if (Array.isArray(array)) {
+        array.forEach(function (arg) {
+          return element.add(arg);
+        });
+      } else {
+        element.add(array);
+      }
+      return element;
     }
   }]);
   return Elements;

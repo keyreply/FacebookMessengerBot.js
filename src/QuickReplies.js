@@ -10,7 +10,7 @@ class QuickReplies {
       throw Error('Must provide data i.e. {data: null}');
     }
 
-    this._quickReplies.push({text: text || 'QuickReply', event, data, image, isLocation});
+    this._quickReplies.push({text: text, event, data, image, isLocation});
     return this;
   }
 

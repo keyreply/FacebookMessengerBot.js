@@ -2,7 +2,7 @@ import Buttons from './Buttons';
 import QuickReplies from './QuickReplies';
 
 class Elements {
-  constructor() {
+  constructor(elements) {
     this._elements = [];
     this._quickreplies = null;
     this._listStyle = null;
@@ -48,6 +48,7 @@ class Elements {
     }
 
     this._quickreplies = quickreplies;
+    return this;
   }
 
   setListStyle(listStyle, buttons) {
@@ -66,6 +67,7 @@ class Elements {
         }
       }
     }
+    return this;
   }
 
   getQuickReplies() {
@@ -174,6 +176,16 @@ class Elements {
     }
 
     return built;
+  }
+
+  static from(array) {
+    const element = new Elements();
+    if (Array.isArray(array)) {
+      array.forEach(arg => element.add(arg));
+    } else {
+      element.add(array);
+    }
+    return element;
   }
 }
 

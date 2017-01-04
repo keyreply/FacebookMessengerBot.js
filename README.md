@@ -116,7 +116,7 @@ bot.on('message', async message => {
 
 ### Send Responses
 ```es6
-import {Elements} from 'facebook-messenger-bot'; // import Bot class
+import {Bot, Elements} from 'facebook-messenger-bot'; // import Bot class
 
 bot.on('message', async message => {
     const {sender} = message;
@@ -132,14 +132,14 @@ bot.on('message', async message => {
     await bot.send(sender.id, out, "NO_PUSH");
 
     // wait for 1s
-    await bot.wait(1000);
+    await Bot.wait(1000);
 
     // ---- send image
     const out = new Elements();
     out.add({image: 'https://developers.facebook.com/images/devsite/fb4d_logo-2x.png'});
     await bot.send(sender.id, out);
 
-    await bot.wait(1000);
+    await Bot.wait(1000);
 
     // ---- send buttons (single card)
     buttons = new Buttons();
@@ -158,7 +158,7 @@ bot.on('message', async message => {
     out.add({text: 'ABC Flower shop', subtext: 'Office hours 10am - 6pm', buttons}); // add a card
     await bot.send(to, out);
 
-    await bot.wait(2000);
+    await Bot.wait(2000);
 
   	// ---- send list
   	out = new Elements();
@@ -216,7 +216,7 @@ bot.on('message', async message => {
     out = new Elements();
     out.add({image: 'http://someimage.com', text: 'hey', buttons});
     await bot.send(to, out);
-    await sleep(2000);
+    await Bot.wait(2000);
 });
 
 bot.on('search-engine', async (data, message) => {
@@ -265,17 +265,18 @@ bot.on('delivery', async (message, mids) => {
 
 ### Set/Delete persistent menu
 ```es6
-// use postback buttons for the menu, other buttons are not supported by facebook
-menuButtons = new menuButtons();
+(async function () {
+  // use postback buttons for the menu, other buttons are not supported by facebook
+  menuButtons = new Buttons();
 
-menuButtons.add({text: 'Google', data: 'google', event: 'search-engine'});
-menuButtons.add({text: 'Bing', data: 'bing', event: 'search-engine'});
-menuButtons.add({text: 'Yahoo', data: 'yahoo', event: 'search-engine'});
+  menuButtons.add({text: 'Google', data: 'google', event: 'search-engine'});
+  menuButtons.add({text: 'Bing', data: 'bing', event: 'search-engine'});
+  menuButtons.add({text: 'Yahoo', data: 'yahoo', event: 'search-engine'});
 
-console.log(await bot.setPersistentMenu(menuButtons));
+  console.log(await bot.setPersistentMenu(menuButtons));
 
-// console.log(await bot.setPersistentMenu(null)); // DELETE Persisten menu
-
+  // console.log(await bot.setPersistentMenu(null)); // DELETE Persisten menu
+})();
 
 ```
 
