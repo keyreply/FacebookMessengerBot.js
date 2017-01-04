@@ -23,10 +23,22 @@ var _createClass3 = _interopRequireDefault(_createClass2);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var Buttons = function () {
-  function Buttons() {
+  function Buttons(buttons) {
+    var _this = this;
+
     (0, _classCallCheck3.default)(this, Buttons);
 
     this._buttons = [];
+
+    if (buttons != null) {
+      if (Array.isArray(buttons)) {
+        buttons.forEach(function (button) {
+          return _this.add(button);
+        });
+      } else {
+        this.add(buttons);
+      }
+    }
   }
 
   (0, _createClass3.default)(Buttons, [{

@@ -25,10 +25,22 @@ var _utils = require('./libs/utils');
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var QuickReplies = function () {
-  function QuickReplies() {
+  function QuickReplies(quickreplies) {
+    var _this = this;
+
     (0, _classCallCheck3.default)(this, QuickReplies);
 
     this._quickReplies = [];
+
+    if (quickreplies != null) {
+      if (Array.isArray(quickreplies)) {
+        quickreplies.forEach(function (reply) {
+          return _this.add(reply);
+        });
+      } else {
+        this.add(quickreplies);
+      }
+    }
   }
 
   (0, _createClass3.default)(QuickReplies, [{

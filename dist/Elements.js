@@ -32,12 +32,24 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var Elements = function () {
   function Elements(elements) {
+    var _this = this;
+
     (0, _classCallCheck3.default)(this, Elements);
 
     this._elements = [];
     this._quickreplies = null;
     this._listStyle = null;
     this._buttons = null;
+
+    if (elements != null) {
+      if (Array.isArray(elements)) {
+        elements.forEach(function (element) {
+          return _this.add(element);
+        });
+      } else {
+        this.add(elements);
+      }
+    }
   }
 
   (0, _createClass3.default)(Elements, [{
@@ -112,17 +124,17 @@ var Elements = function () {
   }, {
     key: 'toJSON',
     value: function toJSON() {
-      var _this = this;
+      var _this2 = this;
 
       var build = function build() {
-        if (_this._elements.length > 1) {
+        if (_this2._elements.length > 1) {
           var elements = [];
           var _iteratorNormalCompletion = true;
           var _didIteratorError = false;
           var _iteratorError = undefined;
 
           try {
-            for (var _iterator = (0, _getIterator3.default)(_this._elements), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+            for (var _iterator = (0, _getIterator3.default)(_this2._elements), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
               var e = _step.value;
 
               var element = {};
@@ -149,23 +161,23 @@ var Elements = function () {
           }
 
           var buttons = void 0;
-          if (_this._buttons && _this._buttons.length) {
-            buttons = _this._buttons.toJSON();
+          if (_this2._buttons && _this2._buttons.length) {
+            buttons = _this2._buttons.toJSON();
           }
 
-          if (_this._listStyle) {
+          if (_this2._listStyle) {
             return {
               attachment: {
                 type: 'template',
                 payload: {
                   template_type: 'list',
-                  top_element_style: _this._listStyle,
+                  top_element_style: _this2._listStyle,
                   elements: elements,
                   buttons: buttons
                 }
               }
             };
-          } else if (!_this._listStyle) {
+          } else if (!_this2._listStyle) {
             return {
               attachment: {
                 type: 'template',
@@ -176,8 +188,8 @@ var Elements = function () {
               }
             };
           }
-        } else if (_this._elements.length === 1) {
-          var _e = _this._elements[0];
+        } else if (_this2._elements.length === 1) {
+          var _e = _this2._elements[0];
           var _element = {};
           if (_e.text && _e.buttons && _e.buttons.length && (_e.image || _e.subtext)) {
             _element.title = _e.text;
