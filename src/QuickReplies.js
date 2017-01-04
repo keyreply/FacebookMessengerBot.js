@@ -1,8 +1,16 @@
 import {cut} from './libs/utils';
 
 class QuickReplies {
-  constructor() {
+  constructor(quickreplies) {
     this._quickReplies = [];
+
+    if (quickreplies != null) {
+      if (Array.isArray(quickreplies)) {
+        quickreplies.forEach(reply => this.add(reply));
+      } else {
+        this.add(quickreplies);
+      }
+    }
   }
 
   add({text, data, event, image, isLocation}) {
