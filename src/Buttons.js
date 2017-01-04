@@ -1,6 +1,14 @@
 class Buttons {
-  constructor() {
+  constructor(buttons) {
     this._buttons = [];
+    
+    if (buttons != null) {
+      if (Array.isArray(buttons)) {
+        buttons.forEach(button => this.add(button));
+      } else {
+        this.add(buttons);
+      }
+    }
   }
 
   add({text, data, url, phone, event, share, account_linking, webview_height_ratio}) {

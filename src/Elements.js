@@ -7,6 +7,14 @@ class Elements {
     this._quickreplies = null;
     this._listStyle = null;
     this._buttons = null;
+
+    if (elements != null) {
+      if (Array.isArray(elements)) {
+        elements.forEach(element => this.add(element));
+      } else {
+        this.add(elements);
+      }
+    }
   }
 
   add({
