@@ -191,11 +191,13 @@ var Elements = function () {
         } else if (_this2._elements.length === 1) {
           var _e = _this2._elements[0];
           var _element = {};
-          if (_e.text && _e.buttons && _e.buttons.length && (_e.image || _e.subtext)) {
-            _element.title = _e.text;
+          if (_e.text && (_e.url || _e.image || _e.subtext)) {
+            if (_e.text) _element.title = _e.text;
             if (_e.image) _element.image_url = _e.image;
             if (_e.subtext) _element.subtitle = _e.subtext;
-            _element.buttons = _e.buttons.toJSON();
+            if (_e.url) _element.item_url = _e.url;
+            if (_e.buttons && _e.buttons.length) _element.buttons = _e.buttons.toJSON();
+
             return {
               attachment: {
                 type: 'template',

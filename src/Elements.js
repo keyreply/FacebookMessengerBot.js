@@ -131,11 +131,13 @@ class Elements {
       } else if (this._elements.length === 1) {
         const e = this._elements[0];
         const element = {};
-        if (e.text && e.buttons && e.buttons.length && (e.image || e.subtext)) {
-          element.title = e.text;
+        if (e.text && (e.url || e.image || e.subtext)) {
+          if (e.text) element.title = e.text;
           if (e.image) element.image_url = e.image;
           if (e.subtext) element.subtitle = e.subtext;
-          element.buttons = e.buttons.toJSON();
+          if (e.url) element.item_url = e.url;
+          if (e.buttons && e.buttons.length) element.buttons = e.buttons.toJSON();
+
           return {
             attachment: {
               type: 'template',
