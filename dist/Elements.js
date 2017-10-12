@@ -57,6 +57,7 @@ var Elements = function () {
     value: function add(_ref) {
       var text = _ref.text,
           image = _ref.image,
+          video = _ref.video,
           subtext = _ref.subtext,
           url = _ref.url,
           buttons = _ref.buttons;
@@ -74,6 +75,7 @@ var Elements = function () {
       this._elements.push({
         text: text,
         image: image,
+        video: video,
         subtext: subtext,
         url: url,
         buttons: buttons
@@ -229,6 +231,15 @@ var Elements = function () {
                 type: 'image',
                 payload: {
                   url: _e.image
+                }
+              }
+            };
+          } else if (_e.video) {
+            return {
+              attachment: {
+                type: 'video',
+                payload: {
+                  url: _e.video
                 }
               }
             };

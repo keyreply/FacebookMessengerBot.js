@@ -20,6 +20,7 @@ class Elements {
   add({
     text,
     image,
+    video,
     subtext,
     url,
     buttons
@@ -37,6 +38,7 @@ class Elements {
     this._elements.push({
       text,
       image,
+      video,
       subtext,
       url,
       buttons
@@ -170,6 +172,15 @@ class Elements {
               type: 'image',
               payload: {
                 url: e.image
+              }
+            }
+          };
+        } else if (e.video) {
+          return {
+            attachment: {
+              type: 'video',
+              payload: {
+                url: e.video
               }
             }
           };
