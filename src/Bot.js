@@ -191,7 +191,7 @@ class Bot extends EventEmitter {
       message.isButton = true;
 
       if (postback.hasOwnProperty('data')) {
-        message.postback = postback;
+        //message.postback = postback;
         message.data = postback.data;
         message.event = postback.event;
 
