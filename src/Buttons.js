@@ -11,12 +11,32 @@ class Buttons {
     }
   }
 
-  add({text, data, url, phone, event, share, account_linking, webview_height_ratio}) {
+  add({
+      text,
+      data,
+      url,
+      phone,
+      event,
+      share,
+      account_linking,
+      webview_height_ratio,
+      messenger_extensions
+    }) {
     if (!data && !url && !event && !phone && !share) {
       throw Error('Must provide a url or data i.e. {data: null} or {url: \'https://facebook.com\'}');
     }
 
-    this._buttons.push({text: text || 'Button', event, data, phone, share, url, account_linking, webview_height_ratio});
+    this._buttons.push({
+      text: text || 'Button',
+      event,
+      data,
+      phone,
+      share,
+      url,
+      account_linking,
+      webview_height_ratio,
+      messenger_extensions
+    });
     return this;
   }
 
@@ -32,7 +52,13 @@ class Buttons {
           throw Error('Missing url for account linking');
         }
       } else if (button.url) {
-        buttons.push({type: 'web_url', url: button.url, title: button.text, webview_height_ratio: button.webview_height_ratio || 'full'});
+        buttons.push({
+          type: 'web_url',
+          url: button.url,
+          title: button.text,
+          messenger_extensions: button.messenger_extensions,
+          webview_height_ratio: button.webview_height_ratio || 'full'
+        });
       } else if (button.data != null) {
         const payload = JSON.stringify({data: button.data, event: button.event});
         buttons.push({type: 'postback', payload, title: button.text});
