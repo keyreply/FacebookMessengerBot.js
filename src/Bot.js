@@ -1,13 +1,13 @@
 import EventEmitter from 'events';
 import bodyParser from 'body-parser';
-import {Router} from 'express';
+import { Router } from 'express';
 import Elements from './Elements.js';
 import Buttons from './Buttons.js';
 import QuickReplies from './QuickReplies.js';
 import fetch from './libs/fetch.js';
 import _ from 'lodash';
 
-export {Elements, Buttons, QuickReplies};
+export { Elements, Buttons, QuickReplies };
 
 const userCache = {};
 
@@ -30,11 +30,11 @@ class Bot extends EventEmitter {
   }
 
   async setGreeting(text) {
-    const {body: {result}} = await fetch('https://graph.facebook.com/v2.6/me/thread_settings', {
+    const { body: { result } } = await fetch('https://graph.facebook.com/v2.6/me/thread_settings', {
       method: 'post',
       json: true,
-      query: {access_token: this._token},
-      body: {setting_type: 'greeting', greeting: {text}}
+      query: { access_token: this._token },
+      body: { setting_type: 'greeting', greeting: { text } }
     });
 
     return result;
@@ -42,10 +42,10 @@ class Bot extends EventEmitter {
 
   async setGetStarted(input) {
     if (!input) {
-      const {body: {result}} = await fetch('https://graph.facebook.com/v2.6/me/thread_settings', {
+      const { body: { result } } = await fetch('https://graph.facebook.com/v2.6/me/thread_settings', {
         method: 'delete',
         json: true,
-        query: {access_token: this._token},
+        query: { access_token: this._token },
         body: {
           setting_type: 'call_to_actions',
           thread_state: 'new_thread'
@@ -55,15 +55,15 @@ class Bot extends EventEmitter {
       return result;
     }
 
-    const {data, event} = input;
-    const {body: {result}} = await fetch('https://graph.facebook.com/v2.6/me/thread_settings', {
+    const { data, event } = input;
+    const { body: { result } } = await fetch('https://graph.facebook.com/v2.6/me/thread_settings', {
       method: 'post',
       json: true,
-      query: {access_token: this._token},
+      query: { access_token: this._token },
       body: {
         setting_type: 'call_to_actions',
         thread_state: 'new_thread',
-        call_to_actions: [{payload: JSON.stringify({data, event})}]
+        call_to_actions: [{ payload: JSON.stringify({ data, event }) }]
       }
     });
 
@@ -72,10 +72,10 @@ class Bot extends EventEmitter {
 
   async setPersistentMenu(input) {
     if (!input) {
-      const {body: {result}} = await fetch('https://graph.facebook.com/v2.6/me/thread_settings', {
+      const { body: { result } } = await fetch('https://graph.facebook.com/v2.6/me/thread_settings', {
         method: 'delete',
         json: true,
-        query: {access_token: this._token},
+        query: { access_token: this._token },
         body: {
           setting_type: 'call_to_actions',
           thread_state: 'existing_thread'
@@ -85,10 +85,10 @@ class Bot extends EventEmitter {
       return result;
     }
 
-    const {body: {result}} = await fetch('https://graph.facebook.com/v2.6/me/thread_settings', {
+    const { body: { result } } = await fetch('https://graph.facebook.com/v2.6/me/thread_settings', {
       method: 'post',
       json: true,
-      query: {access_token: this._token},
+      query: { access_token: this._token },
       body: {
         setting_type: 'call_to_actions',
         thread_state: 'existing_thread',
@@ -101,12 +101,12 @@ class Bot extends EventEmitter {
 
   async setTyping(to, state) {
     const action = state ? 'typing_on' : 'typing_off';
-    
-    const {body: {result}} = await fetch('https://graph.facebook.com/v2.6/me/messages', {
+
+    const { body: { result } } = await fetch('https://graph.facebook.com/v2.6/me/messages', {
       method: 'post',
       json: true,
-      query: {access_token: this._token},
-      body: {recipient: {id: to}, sender_action: action}
+      query: { access_token: this._token },
+      body: { recipient: { id: to }, sender_action: action }
     });
 
     return result;
@@ -115,15 +115,15 @@ class Bot extends EventEmitter {
 
   async send(to, message, notification_type = "REGULAR") {
     if (this._debug) {
-      console.log({recipient: {id: to}, message: message ? message.toJSON() : message, notification_type});
+      console.log({ recipient: { id: to }, message: message ? message.toJSON() : message, notification_type });
     }
 
     try {
       await fetch('https://graph.facebook.com/v2.6/me/messages', {
         method: 'post',
         json: true,
-        query: {access_token: this._token},
-        body: {recipient: {id: to}, message, notification_type}
+        query: { access_token: this._token },
+        body: { recipient: { id: to }, message, notification_type }
       });
     } catch (e) {
       if (e.text) {
@@ -150,8 +150,8 @@ class Bot extends EventEmitter {
       props = userCache[key];
       props.fromCache = true;
     } else {
-      const {body} = await fetch(`https://graph.facebook.com/v2.6/${id}`, {
-        query: {access_token: this._token, fields}, json: true
+      const { body } = await fetch(`https://graph.facebook.com/v2.6/${id}`, {
+        query: { access_token: this._token, fields }, json: true
       });
 
       props = body;
@@ -165,6 +165,16 @@ class Bot extends EventEmitter {
     return props;
   }
 
+  async handleStandby(input) {
+    const body = JSON.parse(JSON.stringify(input));
+    const message = body.entry[0].standby[0];
+
+    //filter for message_delivered events
+    if (message.delivery && message.delivery.mids && message.delivery.mids[0]){
+      this.emit('standby', message);
+    }
+  }
+
   async handleMessage(input) {
     const body = JSON.parse(JSON.stringify(input));
     const message = body.entry[0].messaging[0];
@@ -173,7 +183,7 @@ class Bot extends EventEmitter {
 
     message.raw = input;
 
-    message.sender.fetch = async(fields, cache) => {
+    message.sender.fetch = async (fields, cache) => {
       const props = await this.fetchUser(message.sender.id, fields, cache);
       Object.assign(message.sender, props);
       return message.sender;
@@ -271,7 +281,7 @@ class Bot extends EventEmitter {
 
     if (attachments.location) {
       const location = attachments.location[0];
-      message.location = {...location, ...location.payload.coordinates};
+      message.location = { ...location, ...location.payload.coordinates };
       delete message.location.payload;
     }
 
@@ -296,7 +306,11 @@ class Bot extends EventEmitter {
     });
 
     router.post('/', (req, res) => {
-      this.handleMessage(req.body);
+      if (req.body.entry[0].standby) {
+        this.handleStandby(req.body);
+      } else {
+        this.handleMessage(req.body);
+      }
       res.send().status(200);
     });
 
@@ -304,6 +318,6 @@ class Bot extends EventEmitter {
   }
 }
 
-export {Bot};
+export { Bot };
 
 export default Bot;

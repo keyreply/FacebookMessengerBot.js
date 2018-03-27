@@ -455,16 +455,48 @@ var Bot = function (_EventEmitter) {
       return fetchUser;
     }()
   }, {
+    key: 'handleStandby',
+    value: function () {
+      var _ref15 = (0, _bluebird.coroutine)( /*#__PURE__*/_regenerator2.default.mark(function _callee8(input) {
+        var body, message;
+        return _regenerator2.default.wrap(function _callee8$(_context8) {
+          while (1) {
+            switch (_context8.prev = _context8.next) {
+              case 0:
+                body = JSON.parse((0, _stringify2.default)(input));
+                message = body.entry[0].standby[0];
+
+                //filter for message_delivered events
+
+                if (message.delivery && message.delivery.mids && message.delivery.mids[0]) {
+                  this.emit('standby', message);
+                }
+
+              case 3:
+              case 'end':
+                return _context8.stop();
+            }
+          }
+        }, _callee8, this);
+      }));
+
+      function handleStandby(_x14) {
+        return _ref15.apply(this, arguments);
+      }
+
+      return handleStandby;
+    }()
+  }, {
     key: 'handleMessage',
     value: function () {
-      var _ref15 = (0, _bluebird.coroutine)( /*#__PURE__*/_regenerator2.default.mark(function _callee9(input) {
+      var _ref16 = (0, _bluebird.coroutine)( /*#__PURE__*/_regenerator2.default.mark(function _callee10(input) {
         var _this2 = this;
 
         var body, message, postback, _postback, attachments, location;
 
-        return _regenerator2.default.wrap(function _callee9$(_context9) {
+        return _regenerator2.default.wrap(function _callee10$(_context10) {
           while (1) {
-            switch (_context9.prev = _context9.next) {
+            switch (_context10.prev = _context10.next) {
               case 0:
                 body = JSON.parse((0, _stringify2.default)(input));
                 message = body.entry[0].messaging[0];
@@ -475,38 +507,38 @@ var Bot = function (_EventEmitter) {
                 message.raw = input;
 
                 message.sender.fetch = function () {
-                  var _ref16 = (0, _bluebird.coroutine)( /*#__PURE__*/_regenerator2.default.mark(function _callee8(fields, cache) {
+                  var _ref17 = (0, _bluebird.coroutine)( /*#__PURE__*/_regenerator2.default.mark(function _callee9(fields, cache) {
                     var props;
-                    return _regenerator2.default.wrap(function _callee8$(_context8) {
+                    return _regenerator2.default.wrap(function _callee9$(_context9) {
                       while (1) {
-                        switch (_context8.prev = _context8.next) {
+                        switch (_context9.prev = _context9.next) {
                           case 0:
-                            _context8.next = 2;
+                            _context9.next = 2;
                             return _this2.fetchUser(message.sender.id, fields, cache);
 
                           case 2:
-                            props = _context8.sent;
+                            props = _context9.sent;
 
                             (0, _assign2.default)(message.sender, props);
-                            return _context8.abrupt('return', message.sender);
+                            return _context9.abrupt('return', message.sender);
 
                           case 5:
                           case 'end':
-                            return _context8.stop();
+                            return _context9.stop();
                         }
                       }
-                    }, _callee8, _this2);
+                    }, _callee9, _this2);
                   }));
 
-                  return function (_x15, _x16) {
-                    return _ref16.apply(this, arguments);
+                  return function (_x16, _x17) {
+                    return _ref17.apply(this, arguments);
                   };
                 }();
 
                 // POSTBACK
 
                 if (!message.postback) {
-                  _context9.next = 12;
+                  _context10.next = 12;
                   break;
                 }
 
@@ -534,11 +566,11 @@ var Bot = function (_EventEmitter) {
                   this.emit('invalid-postback', message, message.postback);
                 }
 
-                return _context9.abrupt('return');
+                return _context10.abrupt('return');
 
               case 12:
                 if (!message.delivery) {
-                  _context9.next = 18;
+                  _context10.next = 18;
                   break;
                 }
 
@@ -548,22 +580,22 @@ var Bot = function (_EventEmitter) {
                 delete message.delivery;
 
                 this.emit('delivery', message, message.delivered);
-                return _context9.abrupt('return');
+                return _context10.abrupt('return');
 
               case 18:
                 if (!message.optin) {
-                  _context9.next = 23;
+                  _context10.next = 23;
                   break;
                 }
 
                 message.param = message.optin.ref || true;
                 message.optin = message.param;
                 this.emit('optin', message, message.optin);
-                return _context9.abrupt('return');
+                return _context10.abrupt('return');
 
               case 23:
                 if (!(message.quick_reply && !message.is_echo)) {
-                  _context9.next = 29;
+                  _context10.next = 29;
                   break;
                 }
 
@@ -592,7 +624,7 @@ var Bot = function (_EventEmitter) {
                   this.emit('invalid-postback', message, message.postback);
                 }
 
-                return _context9.abrupt('return');
+                return _context10.abrupt('return');
 
               case 29:
                 attachments = _lodash2.default.groupBy(message.attachments, 'type');
@@ -631,14 +663,14 @@ var Bot = function (_EventEmitter) {
 
               case 37:
               case 'end':
-                return _context9.stop();
+                return _context10.stop();
             }
           }
-        }, _callee9, this);
+        }, _callee10, this);
       }));
 
-      function handleMessage(_x14) {
-        return _ref15.apply(this, arguments);
+      function handleMessage(_x15) {
+        return _ref16.apply(this, arguments);
       }
 
       return handleMessage;
@@ -661,7 +693,11 @@ var Bot = function (_EventEmitter) {
       });
 
       router.post('/', function (req, res) {
-        _this3.handleMessage(req.body);
+        if (req.body.entry[0].standby) {
+          _this3.handleStandby(req.body);
+        } else {
+          _this3.handleMessage(req.body);
+        }
         res.send().status(200);
       });
 
