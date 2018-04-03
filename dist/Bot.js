@@ -555,7 +555,7 @@ var Bot = function (_EventEmitter) {
                         switch (_context9.prev = _context9.next) {
                           case 0:
                             _context9.next = 2;
-                            return _this2.fetchUser(message.sender.id, fields, cache);
+                            return _this2.fetchUser(message.sender.id, fields, cache, message.recipient.id);
 
                           case 2:
                             props = _context9.sent;

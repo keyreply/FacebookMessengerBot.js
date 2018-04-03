@@ -219,7 +219,7 @@ class Bot extends EventEmitter {
     message.raw = input;
 
     message.sender.fetch = async (fields, cache) => {
-      const props = await this.fetchUser(message.sender.id, fields, cache);
+      const props = await this.fetchUser(message.sender.id, fields, cache, message.recipient.id);
       Object.assign(message.sender, props);
       return message.sender;
     };
