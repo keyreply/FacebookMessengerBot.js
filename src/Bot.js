@@ -23,13 +23,22 @@ class Bot extends EventEmitter {
 
   constructor(token, verification, debug = false) {
     super();
-
-    this._token = token;
+    // support multiple tokens with backwards compatibility
+    if (typeof token === 'object') { 
+      this._tokens = token;
+    } else {
+      this._token = token;
+    }
     this._debug = debug;
     this._verification = verification;
   }
 
-  async setGreeting(text) {
+  async setGreeting(text, pageId) {
+    // support multiple tokens with backwards compatibility
+    if (pageId && this._tokens) {
+      this._token = this._tokens[pageId];
+    }
+
     const { body: { result } } = await fetch('https://graph.facebook.com/v2.6/me/thread_settings', {
       method: 'post',
       json: true,
@@ -40,7 +49,12 @@ class Bot extends EventEmitter {
     return result;
   }
 
-  async setGetStarted(input) {
+  async setGetStarted(input, pageId) {
+    // support multiple tokens with backwards compatibility
+    if (pageId && this._tokens) {
+      this._token = this._tokens[pageId];
+    }
+
     if (!input) {
       const { body: { result } } = await fetch('https://graph.facebook.com/v2.6/me/thread_settings', {
         method: 'delete',
@@ -70,7 +84,12 @@ class Bot extends EventEmitter {
     return result;
   }
 
-  async setPersistentMenu(input) {
+  async setPersistentMenu(input, pageId) {
+    // support multiple tokens with backwards compatibility
+    if (pageId && this._tokens) {
+      this._token = this._tokens[pageId];
+    }
+
     if (!input) {
       const { body: { result } } = await fetch('https://graph.facebook.com/v2.6/me/thread_settings', {
         method: 'delete',
@@ -99,7 +118,12 @@ class Bot extends EventEmitter {
     return result;
   }
 
-  async setTyping(to, state) {
+  async setTyping(to, state, pageId) {
+    // support multiple tokens with backwards compatibility    
+    if (pageId && this._tokens) {
+      this._token = this._tokens[pageId];
+    }
+
     const action = state ? 'typing_on' : 'typing_off';
 
     const { body: { result } } = await fetch('https://graph.facebook.com/v2.6/me/messages', {
@@ -113,7 +137,13 @@ class Bot extends EventEmitter {
   }
 
 
-  async send(to, message, notification_type = "REGULAR") {
+  async send(to, message, notification_type = "REGULAR", pageId) {
+    // support multiple tokens with backwards compatibility
+    if (pageId && this._tokens) {
+      this._token = this._tokens[pageId];
+    }
+
+
     if (this._debug) {
       console.log({ recipient: { id: to }, message: message ? message.toJSON() : message, notification_type });
     }
@@ -142,7 +172,12 @@ class Bot extends EventEmitter {
     }
   }
 
-  async fetchUser(id, fields = 'first_name,last_name,profile_pic', cache = false) {
+  async fetchUser(id, fields = 'first_name,last_name,profile_pic', cache = false, pageId) {
+    // support multiple tokens with backwards compatibility
+    if (pageId && this._tokens) {
+      this._token = this._tokens[pageId];
+    }
+
     const key = id + fields;
     let props;
 
@@ -170,7 +205,7 @@ class Bot extends EventEmitter {
     const message = body.entry[0].standby[0];
 
     //filter for message_delivered events
-    if (message.delivery && message.delivery.mids && message.delivery.mids[0]){
+    if (message.delivery && message.delivery.mids && message.delivery.mids[0]) {
       this.emit('standby', message);
     }
   }

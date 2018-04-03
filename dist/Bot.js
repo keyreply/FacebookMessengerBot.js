@@ -17,6 +17,10 @@ var _stringify = require('babel-runtime/core-js/json/stringify');
 
 var _stringify2 = _interopRequireDefault(_stringify);
 
+var _typeof2 = require('babel-runtime/helpers/typeof');
+
+var _typeof3 = _interopRequireDefault(_typeof2);
+
 var _getPrototypeOf = require('babel-runtime/core-js/object/get-prototype-of');
 
 var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
@@ -118,9 +122,14 @@ var Bot = function (_EventEmitter) {
     var debug = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
     (0, _classCallCheck3.default)(this, Bot);
 
+    // support multiple tokens with backwards compatibility
     var _this = (0, _possibleConstructorReturn3.default)(this, (Bot.__proto__ || (0, _getPrototypeOf2.default)(Bot)).call(this));
 
-    _this._token = token;
+    if ((typeof token === 'undefined' ? 'undefined' : (0, _typeof3.default)(token)) === 'object') {
+      _this._tokens = token;
+    } else {
+      _this._token = token;
+    }
     _this._debug = debug;
     _this._verification = verification;
     return _this;
@@ -129,14 +138,19 @@ var Bot = function (_EventEmitter) {
   (0, _createClass3.default)(Bot, [{
     key: 'setGreeting',
     value: function () {
-      var _ref2 = (0, _bluebird.coroutine)( /*#__PURE__*/_regenerator2.default.mark(function _callee2(text) {
+      var _ref2 = (0, _bluebird.coroutine)( /*#__PURE__*/_regenerator2.default.mark(function _callee2(text, pageId) {
         var _ref3, result;
 
         return _regenerator2.default.wrap(function _callee2$(_context2) {
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
-                _context2.next = 2;
+                // support multiple tokens with backwards compatibility
+                if (pageId && this._tokens) {
+                  this._token = this._tokens[pageId];
+                }
+
+                _context2.next = 3;
                 return (0, _fetch2.default)('https://graph.facebook.com/v2.6/me/thread_settings', {
                   method: 'post',
                   json: true,
@@ -144,12 +158,12 @@ var Bot = function (_EventEmitter) {
                   body: { setting_type: 'greeting', greeting: { text: text } }
                 });
 
-              case 2:
+              case 3:
                 _ref3 = _context2.sent;
                 result = _ref3.body.result;
                 return _context2.abrupt('return', result);
 
-              case 5:
+              case 6:
               case 'end':
                 return _context2.stop();
             }
@@ -157,7 +171,7 @@ var Bot = function (_EventEmitter) {
         }, _callee2, this);
       }));
 
-      function setGreeting(_x3) {
+      function setGreeting(_x3, _x4) {
         return _ref2.apply(this, arguments);
       }
 
@@ -166,19 +180,24 @@ var Bot = function (_EventEmitter) {
   }, {
     key: 'setGetStarted',
     value: function () {
-      var _ref4 = (0, _bluebird.coroutine)( /*#__PURE__*/_regenerator2.default.mark(function _callee3(input) {
+      var _ref4 = (0, _bluebird.coroutine)( /*#__PURE__*/_regenerator2.default.mark(function _callee3(input, pageId) {
         var _ref5, _result, data, event, _ref6, result;
 
         return _regenerator2.default.wrap(function _callee3$(_context3) {
           while (1) {
             switch (_context3.prev = _context3.next) {
               case 0:
+                // support multiple tokens with backwards compatibility
+                if (pageId && this._tokens) {
+                  this._token = this._tokens[pageId];
+                }
+
                 if (input) {
-                  _context3.next = 6;
+                  _context3.next = 7;
                   break;
                 }
 
-                _context3.next = 3;
+                _context3.next = 4;
                 return (0, _fetch2.default)('https://graph.facebook.com/v2.6/me/thread_settings', {
                   method: 'delete',
                   json: true,
@@ -189,14 +208,14 @@ var Bot = function (_EventEmitter) {
                   }
                 });
 
-              case 3:
+              case 4:
                 _ref5 = _context3.sent;
                 _result = _ref5.body.result;
                 return _context3.abrupt('return', _result);
 
-              case 6:
+              case 7:
                 data = input.data, event = input.event;
-                _context3.next = 9;
+                _context3.next = 10;
                 return (0, _fetch2.default)('https://graph.facebook.com/v2.6/me/thread_settings', {
                   method: 'post',
                   json: true,
@@ -208,12 +227,12 @@ var Bot = function (_EventEmitter) {
                   }
                 });
 
-              case 9:
+              case 10:
                 _ref6 = _context3.sent;
                 result = _ref6.body.result;
                 return _context3.abrupt('return', result);
 
-              case 12:
+              case 13:
               case 'end':
                 return _context3.stop();
             }
@@ -221,7 +240,7 @@ var Bot = function (_EventEmitter) {
         }, _callee3, this);
       }));
 
-      function setGetStarted(_x4) {
+      function setGetStarted(_x5, _x6) {
         return _ref4.apply(this, arguments);
       }
 
@@ -230,19 +249,24 @@ var Bot = function (_EventEmitter) {
   }, {
     key: 'setPersistentMenu',
     value: function () {
-      var _ref7 = (0, _bluebird.coroutine)( /*#__PURE__*/_regenerator2.default.mark(function _callee4(input) {
+      var _ref7 = (0, _bluebird.coroutine)( /*#__PURE__*/_regenerator2.default.mark(function _callee4(input, pageId) {
         var _ref8, _result2, _ref9, result;
 
         return _regenerator2.default.wrap(function _callee4$(_context4) {
           while (1) {
             switch (_context4.prev = _context4.next) {
               case 0:
+                // support multiple tokens with backwards compatibility
+                if (pageId && this._tokens) {
+                  this._token = this._tokens[pageId];
+                }
+
                 if (input) {
-                  _context4.next = 6;
+                  _context4.next = 7;
                   break;
                 }
 
-                _context4.next = 3;
+                _context4.next = 4;
                 return (0, _fetch2.default)('https://graph.facebook.com/v2.6/me/thread_settings', {
                   method: 'delete',
                   json: true,
@@ -253,13 +277,13 @@ var Bot = function (_EventEmitter) {
                   }
                 });
 
-              case 3:
+              case 4:
                 _ref8 = _context4.sent;
                 _result2 = _ref8.body.result;
                 return _context4.abrupt('return', _result2);
 
-              case 6:
-                _context4.next = 8;
+              case 7:
+                _context4.next = 9;
                 return (0, _fetch2.default)('https://graph.facebook.com/v2.6/me/thread_settings', {
                   method: 'post',
                   json: true,
@@ -271,12 +295,12 @@ var Bot = function (_EventEmitter) {
                   }
                 });
 
-              case 8:
+              case 9:
                 _ref9 = _context4.sent;
                 result = _ref9.body.result;
                 return _context4.abrupt('return', result);
 
-              case 11:
+              case 12:
               case 'end':
                 return _context4.stop();
             }
@@ -284,7 +308,7 @@ var Bot = function (_EventEmitter) {
         }, _callee4, this);
       }));
 
-      function setPersistentMenu(_x5) {
+      function setPersistentMenu(_x7, _x8) {
         return _ref7.apply(this, arguments);
       }
 
@@ -293,15 +317,20 @@ var Bot = function (_EventEmitter) {
   }, {
     key: 'setTyping',
     value: function () {
-      var _ref10 = (0, _bluebird.coroutine)( /*#__PURE__*/_regenerator2.default.mark(function _callee5(to, state) {
+      var _ref10 = (0, _bluebird.coroutine)( /*#__PURE__*/_regenerator2.default.mark(function _callee5(to, state, pageId) {
         var action, _ref11, result;
 
         return _regenerator2.default.wrap(function _callee5$(_context5) {
           while (1) {
             switch (_context5.prev = _context5.next) {
               case 0:
+                // support multiple tokens with backwards compatibility    
+                if (pageId && this._tokens) {
+                  this._token = this._tokens[pageId];
+                }
+
                 action = state ? 'typing_on' : 'typing_off';
-                _context5.next = 3;
+                _context5.next = 4;
                 return (0, _fetch2.default)('https://graph.facebook.com/v2.6/me/messages', {
                   method: 'post',
                   json: true,
@@ -309,12 +338,12 @@ var Bot = function (_EventEmitter) {
                   body: { recipient: { id: to }, sender_action: action }
                 });
 
-              case 3:
+              case 4:
                 _ref11 = _context5.sent;
                 result = _ref11.body.result;
                 return _context5.abrupt('return', result);
 
-              case 6:
+              case 7:
               case 'end':
                 return _context5.stop();
             }
@@ -322,7 +351,7 @@ var Bot = function (_EventEmitter) {
         }, _callee5, this);
       }));
 
-      function setTyping(_x6, _x7) {
+      function setTyping(_x9, _x10, _x11) {
         return _ref10.apply(this, arguments);
       }
 
@@ -333,17 +362,23 @@ var Bot = function (_EventEmitter) {
     value: function () {
       var _ref12 = (0, _bluebird.coroutine)( /*#__PURE__*/_regenerator2.default.mark(function _callee6(to, message) {
         var notification_type = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : "REGULAR";
+        var pageId = arguments[3];
         var text, err;
         return _regenerator2.default.wrap(function _callee6$(_context6) {
           while (1) {
             switch (_context6.prev = _context6.next) {
               case 0:
+                // support multiple tokens with backwards compatibility
+                if (pageId && this._tokens) {
+                  this._token = this._tokens[pageId];
+                }
+
                 if (this._debug) {
                   console.log({ recipient: { id: to }, message: message ? message.toJSON() : message, notification_type: notification_type });
                 }
 
-                _context6.prev = 1;
-                _context6.next = 4;
+                _context6.prev = 2;
+                _context6.next = 5;
                 return (0, _fetch2.default)('https://graph.facebook.com/v2.6/me/messages', {
                   method: 'post',
                   json: true,
@@ -351,16 +386,16 @@ var Bot = function (_EventEmitter) {
                   body: { recipient: { id: to }, message: message, notification_type: notification_type }
                 });
 
-              case 4:
-                _context6.next = 15;
+              case 5:
+                _context6.next = 16;
                 break;
 
-              case 6:
-                _context6.prev = 6;
-                _context6.t0 = _context6['catch'](1);
+              case 7:
+                _context6.prev = 7;
+                _context6.t0 = _context6['catch'](2);
 
                 if (!_context6.t0.text) {
-                  _context6.next = 14;
+                  _context6.next = 15;
                   break;
                 }
 
@@ -376,18 +411,18 @@ var Bot = function (_EventEmitter) {
 
                 throw Error(text);
 
-              case 14:
+              case 15:
                 throw _context6.t0;
 
-              case 15:
+              case 16:
               case 'end':
                 return _context6.stop();
             }
           }
-        }, _callee6, this, [[1, 6]]);
+        }, _callee6, this, [[2, 7]]);
       }));
 
-      function send(_x8, _x9) {
+      function send(_x12, _x13) {
         return _ref12.apply(this, arguments);
       }
 
@@ -399,6 +434,7 @@ var Bot = function (_EventEmitter) {
       var _ref13 = (0, _bluebird.coroutine)( /*#__PURE__*/_regenerator2.default.mark(function _callee7(id) {
         var fields = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'first_name,last_name,profile_pic';
         var cache = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+        var pageId = arguments[3];
 
         var key, props, _ref14, body;
 
@@ -406,26 +442,31 @@ var Bot = function (_EventEmitter) {
           while (1) {
             switch (_context7.prev = _context7.next) {
               case 0:
+                // support multiple tokens with backwards compatibility
+                if (pageId && this._tokens) {
+                  this._token = this._tokens[pageId];
+                }
+
                 key = id + fields;
                 props = void 0;
 
                 if (!(cache && userCache[key])) {
-                  _context7.next = 7;
+                  _context7.next = 8;
                   break;
                 }
 
                 props = userCache[key];
                 props.fromCache = true;
-                _context7.next = 14;
+                _context7.next = 15;
                 break;
 
-              case 7:
-                _context7.next = 9;
+              case 8:
+                _context7.next = 10;
                 return (0, _fetch2.default)('https://graph.facebook.com/v2.6/' + id, {
                   query: { access_token: this._token, fields: fields }, json: true
                 });
 
-              case 9:
+              case 10:
                 _ref14 = _context7.sent;
                 body = _ref14.body;
 
@@ -437,10 +478,10 @@ var Bot = function (_EventEmitter) {
                   userCache[key] = props;
                 }
 
-              case 14:
+              case 15:
                 return _context7.abrupt('return', props);
 
-              case 15:
+              case 16:
               case 'end':
                 return _context7.stop();
             }
@@ -448,7 +489,7 @@ var Bot = function (_EventEmitter) {
         }, _callee7, this);
       }));
 
-      function fetchUser(_x11) {
+      function fetchUser(_x15) {
         return _ref13.apply(this, arguments);
       }
 
@@ -480,7 +521,7 @@ var Bot = function (_EventEmitter) {
         }, _callee8, this);
       }));
 
-      function handleStandby(_x14) {
+      function handleStandby(_x18) {
         return _ref15.apply(this, arguments);
       }
 
@@ -530,7 +571,7 @@ var Bot = function (_EventEmitter) {
                     }, _callee9, _this2);
                   }));
 
-                  return function (_x16, _x17) {
+                  return function (_x20, _x21) {
                     return _ref17.apply(this, arguments);
                   };
                 }();
@@ -669,7 +710,7 @@ var Bot = function (_EventEmitter) {
         }, _callee10, this);
       }));
 
-      function handleMessage(_x15) {
+      function handleMessage(_x19) {
         return _ref16.apply(this, arguments);
       }
 
