@@ -1,4 +1,4 @@
-import {cut} from './libs/utils';
+import { cut } from "./libs/utils";
 
 class QuickReplies {
   constructor(quickreplies) {
@@ -13,27 +13,38 @@ class QuickReplies {
     }
   }
 
-  add({text, data, event, image, isLocation}) {
+  add({ text, data, event, image, isLocation, options }) {
     if (!data && !event && !isLocation) {
-      throw Error('Must provide data i.e. {data: null}');
+      throw Error("Must provide data i.e. {data: null}");
     }
 
-    this._quickReplies.push({text: text, event, data, image, isLocation});
+    this._quickReplies.push({
+      text: text,
+      event,
+      data,
+      image,
+      isLocation,
+      options
+    });
     return this;
   }
 
   toJSON() {
     const quickReplies = [];
     for (const reply of this._quickReplies) {
-      let contentType = 'text';
-      const payload = JSON.stringify({data: reply.data, event: reply.event});
+      let contentType = "text";
+      const payload = JSON.stringify({ data: reply.data, event: reply.event });
       if (!reply.text) {
-        throw new Error('No text attribute');
+        throw new Error("No text attribute");
       }
       if (reply.isLocation) {
-        contentType = 'location';
+        contentType = "location";
       }
-      let pill = {payload, title: cut(String(reply.text), 20), content_type: contentType};
+      let pill = {
+        payload,
+        title: cut(String(reply.text), 20),
+        content_type: contentType
+      };
       if (reply.image) {
         pill.image_url = reply.image;
       }

@@ -1,11 +1,11 @@
-import EventEmitter from 'events';
-import bodyParser from 'body-parser';
-import { Router } from 'express';
-import Elements from './Elements.js';
-import Buttons from './Buttons.js';
-import QuickReplies from './QuickReplies.js';
-import fetch from './libs/fetch.js';
-import _ from 'lodash';
+import EventEmitter from "events";
+import bodyParser from "body-parser";
+import { Router } from "express";
+import Elements from "./Elements.js";
+import Buttons from "./Buttons.js";
+import QuickReplies from "./QuickReplies.js";
+import fetch from "./libs/fetch.js";
+import _ from "lodash";
 
 export { Elements, Buttons, QuickReplies };
 
@@ -24,7 +24,7 @@ class Bot extends EventEmitter {
   constructor(token, verification, debug = false) {
     super();
     // support multiple tokens with backwards compatibility
-    if (typeof token === 'object') { 
+    if (typeof token === "object") {
       this._tokens = token;
     } else {
       this._token = token;
@@ -39,12 +39,15 @@ class Bot extends EventEmitter {
       this._token = this._tokens[pageId];
     }
 
-    const { body: { result } } = await fetch('https://graph.facebook.com/v2.6/me/thread_settings', {
-      method: 'post',
-      json: true,
-      query: { access_token: this._token },
-      body: { setting_type: 'greeting', greeting: { text } }
-    });
+    const { body: { result } } = await fetch(
+      "https://graph.facebook.com/v2.6/me/thread_settings",
+      {
+        method: "post",
+        json: true,
+        query: { access_token: this._token },
+        body: { setting_type: "greeting", greeting: { text } }
+      }
+    );
 
     return result;
   }
@@ -56,30 +59,36 @@ class Bot extends EventEmitter {
     }
 
     if (!input) {
-      const { body: { result } } = await fetch('https://graph.facebook.com/v2.6/me/thread_settings', {
-        method: 'delete',
-        json: true,
-        query: { access_token: this._token },
-        body: {
-          setting_type: 'call_to_actions',
-          thread_state: 'new_thread'
+      const { body: { result } } = await fetch(
+        "https://graph.facebook.com/v2.6/me/thread_settings",
+        {
+          method: "delete",
+          json: true,
+          query: { access_token: this._token },
+          body: {
+            setting_type: "call_to_actions",
+            thread_state: "new_thread"
+          }
         }
-      });
+      );
 
       return result;
     }
 
     const { data, event } = input;
-    const { body: { result } } = await fetch('https://graph.facebook.com/v2.6/me/thread_settings', {
-      method: 'post',
-      json: true,
-      query: { access_token: this._token },
-      body: {
-        setting_type: 'call_to_actions',
-        thread_state: 'new_thread',
-        call_to_actions: [{ payload: JSON.stringify({ data, event }) }]
+    const { body: { result } } = await fetch(
+      "https://graph.facebook.com/v2.6/me/thread_settings",
+      {
+        method: "post",
+        json: true,
+        query: { access_token: this._token },
+        body: {
+          setting_type: "call_to_actions",
+          thread_state: "new_thread",
+          call_to_actions: [{ payload: JSON.stringify({ data, event }) }]
+        }
       }
-    });
+    );
 
     return result;
   }
@@ -91,51 +100,59 @@ class Bot extends EventEmitter {
     }
 
     if (!input) {
-      const { body: { result } } = await fetch('https://graph.facebook.com/v2.6/me/thread_settings', {
-        method: 'delete',
-        json: true,
-        query: { access_token: this._token },
-        body: {
-          setting_type: 'call_to_actions',
-          thread_state: 'existing_thread'
+      const { body: { result } } = await fetch(
+        "https://graph.facebook.com/v2.6/me/thread_settings",
+        {
+          method: "delete",
+          json: true,
+          query: { access_token: this._token },
+          body: {
+            setting_type: "call_to_actions",
+            thread_state: "existing_thread"
+          }
         }
-      });
+      );
 
       return result;
     }
 
-    const { body: { result } } = await fetch('https://graph.facebook.com/v2.6/me/thread_settings', {
-      method: 'post',
-      json: true,
-      query: { access_token: this._token },
-      body: {
-        setting_type: 'call_to_actions',
-        thread_state: 'existing_thread',
-        call_to_actions: input
+    const { body: { result } } = await fetch(
+      "https://graph.facebook.com/v2.6/me/thread_settings",
+      {
+        method: "post",
+        json: true,
+        query: { access_token: this._token },
+        body: {
+          setting_type: "call_to_actions",
+          thread_state: "existing_thread",
+          call_to_actions: input
+        }
       }
-    });
+    );
 
     return result;
   }
 
   async setTyping(to, state, pageId) {
-    // support multiple tokens with backwards compatibility    
+    // support multiple tokens with backwards compatibility
     if (pageId && this._tokens) {
       this._token = this._tokens[pageId];
     }
 
-    const action = state ? 'typing_on' : 'typing_off';
+    const action = state ? "typing_on" : "typing_off";
 
-    const { body: { result } } = await fetch('https://graph.facebook.com/v2.6/me/messages', {
-      method: 'post',
-      json: true,
-      query: { access_token: this._token },
-      body: { recipient: { id: to }, sender_action: action }
-    });
+    const { body: { result } } = await fetch(
+      "https://graph.facebook.com/v2.6/me/messages",
+      {
+        method: "post",
+        json: true,
+        query: { access_token: this._token },
+        body: { recipient: { id: to }, sender_action: action }
+      }
+    );
 
     return result;
   }
-
 
   async send(to, message, notification_type = "REGULAR", pageId) {
     // support multiple tokens with backwards compatibility
@@ -143,14 +160,17 @@ class Bot extends EventEmitter {
       this._token = this._tokens[pageId];
     }
 
-
     if (this._debug) {
-      console.log({ recipient: { id: to }, message: message ? message.toJSON() : message, notification_type });
+      console.log({
+        recipient: { id: to },
+        message: message ? message.toJSON() : message,
+        notification_type
+      });
     }
 
     try {
-      await fetch('https://graph.facebook.com/v2.6/me/messages', {
-        method: 'post',
+      await fetch("https://graph.facebook.com/v2.6/me/messages", {
+        method: "post",
         json: true,
         query: { access_token: this._token },
         body: { recipient: { id: to }, message, notification_type }
@@ -160,7 +180,7 @@ class Bot extends EventEmitter {
         let text = e.text;
         try {
           const err = JSON.parse(e.text).error;
-          text = `${err.type || 'Unknown'}: ${err.message || 'No message'}`;
+          text = `${err.type || "Unknown"}: ${err.message || "No message"}`;
         } catch (ee) {
           // ignore
         }
@@ -172,7 +192,12 @@ class Bot extends EventEmitter {
     }
   }
 
-  async fetchUser(id, fields = 'first_name,last_name,profile_pic', cache = false, pageId) {
+  async fetchUser(
+    id,
+    fields = "first_name,last_name,profile_pic",
+    cache = false,
+    pageId
+  ) {
     // support multiple tokens with backwards compatibility
     if (pageId && this._tokens) {
       this._token = this._tokens[pageId];
@@ -186,7 +211,8 @@ class Bot extends EventEmitter {
       props.fromCache = true;
     } else {
       const { body } = await fetch(`https://graph.facebook.com/v2.6/${id}`, {
-        query: { access_token: this._token, fields }, json: true
+        query: { access_token: this._token, fields },
+        json: true
       });
 
       props = body;
@@ -206,7 +232,7 @@ class Bot extends EventEmitter {
 
     //filter for message_delivered events
     if (message.delivery && message.delivery.mids && message.delivery.mids[0]) {
-      this.emit('standby', message);
+      this.emit("standby", message);
     }
   }
 
@@ -219,7 +245,12 @@ class Bot extends EventEmitter {
     message.raw = input;
 
     message.sender.fetch = async (fields, cache) => {
-      const props = await this.fetchUser(message.sender.id, fields, cache, message.recipient.id);
+      const props = await this.fetchUser(
+        message.sender.id,
+        fields,
+        cache,
+        message.recipient.id
+      );
       Object.assign(message.sender, props);
       return message.sender;
     };
@@ -235,18 +266,18 @@ class Bot extends EventEmitter {
       }
       message.isButton = true;
 
-      if (postback.hasOwnProperty('data')) {
+      if (postback.hasOwnProperty("data")) {
         //message.postback = postback;
         message.data = postback.data;
         message.event = postback.event;
 
-        this.emit('postback', message.event, message, message.data);
+        this.emit("postback", message.event, message, message.data);
 
-        if (postback.hasOwnProperty('event')) {
+        if (postback.hasOwnProperty("event")) {
           this.emit(message.event, message, message.data);
         }
       } else {
-        this.emit('invalid-postback', message, message.postback);
+        this.emit("invalid-postback", message, message.postback);
       }
 
       return;
@@ -259,7 +290,7 @@ class Bot extends EventEmitter {
 
       delete message.delivery;
 
-      this.emit('delivery', message, message.delivered);
+      this.emit("delivery", message, message.delivered);
       return;
     }
 
@@ -267,7 +298,7 @@ class Bot extends EventEmitter {
     if (message.optin) {
       message.param = message.optin.ref || true;
       message.optin = message.param;
-      this.emit('optin', message, message.optin);
+      this.emit("optin", message, message.optin);
       return;
     }
 
@@ -283,24 +314,24 @@ class Bot extends EventEmitter {
 
       message.isQuickReply = true;
 
-      if (postback.hasOwnProperty('data')) {
+      if (postback.hasOwnProperty("data")) {
         message.postback = postback;
         message.data = postback.data;
         message.event = postback.event;
 
-        this.emit('postback', message.event, message, message.data);
+        this.emit("postback", message.event, message, message.data);
 
-        if (postback.hasOwnProperty('event')) {
+        if (postback.hasOwnProperty("event")) {
           this.emit(message.event, message, message.data);
         }
       } else {
-        this.emit('invalid-postback', message, message.postback);
+        this.emit("invalid-postback", message, message.postback);
       }
 
       return;
     }
 
-    const attachments = _.groupBy(message.attachments, 'type');
+    const attachments = _.groupBy(message.attachments, "type");
 
     if (attachments.image) {
       message.images = attachments.image.map(a => a.payload.url);
@@ -324,7 +355,7 @@ class Bot extends EventEmitter {
 
     delete message.attachments;
 
-    this.emit('message', message);
+    this.emit("message", message);
   }
 
   router() {
@@ -332,15 +363,15 @@ class Bot extends EventEmitter {
 
     router.use(bodyParser.json());
 
-    router.get('/', (req, res) => {
-      if (req.query['hub.verify_token'] === this._verification) {
-        res.send(req.query['hub.challenge']);
+    router.get("/", (req, res) => {
+      if (req.query["hub.verify_token"] === this._verification) {
+        res.send(req.query["hub.challenge"]);
       } else {
-        res.send('Error, wrong validation token');
+        res.send("Error, wrong validation token");
       }
     });
 
-    router.post('/', (req, res) => {
+    router.post("/", (req, res) => {
       if (req.body.entry[0].standby) {
         this.handleStandby(req.body);
       } else {

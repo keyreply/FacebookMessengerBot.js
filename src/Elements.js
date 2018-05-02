@@ -1,5 +1,5 @@
-import Buttons from './Buttons';
-import QuickReplies from './QuickReplies';
+import Buttons from "./Buttons";
+import QuickReplies from "./QuickReplies";
 
 class Elements {
   constructor(elements) {
@@ -17,20 +17,13 @@ class Elements {
     }
   }
 
-  add({
-    text,
-    image,
-    video,
-    subtext,
-    url,
-    buttons
-  }) {
+  add({ text, image, video, subtext, url, buttons, options }) {
     if (buttons) {
       if (!(buttons instanceof Buttons)) {
         if (Array.isArray(buttons)) {
           buttons = Buttons.from(buttons);
         } else {
-          throw Error('Unable to parse buttons');
+          throw Error("Unable to parse buttons");
         }
       }
     }
@@ -41,7 +34,8 @@ class Elements {
       video,
       subtext,
       url,
-      buttons
+      buttons,
+      options
     });
     return this;
   }
@@ -52,7 +46,7 @@ class Elements {
         if (Array.isArray(quickreplies)) {
           quickreplies = QuickReplies.from(quickreplies);
         } else {
-          throw Error('Unable to parse quickreplies');
+          throw Error("Unable to parse quickreplies");
         }
       }
     }
@@ -62,7 +56,7 @@ class Elements {
   }
 
   setListStyle(listStyle, buttons) {
-    if (listStyle === 'large' || listStyle === 'compact') {
+    if (listStyle === "large" || listStyle === "compact") {
       this._listStyle = listStyle;
     } else {
       throw Error('Valid values for list styles are "large" or "compact"');
@@ -73,7 +67,7 @@ class Elements {
         if (Array.isArray(buttons)) {
           this._buttons = Buttons.from(buttons);
         } else {
-          throw Error('Unable to parse buttons');
+          throw Error("Unable to parse buttons");
         }
       }
     }
@@ -98,7 +92,8 @@ class Elements {
           if (e.image) element.image_url = e.image;
           if (e.subtext) element.subtitle = e.subtext;
           if (e.url) element.item_url = e.url;
-          if (e.buttons && e.buttons.length) element.buttons = e.buttons.toJSON();
+          if (e.buttons && e.buttons.length)
+            element.buttons = e.buttons.toJSON();
           elements.push(element);
         }
 
@@ -110,9 +105,9 @@ class Elements {
         if (this._listStyle) {
           return {
             attachment: {
-              type: 'template',
+              type: "template",
               payload: {
-                template_type: 'list',
+                template_type: "list",
                 top_element_style: this._listStyle,
                 elements,
                 buttons
@@ -122,9 +117,9 @@ class Elements {
         } else if (!this._listStyle) {
           return {
             attachment: {
-              type: 'template',
+              type: "template",
               payload: {
-                template_type: 'generic',
+                template_type: "generic",
                 elements
               }
             }
@@ -138,13 +133,14 @@ class Elements {
           if (e.image) element.image_url = e.image;
           if (e.subtext) element.subtitle = e.subtext;
           if (e.url) element.item_url = e.url;
-          if (e.buttons && e.buttons.length) element.buttons = e.buttons.toJSON();
+          if (e.buttons && e.buttons.length)
+            element.buttons = e.buttons.toJSON();
 
           return {
             attachment: {
-              type: 'template',
+              type: "template",
               payload: {
-                template_type: 'generic',
+                template_type: "generic",
                 elements: [element]
               }
             }
@@ -155,9 +151,9 @@ class Elements {
           element.buttons = e.buttons.toJSON();
           return {
             attachment: {
-              type: 'template',
+              type: "template",
               payload: {
-                template_type: 'button',
+                template_type: "button",
                 ...element
               }
             }
@@ -169,7 +165,7 @@ class Elements {
         } else if (e.image) {
           return {
             attachment: {
-              type: 'image',
+              type: "image",
               payload: {
                 url: e.image
               }
@@ -178,7 +174,7 @@ class Elements {
         } else if (e.video) {
           return {
             attachment: {
-              type: 'video',
+              type: "video",
               payload: {
                 url: e.video
               }
@@ -187,7 +183,7 @@ class Elements {
         }
       }
 
-      throw Error('Could not form a message. Have you followed the format?');
+      throw Error("Could not form a message. Have you followed the format?");
     };
 
     const built = build();
