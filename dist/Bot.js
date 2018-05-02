@@ -1,55 +1,55 @@
-'use strict';
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.Bot = exports.wait = exports.QuickReplies = exports.Buttons = exports.Elements = undefined;
 
-var _extends2 = require('babel-runtime/helpers/extends');
+var _extends2 = require("babel-runtime/helpers/extends");
 
 var _extends3 = _interopRequireDefault(_extends2);
 
-var _assign = require('babel-runtime/core-js/object/assign');
+var _assign = require("babel-runtime/core-js/object/assign");
 
 var _assign2 = _interopRequireDefault(_assign);
 
-var _stringify = require('babel-runtime/core-js/json/stringify');
+var _stringify = require("babel-runtime/core-js/json/stringify");
 
 var _stringify2 = _interopRequireDefault(_stringify);
 
-var _typeof2 = require('babel-runtime/helpers/typeof');
+var _typeof2 = require("babel-runtime/helpers/typeof");
 
 var _typeof3 = _interopRequireDefault(_typeof2);
 
-var _getPrototypeOf = require('babel-runtime/core-js/object/get-prototype-of');
+var _getPrototypeOf = require("babel-runtime/core-js/object/get-prototype-of");
 
 var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
 
-var _classCallCheck2 = require('babel-runtime/helpers/classCallCheck');
+var _classCallCheck2 = require("babel-runtime/helpers/classCallCheck");
 
 var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
 
-var _createClass2 = require('babel-runtime/helpers/createClass');
+var _createClass2 = require("babel-runtime/helpers/createClass");
 
 var _createClass3 = _interopRequireDefault(_createClass2);
 
-var _possibleConstructorReturn2 = require('babel-runtime/helpers/possibleConstructorReturn');
+var _possibleConstructorReturn2 = require("babel-runtime/helpers/possibleConstructorReturn");
 
 var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
 
-var _inherits2 = require('babel-runtime/helpers/inherits');
+var _inherits2 = require("babel-runtime/helpers/inherits");
 
 var _inherits3 = _interopRequireDefault(_inherits2);
 
-var _regenerator = require('babel-runtime/regenerator');
+var _regenerator = require("babel-runtime/regenerator");
 
 var _regenerator2 = _interopRequireDefault(_regenerator);
 
-var _promise = require('babel-runtime/core-js/promise');
+var _promise = require("babel-runtime/core-js/promise");
 
 var _promise2 = _interopRequireDefault(_promise);
 
-var _bluebird = require('bluebird');
+var _bluebird = require("bluebird");
 
 var wait = exports.wait = function () {
   var _ref = (0, _bluebird.coroutine)( /*#__PURE__*/_regenerator2.default.mark(function _callee(time) {
@@ -57,14 +57,14 @@ var wait = exports.wait = function () {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
-            return _context.abrupt('return', new _promise2.default(function (resolve) {
+            return _context.abrupt("return", new _promise2.default(function (resolve) {
               return setTimeout(function () {
                 return resolve();
               }, time);
             }));
 
           case 1:
-          case 'end':
+          case "end":
             return _context.stop();
         }
       }
@@ -76,33 +76,33 @@ var wait = exports.wait = function () {
   };
 }();
 
-var _events = require('events');
+var _events = require("events");
 
 var _events2 = _interopRequireDefault(_events);
 
-var _bodyParser = require('body-parser');
+var _bodyParser = require("body-parser");
 
 var _bodyParser2 = _interopRequireDefault(_bodyParser);
 
-var _express = require('express');
+var _express = require("express");
 
-var _Elements = require('./Elements.js');
+var _Elements = require("./Elements.js");
 
 var _Elements2 = _interopRequireDefault(_Elements);
 
-var _Buttons = require('./Buttons.js');
+var _Buttons = require("./Buttons.js");
 
 var _Buttons2 = _interopRequireDefault(_Buttons);
 
-var _QuickReplies = require('./QuickReplies.js');
+var _QuickReplies = require("./QuickReplies.js");
 
 var _QuickReplies2 = _interopRequireDefault(_QuickReplies);
 
-var _fetch = require('./libs/fetch.js');
+var _fetch = require("./libs/fetch.js");
 
 var _fetch2 = _interopRequireDefault(_fetch);
 
-var _lodash = require('lodash');
+var _lodash = require("lodash");
 
 var _lodash2 = _interopRequireDefault(_lodash);
 
@@ -125,7 +125,7 @@ var Bot = function (_EventEmitter) {
     // support multiple tokens with backwards compatibility
     var _this = (0, _possibleConstructorReturn3.default)(this, (Bot.__proto__ || (0, _getPrototypeOf2.default)(Bot)).call(this));
 
-    if ((typeof token === 'undefined' ? 'undefined' : (0, _typeof3.default)(token)) === 'object') {
+    if ((typeof token === "undefined" ? "undefined" : (0, _typeof3.default)(token)) === "object") {
       _this._tokens = token;
     } else {
       _this._token = token;
@@ -136,7 +136,7 @@ var Bot = function (_EventEmitter) {
   }
 
   (0, _createClass3.default)(Bot, [{
-    key: 'setGreeting',
+    key: "setGreeting",
     value: function () {
       var _ref2 = (0, _bluebird.coroutine)( /*#__PURE__*/_regenerator2.default.mark(function _callee2(text, pageId) {
         var _ref3, result;
@@ -151,20 +151,20 @@ var Bot = function (_EventEmitter) {
                 }
 
                 _context2.next = 3;
-                return (0, _fetch2.default)('https://graph.facebook.com/v2.6/me/thread_settings', {
-                  method: 'post',
+                return (0, _fetch2.default)("https://graph.facebook.com/v2.6/me/thread_settings", {
+                  method: "post",
                   json: true,
                   query: { access_token: this._token },
-                  body: { setting_type: 'greeting', greeting: { text: text } }
+                  body: { setting_type: "greeting", greeting: { text: text } }
                 });
 
               case 3:
                 _ref3 = _context2.sent;
                 result = _ref3.body.result;
-                return _context2.abrupt('return', result);
+                return _context2.abrupt("return", result);
 
               case 6:
-              case 'end':
+              case "end":
                 return _context2.stop();
             }
           }
@@ -178,7 +178,7 @@ var Bot = function (_EventEmitter) {
       return setGreeting;
     }()
   }, {
-    key: 'setGetStarted',
+    key: "setGetStarted",
     value: function () {
       var _ref4 = (0, _bluebird.coroutine)( /*#__PURE__*/_regenerator2.default.mark(function _callee3(input, pageId) {
         var _ref5, _result, data, event, _ref6, result;
@@ -198,31 +198,31 @@ var Bot = function (_EventEmitter) {
                 }
 
                 _context3.next = 4;
-                return (0, _fetch2.default)('https://graph.facebook.com/v2.6/me/thread_settings', {
-                  method: 'delete',
+                return (0, _fetch2.default)("https://graph.facebook.com/v2.6/me/thread_settings", {
+                  method: "delete",
                   json: true,
                   query: { access_token: this._token },
                   body: {
-                    setting_type: 'call_to_actions',
-                    thread_state: 'new_thread'
+                    setting_type: "call_to_actions",
+                    thread_state: "new_thread"
                   }
                 });
 
               case 4:
                 _ref5 = _context3.sent;
                 _result = _ref5.body.result;
-                return _context3.abrupt('return', _result);
+                return _context3.abrupt("return", _result);
 
               case 7:
                 data = input.data, event = input.event;
                 _context3.next = 10;
-                return (0, _fetch2.default)('https://graph.facebook.com/v2.6/me/thread_settings', {
-                  method: 'post',
+                return (0, _fetch2.default)("https://graph.facebook.com/v2.6/me/thread_settings", {
+                  method: "post",
                   json: true,
                   query: { access_token: this._token },
                   body: {
-                    setting_type: 'call_to_actions',
-                    thread_state: 'new_thread',
+                    setting_type: "call_to_actions",
+                    thread_state: "new_thread",
                     call_to_actions: [{ payload: (0, _stringify2.default)({ data: data, event: event }) }]
                   }
                 });
@@ -230,10 +230,10 @@ var Bot = function (_EventEmitter) {
               case 10:
                 _ref6 = _context3.sent;
                 result = _ref6.body.result;
-                return _context3.abrupt('return', result);
+                return _context3.abrupt("return", result);
 
               case 13:
-              case 'end':
+              case "end":
                 return _context3.stop();
             }
           }
@@ -247,7 +247,7 @@ var Bot = function (_EventEmitter) {
       return setGetStarted;
     }()
   }, {
-    key: 'setPersistentMenu',
+    key: "setPersistentMenu",
     value: function () {
       var _ref7 = (0, _bluebird.coroutine)( /*#__PURE__*/_regenerator2.default.mark(function _callee4(input, pageId) {
         var _ref8, _result2, _ref9, result;
@@ -267,30 +267,30 @@ var Bot = function (_EventEmitter) {
                 }
 
                 _context4.next = 4;
-                return (0, _fetch2.default)('https://graph.facebook.com/v2.6/me/thread_settings', {
-                  method: 'delete',
+                return (0, _fetch2.default)("https://graph.facebook.com/v2.6/me/thread_settings", {
+                  method: "delete",
                   json: true,
                   query: { access_token: this._token },
                   body: {
-                    setting_type: 'call_to_actions',
-                    thread_state: 'existing_thread'
+                    setting_type: "call_to_actions",
+                    thread_state: "existing_thread"
                   }
                 });
 
               case 4:
                 _ref8 = _context4.sent;
                 _result2 = _ref8.body.result;
-                return _context4.abrupt('return', _result2);
+                return _context4.abrupt("return", _result2);
 
               case 7:
                 _context4.next = 9;
-                return (0, _fetch2.default)('https://graph.facebook.com/v2.6/me/thread_settings', {
-                  method: 'post',
+                return (0, _fetch2.default)("https://graph.facebook.com/v2.6/me/thread_settings", {
+                  method: "post",
                   json: true,
                   query: { access_token: this._token },
                   body: {
-                    setting_type: 'call_to_actions',
-                    thread_state: 'existing_thread',
+                    setting_type: "call_to_actions",
+                    thread_state: "existing_thread",
                     call_to_actions: input
                   }
                 });
@@ -298,10 +298,10 @@ var Bot = function (_EventEmitter) {
               case 9:
                 _ref9 = _context4.sent;
                 result = _ref9.body.result;
-                return _context4.abrupt('return', result);
+                return _context4.abrupt("return", result);
 
               case 12:
-              case 'end':
+              case "end":
                 return _context4.stop();
             }
           }
@@ -315,7 +315,7 @@ var Bot = function (_EventEmitter) {
       return setPersistentMenu;
     }()
   }, {
-    key: 'setTyping',
+    key: "setTyping",
     value: function () {
       var _ref10 = (0, _bluebird.coroutine)( /*#__PURE__*/_regenerator2.default.mark(function _callee5(to, state, pageId) {
         var action, _ref11, result;
@@ -324,15 +324,15 @@ var Bot = function (_EventEmitter) {
           while (1) {
             switch (_context5.prev = _context5.next) {
               case 0:
-                // support multiple tokens with backwards compatibility    
+                // support multiple tokens with backwards compatibility
                 if (pageId && this._tokens) {
                   this._token = this._tokens[pageId];
                 }
 
-                action = state ? 'typing_on' : 'typing_off';
+                action = state ? "typing_on" : "typing_off";
                 _context5.next = 4;
-                return (0, _fetch2.default)('https://graph.facebook.com/v2.6/me/messages', {
-                  method: 'post',
+                return (0, _fetch2.default)("https://graph.facebook.com/v2.6/me/messages", {
+                  method: "post",
                   json: true,
                   query: { access_token: this._token },
                   body: { recipient: { id: to }, sender_action: action }
@@ -341,10 +341,10 @@ var Bot = function (_EventEmitter) {
               case 4:
                 _ref11 = _context5.sent;
                 result = _ref11.body.result;
-                return _context5.abrupt('return', result);
+                return _context5.abrupt("return", result);
 
               case 7:
-              case 'end':
+              case "end":
                 return _context5.stop();
             }
           }
@@ -358,7 +358,7 @@ var Bot = function (_EventEmitter) {
       return setTyping;
     }()
   }, {
-    key: 'send',
+    key: "send",
     value: function () {
       var _ref12 = (0, _bluebird.coroutine)( /*#__PURE__*/_regenerator2.default.mark(function _callee6(to, message) {
         var notification_type = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : "REGULAR";
@@ -374,13 +374,17 @@ var Bot = function (_EventEmitter) {
                 }
 
                 if (this._debug) {
-                  console.log({ recipient: { id: to }, message: message ? message.toJSON() : message, notification_type: notification_type });
+                  console.log({
+                    recipient: { id: to },
+                    message: message ? message.toJSON() : message,
+                    notification_type: notification_type
+                  });
                 }
 
                 _context6.prev = 2;
                 _context6.next = 5;
-                return (0, _fetch2.default)('https://graph.facebook.com/v2.6/me/messages', {
-                  method: 'post',
+                return (0, _fetch2.default)("https://graph.facebook.com/v2.6/me/messages", {
+                  method: "post",
                   json: true,
                   query: { access_token: this._token },
                   body: { recipient: { id: to }, message: message, notification_type: notification_type }
@@ -392,7 +396,7 @@ var Bot = function (_EventEmitter) {
 
               case 7:
                 _context6.prev = 7;
-                _context6.t0 = _context6['catch'](2);
+                _context6.t0 = _context6["catch"](2);
 
                 if (!_context6.t0.text) {
                   _context6.next = 15;
@@ -404,7 +408,7 @@ var Bot = function (_EventEmitter) {
                 try {
                   err = JSON.parse(_context6.t0.text).error;
 
-                  text = (err.type || 'Unknown') + ': ' + (err.message || 'No message');
+                  text = (err.type || "Unknown") + ": " + (err.message || "No message");
                 } catch (ee) {
                   // ignore
                 }
@@ -415,7 +419,7 @@ var Bot = function (_EventEmitter) {
                 throw _context6.t0;
 
               case 16:
-              case 'end':
+              case "end":
                 return _context6.stop();
             }
           }
@@ -429,10 +433,10 @@ var Bot = function (_EventEmitter) {
       return send;
     }()
   }, {
-    key: 'fetchUser',
+    key: "fetchUser",
     value: function () {
       var _ref13 = (0, _bluebird.coroutine)( /*#__PURE__*/_regenerator2.default.mark(function _callee7(id) {
-        var fields = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'first_name,last_name,profile_pic';
+        var fields = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "first_name,last_name,profile_pic";
         var cache = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
         var pageId = arguments[3];
 
@@ -462,8 +466,9 @@ var Bot = function (_EventEmitter) {
 
               case 8:
                 _context7.next = 10;
-                return (0, _fetch2.default)('https://graph.facebook.com/v2.6/' + id, {
-                  query: { access_token: this._token, fields: fields }, json: true
+                return (0, _fetch2.default)("https://graph.facebook.com/v2.6/" + id, {
+                  query: { access_token: this._token, fields: fields },
+                  json: true
                 });
 
               case 10:
@@ -479,10 +484,10 @@ var Bot = function (_EventEmitter) {
                 }
 
               case 15:
-                return _context7.abrupt('return', props);
+                return _context7.abrupt("return", props);
 
               case 16:
-              case 'end':
+              case "end":
                 return _context7.stop();
             }
           }
@@ -496,7 +501,7 @@ var Bot = function (_EventEmitter) {
       return fetchUser;
     }()
   }, {
-    key: 'handleStandby',
+    key: "handleStandby",
     value: function () {
       var _ref15 = (0, _bluebird.coroutine)( /*#__PURE__*/_regenerator2.default.mark(function _callee8(input) {
         var body, message;
@@ -510,11 +515,11 @@ var Bot = function (_EventEmitter) {
                 //filter for message_delivered events
 
                 if (message.delivery && message.delivery.mids && message.delivery.mids[0]) {
-                  this.emit('standby', message);
+                  this.emit("standby", message);
                 }
 
               case 3:
-              case 'end':
+              case "end":
                 return _context8.stop();
             }
           }
@@ -528,7 +533,7 @@ var Bot = function (_EventEmitter) {
       return handleStandby;
     }()
   }, {
-    key: 'handleMessage',
+    key: "handleMessage",
     value: function () {
       var _ref16 = (0, _bluebird.coroutine)( /*#__PURE__*/_regenerator2.default.mark(function _callee10(input) {
         var _this2 = this;
@@ -561,10 +566,10 @@ var Bot = function (_EventEmitter) {
                             props = _context9.sent;
 
                             (0, _assign2.default)(message.sender, props);
-                            return _context9.abrupt('return', message.sender);
+                            return _context9.abrupt("return", message.sender);
 
                           case 5:
-                          case 'end':
+                          case "end":
                             return _context9.stop();
                         }
                       }
@@ -593,21 +598,21 @@ var Bot = function (_EventEmitter) {
                 }
                 message.isButton = true;
 
-                if (postback.hasOwnProperty('data')) {
+                if (postback.hasOwnProperty("data")) {
                   //message.postback = postback;
                   message.data = postback.data;
                   message.event = postback.event;
 
-                  this.emit('postback', message.event, message, message.data);
+                  this.emit("postback", message.event, message, message.data);
 
-                  if (postback.hasOwnProperty('event')) {
+                  if (postback.hasOwnProperty("event")) {
                     this.emit(message.event, message, message.data);
                   }
                 } else {
-                  this.emit('invalid-postback', message, message.postback);
+                  this.emit("invalid-postback", message, message.postback);
                 }
 
-                return _context10.abrupt('return');
+                return _context10.abrupt("return");
 
               case 12:
                 if (!message.delivery) {
@@ -620,8 +625,8 @@ var Bot = function (_EventEmitter) {
 
                 delete message.delivery;
 
-                this.emit('delivery', message, message.delivered);
-                return _context10.abrupt('return');
+                this.emit("delivery", message, message.delivered);
+                return _context10.abrupt("return");
 
               case 18:
                 if (!message.optin) {
@@ -631,8 +636,8 @@ var Bot = function (_EventEmitter) {
 
                 message.param = message.optin.ref || true;
                 message.optin = message.param;
-                this.emit('optin', message, message.optin);
-                return _context10.abrupt('return');
+                this.emit("optin", message, message.optin);
+                return _context10.abrupt("return");
 
               case 23:
                 if (!(message.quick_reply && !message.is_echo)) {
@@ -651,24 +656,24 @@ var Bot = function (_EventEmitter) {
 
                 message.isQuickReply = true;
 
-                if (_postback.hasOwnProperty('data')) {
+                if (_postback.hasOwnProperty("data")) {
                   message.postback = _postback;
                   message.data = _postback.data;
                   message.event = _postback.event;
 
-                  this.emit('postback', message.event, message, message.data);
+                  this.emit("postback", message.event, message, message.data);
 
-                  if (_postback.hasOwnProperty('event')) {
+                  if (_postback.hasOwnProperty("event")) {
                     this.emit(message.event, message, message.data);
                   }
                 } else {
-                  this.emit('invalid-postback', message, message.postback);
+                  this.emit("invalid-postback", message, message.postback);
                 }
 
-                return _context10.abrupt('return');
+                return _context10.abrupt("return");
 
               case 29:
-                attachments = _lodash2.default.groupBy(message.attachments, 'type');
+                attachments = _lodash2.default.groupBy(message.attachments, "type");
 
 
                 if (attachments.image) {
@@ -700,10 +705,10 @@ var Bot = function (_EventEmitter) {
 
                 delete message.attachments;
 
-                this.emit('message', message);
+                this.emit("message", message);
 
               case 37:
-              case 'end':
+              case "end":
                 return _context10.stop();
             }
           }
@@ -717,7 +722,7 @@ var Bot = function (_EventEmitter) {
       return handleMessage;
     }()
   }, {
-    key: 'router',
+    key: "router",
     value: function router() {
       var _this3 = this;
 
@@ -725,15 +730,15 @@ var Bot = function (_EventEmitter) {
 
       router.use(_bodyParser2.default.json());
 
-      router.get('/', function (req, res) {
-        if (req.query['hub.verify_token'] === _this3._verification) {
-          res.send(req.query['hub.challenge']);
+      router.get("/", function (req, res) {
+        if (req.query["hub.verify_token"] === _this3._verification) {
+          res.send(req.query["hub.challenge"]);
         } else {
-          res.send('Error, wrong validation token');
+          res.send("Error, wrong validation token");
         }
       });
 
-      router.post('/', function (req, res) {
+      router.post("/", function (req, res) {
         if (req.body.entry[0].standby) {
           _this3.handleStandby(req.body);
         } else {

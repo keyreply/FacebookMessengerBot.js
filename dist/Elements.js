@@ -1,30 +1,30 @@
-'use strict';
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _extends2 = require('babel-runtime/helpers/extends');
+var _extends2 = require("babel-runtime/helpers/extends");
 
 var _extends3 = _interopRequireDefault(_extends2);
 
-var _getIterator2 = require('babel-runtime/core-js/get-iterator');
+var _getIterator2 = require("babel-runtime/core-js/get-iterator");
 
 var _getIterator3 = _interopRequireDefault(_getIterator2);
 
-var _classCallCheck2 = require('babel-runtime/helpers/classCallCheck');
+var _classCallCheck2 = require("babel-runtime/helpers/classCallCheck");
 
 var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
 
-var _createClass2 = require('babel-runtime/helpers/createClass');
+var _createClass2 = require("babel-runtime/helpers/createClass");
 
 var _createClass3 = _interopRequireDefault(_createClass2);
 
-var _Buttons = require('./Buttons');
+var _Buttons = require("./Buttons");
 
 var _Buttons2 = _interopRequireDefault(_Buttons);
 
-var _QuickReplies = require('./QuickReplies');
+var _QuickReplies = require("./QuickReplies");
 
 var _QuickReplies2 = _interopRequireDefault(_QuickReplies);
 
@@ -53,21 +53,22 @@ var Elements = function () {
   }
 
   (0, _createClass3.default)(Elements, [{
-    key: 'add',
+    key: "add",
     value: function add(_ref) {
       var text = _ref.text,
           image = _ref.image,
           video = _ref.video,
           subtext = _ref.subtext,
           url = _ref.url,
-          buttons = _ref.buttons;
+          buttons = _ref.buttons,
+          options = _ref.options;
 
       if (buttons) {
         if (!(buttons instanceof _Buttons2.default)) {
           if (Array.isArray(buttons)) {
             buttons = _Buttons2.default.from(buttons);
           } else {
-            throw Error('Unable to parse buttons');
+            throw Error("Unable to parse buttons");
           }
         }
       }
@@ -78,19 +79,20 @@ var Elements = function () {
         video: video,
         subtext: subtext,
         url: url,
-        buttons: buttons
+        buttons: buttons,
+        options: options
       });
       return this;
     }
   }, {
-    key: 'setQuickReplies',
+    key: "setQuickReplies",
     value: function setQuickReplies(quickreplies) {
       if (quickreplies) {
         if (!(quickreplies instanceof _QuickReplies2.default)) {
           if (Array.isArray(quickreplies)) {
             quickreplies = _QuickReplies2.default.from(quickreplies);
           } else {
-            throw Error('Unable to parse quickreplies');
+            throw Error("Unable to parse quickreplies");
           }
         }
       }
@@ -99,9 +101,9 @@ var Elements = function () {
       return this;
     }
   }, {
-    key: 'setListStyle',
+    key: "setListStyle",
     value: function setListStyle(listStyle, buttons) {
-      if (listStyle === 'large' || listStyle === 'compact') {
+      if (listStyle === "large" || listStyle === "compact") {
         this._listStyle = listStyle;
       } else {
         throw Error('Valid values for list styles are "large" or "compact"');
@@ -112,19 +114,19 @@ var Elements = function () {
           if (Array.isArray(buttons)) {
             this._buttons = _Buttons2.default.from(buttons);
           } else {
-            throw Error('Unable to parse buttons');
+            throw Error("Unable to parse buttons");
           }
         }
       }
       return this;
     }
   }, {
-    key: 'getQuickReplies',
+    key: "getQuickReplies",
     value: function getQuickReplies() {
       return this._quickreplies;
     }
   }, {
-    key: 'toJSON',
+    key: "toJSON",
     value: function toJSON() {
       var _this2 = this;
 
@@ -170,9 +172,9 @@ var Elements = function () {
           if (_this2._listStyle) {
             return {
               attachment: {
-                type: 'template',
+                type: "template",
                 payload: {
-                  template_type: 'list',
+                  template_type: "list",
                   top_element_style: _this2._listStyle,
                   elements: elements,
                   buttons: buttons
@@ -182,9 +184,9 @@ var Elements = function () {
           } else if (!_this2._listStyle) {
             return {
               attachment: {
-                type: 'template',
+                type: "template",
                 payload: {
-                  template_type: 'generic',
+                  template_type: "generic",
                   elements: elements
                 }
               }
@@ -202,9 +204,9 @@ var Elements = function () {
 
             return {
               attachment: {
-                type: 'template',
+                type: "template",
                 payload: {
-                  template_type: 'generic',
+                  template_type: "generic",
                   elements: [_element]
                 }
               }
@@ -215,9 +217,9 @@ var Elements = function () {
             _element.buttons = _e.buttons.toJSON();
             return {
               attachment: {
-                type: 'template',
+                type: "template",
                 payload: (0, _extends3.default)({
-                  template_type: 'button'
+                  template_type: "button"
                 }, _element)
               }
             };
@@ -228,7 +230,7 @@ var Elements = function () {
           } else if (_e.image) {
             return {
               attachment: {
-                type: 'image',
+                type: "image",
                 payload: {
                   url: _e.image
                 }
@@ -237,7 +239,7 @@ var Elements = function () {
           } else if (_e.video) {
             return {
               attachment: {
-                type: 'video',
+                type: "video",
                 payload: {
                   url: _e.video
                 }
@@ -246,7 +248,7 @@ var Elements = function () {
           }
         }
 
-        throw Error('Could not form a message. Have you followed the format?');
+        throw Error("Could not form a message. Have you followed the format?");
       };
 
       var built = build();
@@ -258,12 +260,12 @@ var Elements = function () {
       return built;
     }
   }, {
-    key: 'length',
+    key: "length",
     get: function get() {
       return this._elements.length;
     }
   }], [{
-    key: 'from',
+    key: "from",
     value: function from(array) {
       var element = new Elements();
       if (Array.isArray(array)) {

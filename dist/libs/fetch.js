@@ -1,36 +1,36 @@
-'use strict';
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _slicedToArray2 = require('babel-runtime/helpers/slicedToArray');
+var _slicedToArray2 = require("babel-runtime/helpers/slicedToArray");
 
 var _slicedToArray3 = _interopRequireDefault(_slicedToArray2);
 
-var _entries = require('babel-runtime/core-js/object/entries');
+var _entries = require("babel-runtime/core-js/object/entries");
 
 var _entries2 = _interopRequireDefault(_entries);
 
-var _getIterator2 = require('babel-runtime/core-js/get-iterator');
+var _getIterator2 = require("babel-runtime/core-js/get-iterator");
 
 var _getIterator3 = _interopRequireDefault(_getIterator2);
 
-var _assign = require('babel-runtime/core-js/object/assign');
+var _assign = require("babel-runtime/core-js/object/assign");
 
 var _assign2 = _interopRequireDefault(_assign);
 
-var _typeof2 = require('babel-runtime/helpers/typeof');
+var _typeof2 = require("babel-runtime/helpers/typeof");
 
 var _typeof3 = _interopRequireDefault(_typeof2);
 
-var _promise = require('babel-runtime/core-js/promise');
+var _promise = require("babel-runtime/core-js/promise");
 
 var _promise2 = _interopRequireDefault(_promise);
 
 exports.default = fetch;
 
-var _superagent = require('superagent');
+var _superagent = require("superagent");
 
 var _superagent2 = _interopRequireDefault(_superagent);
 
@@ -40,16 +40,16 @@ function fetch(url) {
   var opts = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
 
   return new _promise2.default(function (resolve, reject) {
-    if ((0, _typeof3.default)(opts.body) === 'object' || opts.json) {
-      opts.headers = (0, _assign2.default)({ 'Content-Type': 'application/json' }, opts.headers || {});
+    if ((0, _typeof3.default)(opts.body) === "object" || opts.json) {
+      opts.headers = (0, _assign2.default)({ "Content-Type": "application/json" }, opts.headers || {});
     }
 
-    var method = opts.method || 'get';
+    var method = opts.method || "get";
     var req = _superagent2.default[method.toLowerCase()](url);
 
     req = req.query(opts.query);
 
-    if (opts.method === 'get') {
+    if (opts.method === "get") {
       req = req.query(opts.body);
     } else {
       req = req.send(opts.body);
@@ -104,14 +104,38 @@ function fetch(url) {
               text = _err.text;
 
 
-          Object.defineProperty(err, 'res', { value: res, enumerable: false, configurable: false });
-          Object.defineProperty(err, 'status', { value: status, enumerable: false, configurable: false });
-          Object.defineProperty(err, 'method', { value: _method, enumerable: false, configurable: false });
-          Object.defineProperty(err, 'path', { value: path, enumerable: false, configurable: false });
-          Object.defineProperty(err, 'text', { value: text, enumerable: false, configurable: false });
+          Object.defineProperty(err, "res", {
+            value: res,
+            enumerable: false,
+            configurable: false
+          });
+          Object.defineProperty(err, "status", {
+            value: status,
+            enumerable: false,
+            configurable: false
+          });
+          Object.defineProperty(err, "method", {
+            value: _method,
+            enumerable: false,
+            configurable: false
+          });
+          Object.defineProperty(err, "path", {
+            value: path,
+            enumerable: false,
+            configurable: false
+          });
+          Object.defineProperty(err, "text", {
+            value: text,
+            enumerable: false,
+            configurable: false
+          });
         } catch (e) {
           try {
-            Object.defineProperty(err, 'res', { value: res, enumerable: false, configurable: false });
+            Object.defineProperty(err, "res", {
+              value: res,
+              enumerable: false,
+              configurable: false
+            });
           } catch (ee) {
             // fallback for crappy browsers
             err.res = res;
@@ -120,7 +144,7 @@ function fetch(url) {
 
         reject(err);
       } else {
-        if ((opts.json || /\/json/g.test(res.headers['Content-Type'])) && res.text) {
+        if ((opts.json || /\/json/g.test(res.headers["Content-Type"])) && res.text) {
           try {
             res.body = JSON.parse(res.text.trim());
           } catch (e) {

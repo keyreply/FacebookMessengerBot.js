@@ -1,22 +1,22 @@
-'use strict';
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _stringify = require('babel-runtime/core-js/json/stringify');
+var _stringify = require("babel-runtime/core-js/json/stringify");
 
 var _stringify2 = _interopRequireDefault(_stringify);
 
-var _getIterator2 = require('babel-runtime/core-js/get-iterator');
+var _getIterator2 = require("babel-runtime/core-js/get-iterator");
 
 var _getIterator3 = _interopRequireDefault(_getIterator2);
 
-var _classCallCheck2 = require('babel-runtime/helpers/classCallCheck');
+var _classCallCheck2 = require("babel-runtime/helpers/classCallCheck");
 
 var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
 
-var _createClass2 = require('babel-runtime/helpers/createClass');
+var _createClass2 = require("babel-runtime/helpers/createClass");
 
 var _createClass3 = _interopRequireDefault(_createClass2);
 
@@ -42,7 +42,7 @@ var Buttons = function () {
   }
 
   (0, _createClass3.default)(Buttons, [{
-    key: 'add',
+    key: "add",
     value: function add(_ref) {
       var text = _ref.text,
           data = _ref.data,
@@ -52,14 +52,15 @@ var Buttons = function () {
           share = _ref.share,
           account_linking = _ref.account_linking,
           webview_height_ratio = _ref.webview_height_ratio,
-          messenger_extensions = _ref.messenger_extensions;
+          messenger_extensions = _ref.messenger_extensions,
+          options = _ref.options;
 
       if (!data && !url && !event && !phone && !share) {
-        throw Error('Must provide a url or data i.e. {data: null} or {url: \'https://facebook.com\'}');
+        throw Error("Must provide a url or data i.e. {data: null} or {url: 'https://facebook.com'}");
       }
 
       this._buttons.push({
-        text: text || 'Button',
+        text: text || "Button",
         event: event,
         data: data,
         phone: phone,
@@ -67,12 +68,13 @@ var Buttons = function () {
         url: url,
         account_linking: account_linking,
         webview_height_ratio: webview_height_ratio,
+        options: options,
         messenger_extensions: messenger_extensions
       });
       return this;
     }
   }, {
-    key: 'toJSON',
+    key: "toJSON",
     value: function toJSON() {
       var buttons = [];
       var _iteratorNormalCompletion = true;
@@ -85,27 +87,39 @@ var Buttons = function () {
 
           if (button.account_linking) {
             if (!button.account_linking.linking) {
-              buttons.push({ type: 'account_unlink' });
+              buttons.push({ type: "account_unlink" });
             } else if (button.url) {
-              buttons.push({ type: 'account_link', url: button.url });
+              buttons.push({ type: "account_link", url: button.url });
             } else {
-              throw Error('Missing url for account linking');
+              throw Error("Missing url for account linking");
             }
           } else if (button.url) {
             buttons.push({
-              type: 'web_url',
+              type: "web_url",
               url: button.url,
               title: button.text,
               messenger_extensions: button.messenger_extensions,
-              webview_height_ratio: button.webview_height_ratio || 'full'
+              webview_height_ratio: button.webview_height_ratio || "full"
             });
           } else if (button.data != null) {
-            var payload = (0, _stringify2.default)({ data: button.data, event: button.event });
-            buttons.push({ type: 'postback', payload: payload, title: button.text });
+            var payload = (0, _stringify2.default)({
+              data: button.data,
+              event: button.event
+            });
+            buttons.push({
+              type: "postback",
+              payload: payload,
+              title: button.text,
+              options: button.options
+            });
           } else if (button.share) {
-            buttons.push({ type: 'element_share' });
+            buttons.push({ type: "element_share" });
           } else if (button.phone) {
-            buttons.push({ type: 'phone_number', payload: button.phone, title: button.text });
+            buttons.push({
+              type: "phone_number",
+              payload: button.phone,
+              title: button.text
+            });
           }
         }
       } catch (err) {
@@ -126,12 +140,12 @@ var Buttons = function () {
       return buttons;
     }
   }, {
-    key: 'length',
+    key: "length",
     get: function get() {
       return this._buttons.length;
     }
   }], [{
-    key: 'from',
+    key: "from",
     value: function from(array) {
       var buttons = new Buttons();
       array.forEach(function (arg) {

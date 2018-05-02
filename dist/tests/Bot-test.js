@@ -1,22 +1,22 @@
-'use strict';
+"use strict";
 
-var _regenerator = require('babel-runtime/regenerator');
+var _regenerator = require("babel-runtime/regenerator");
 
 var _regenerator2 = _interopRequireDefault(_regenerator);
 
-var _bluebird = require('bluebird');
+var _bluebird = require("bluebird");
 
-var _assert = require('assert');
+var _assert = require("assert");
 
 var _assert2 = _interopRequireDefault(_assert);
 
-var _ = require('../..');
+var _ = require("../..");
 
-var _text = require('../../fixtures/text.json');
+var _text = require("../../fixtures/text.json");
 
 var _text2 = _interopRequireDefault(_text);
 
-var _image = require('../../fixtures/image.json');
+var _image = require("../../fixtures/image.json");
 
 var _image2 = _interopRequireDefault(_image);
 
@@ -24,12 +24,12 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var token = process.env.PAGE_ACCESS_TOKEN;
 
-describe('Bot', function () {
+describe("Bot", function () {
   var bot = new _.Bot(token);
 
   if (token) {
-    it('should fetch user profile', function (done) {
-      bot.once('message', function () {
+    it("should fetch user profile", function (done) {
+      bot.once("message", function () {
         var _ref = (0, _bluebird.coroutine)( /*#__PURE__*/_regenerator2.default.mark(function _callee(message) {
           var sender;
           return _regenerator2.default.wrap(function _callee$(_context) {
@@ -38,23 +38,23 @@ describe('Bot', function () {
                 case 0:
                   sender = message.sender;
                   _context.next = 3;
-                  return sender.fetch('first_name,last_name', true);
+                  return sender.fetch("first_name,last_name", true);
 
                 case 3:
 
-                  _assert2.default.equal(sender.first_name, 'Mathew');
-                  _assert2.default.equal(sender.last_name, 'Kurian');
+                  _assert2.default.equal(sender.first_name, "Mathew");
+                  _assert2.default.equal(sender.last_name, "Kurian");
                   _assert2.default.equal(sender.fromCache, false);
 
                   _context.next = 8;
-                  return sender.fetch('first_name,last_name', true);
+                  return sender.fetch("first_name,last_name", true);
 
                 case 8:
                   _assert2.default.equal(sender.fromCache, true);
                   done();
 
                 case 10:
-                case 'end':
+                case "end":
                   return _context.stop();
               }
             }
@@ -70,8 +70,8 @@ describe('Bot', function () {
     });
   }
 
-  it('should extract text', function (done) {
-    bot.once('message', function () {
+  it("should extract text", function (done) {
+    bot.once("message", function () {
       var _ref2 = (0, _bluebird.coroutine)( /*#__PURE__*/_regenerator2.default.mark(function _callee2(message) {
         return _regenerator2.default.wrap(function _callee2$(_context2) {
           while (1) {
@@ -81,7 +81,7 @@ describe('Bot', function () {
                 done();
 
               case 2:
-              case 'end':
+              case "end":
                 return _context2.stop();
             }
           }
@@ -96,8 +96,8 @@ describe('Bot', function () {
     bot.handleMessage(_text2.default);
   });
 
-  it('should extract images', function (done) {
-    bot.once('message', function () {
+  it("should extract images", function (done) {
+    bot.once("message", function () {
       var _ref3 = (0, _bluebird.coroutine)( /*#__PURE__*/_regenerator2.default.mark(function _callee3(message) {
         return _regenerator2.default.wrap(function _callee3$(_context3) {
           while (1) {
@@ -107,7 +107,7 @@ describe('Bot', function () {
                 done();
 
               case 2:
-              case 'end':
+              case "end":
                 return _context3.stop();
             }
           }
