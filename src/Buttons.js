@@ -13,9 +13,8 @@ class Buttons {
 
   add(button) {
     if (!button.data && !button.url && !button.event && !button.phone && !button.share) {
-      throw Error(
-        "Must provide a url or data i.e. {data: null} or {url: 'https://facebook.com'}"
-      );
+      console.error("Must provide a url or data i.e. {data: null} or {url: 'https://facebook.com'}");
+      return;
     }
     const _buttons = Object.assign({
       text: button.text || "Button"
