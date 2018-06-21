@@ -11,36 +11,17 @@ class Buttons {
     }
   }
 
-  add({
-    text,
-    data,
-    url,
-    phone,
-    event,
-    share,
-    account_linking,
-    webview_height_ratio,
-    messenger_extensions,
-    options
-  }) {
-    if (!data && !url && !event && !phone && !share) {
+  add(button) {
+    if (!button.data && !button.url && !button.event && !button.phone && !button.share) {
       throw Error(
         "Must provide a url or data i.e. {data: null} or {url: 'https://facebook.com'}"
       );
     }
+    const _buttons = Object.assign({
+      text: button.text || "Button"
+    }, button)
 
-    this._buttons.push({
-      text: text || "Button",
-      event,
-      data,
-      phone,
-      share,
-      url,
-      account_linking,
-      webview_height_ratio,
-      options,
-      messenger_extensions
-    });
+    this._buttons.push(_buttons);
     return this;
   }
 

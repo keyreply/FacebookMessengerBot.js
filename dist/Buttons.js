@@ -12,6 +12,10 @@ var _getIterator2 = require("babel-runtime/core-js/get-iterator");
 
 var _getIterator3 = _interopRequireDefault(_getIterator2);
 
+var _assign = require("babel-runtime/core-js/object/assign");
+
+var _assign2 = _interopRequireDefault(_assign);
+
 var _classCallCheck2 = require("babel-runtime/helpers/classCallCheck");
 
 var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
@@ -43,34 +47,15 @@ var Buttons = function () {
 
   (0, _createClass3.default)(Buttons, [{
     key: "add",
-    value: function add(_ref) {
-      var text = _ref.text,
-          data = _ref.data,
-          url = _ref.url,
-          phone = _ref.phone,
-          event = _ref.event,
-          share = _ref.share,
-          account_linking = _ref.account_linking,
-          webview_height_ratio = _ref.webview_height_ratio,
-          messenger_extensions = _ref.messenger_extensions,
-          options = _ref.options;
-
-      if (!data && !url && !event && !phone && !share) {
+    value: function add(button) {
+      if (!button.data && !button.url && !button.event && !button.phone && !button.share) {
         throw Error("Must provide a url or data i.e. {data: null} or {url: 'https://facebook.com'}");
       }
+      var _buttons = (0, _assign2.default)({
+        text: button.text || "Button"
+      }, button);
 
-      this._buttons.push({
-        text: text || "Button",
-        event: event,
-        data: data,
-        phone: phone,
-        share: share,
-        url: url,
-        account_linking: account_linking,
-        webview_height_ratio: webview_height_ratio,
-        options: options,
-        messenger_extensions: messenger_extensions
-      });
+      this._buttons.push(_buttons);
       return this;
     }
   }, {
