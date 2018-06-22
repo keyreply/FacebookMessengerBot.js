@@ -15,7 +15,8 @@ class QuickReplies {
 
   add({ text, data, event, image, isLocation, options }) {
     if (!data && !event && !isLocation) {
-      throw Error("Must provide data i.e. {data: null}");
+      console.log("Must provide data i.e. {data: null}");
+      return;
     }
 
     this._quickReplies.push({
