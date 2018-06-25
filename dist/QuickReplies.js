@@ -54,7 +54,8 @@ var QuickReplies = function () {
           options = _ref.options;
 
       if (!data && !event && !isLocation) {
-        throw Error("Must provide data i.e. {data: null}");
+        console.log("Must provide data i.e. {data: null}");
+        return;
       }
 
       this._quickReplies.push({

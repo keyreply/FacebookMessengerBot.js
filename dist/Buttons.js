@@ -49,7 +49,8 @@ var Buttons = function () {
     key: "add",
     value: function add(button) {
       if (!button.data && !button.url && !button.event && !button.phone && !button.share) {
-        throw Error("Must provide a url or data i.e. {data: null} or {url: 'https://facebook.com'}");
+        console.error("Must provide a url or data i.e. {data: null} or {url: 'https://facebook.com'}");
+        return;
       }
       var _buttons = (0, _assign2.default)({
         text: button.text || "Button"
