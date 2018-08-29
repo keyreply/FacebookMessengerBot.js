@@ -39,15 +39,14 @@ class Bot extends EventEmitter {
       this._token = this._tokens[pageId];
     }
 
-    const { body: { result } } = await fetch(
-      "https://graph.facebook.com/v2.6/me/thread_settings",
-      {
-        method: "post",
-        json: true,
-        query: { access_token: this._token },
-        body: { setting_type: "greeting", greeting: { text } }
-      }
-    );
+    const {
+      body: { result }
+    } = await fetch("https://graph.facebook.com/v2.6/me/thread_settings", {
+      method: "post",
+      json: true,
+      query: { access_token: this._token },
+      body: { setting_type: "greeting", greeting: { text } }
+    });
 
     return result;
   }
@@ -59,36 +58,34 @@ class Bot extends EventEmitter {
     }
 
     if (!input) {
-      const { body: { result } } = await fetch(
-        "https://graph.facebook.com/v2.6/me/thread_settings",
-        {
-          method: "delete",
-          json: true,
-          query: { access_token: this._token },
-          body: {
-            setting_type: "call_to_actions",
-            thread_state: "new_thread"
-          }
+      const {
+        body: { result }
+      } = await fetch("https://graph.facebook.com/v2.6/me/thread_settings", {
+        method: "delete",
+        json: true,
+        query: { access_token: this._token },
+        body: {
+          setting_type: "call_to_actions",
+          thread_state: "new_thread"
         }
-      );
+      });
 
       return result;
     }
 
     const { data, event } = input;
-    const { body: { result } } = await fetch(
-      "https://graph.facebook.com/v2.6/me/thread_settings",
-      {
-        method: "post",
-        json: true,
-        query: { access_token: this._token },
-        body: {
-          setting_type: "call_to_actions",
-          thread_state: "new_thread",
-          call_to_actions: [{ payload: JSON.stringify({ data, event }) }]
-        }
+    const {
+      body: { result }
+    } = await fetch("https://graph.facebook.com/v2.6/me/thread_settings", {
+      method: "post",
+      json: true,
+      query: { access_token: this._token },
+      body: {
+        setting_type: "call_to_actions",
+        thread_state: "new_thread",
+        call_to_actions: [{ payload: JSON.stringify({ data, event }) }]
       }
-    );
+    });
 
     return result;
   }
@@ -100,35 +97,33 @@ class Bot extends EventEmitter {
     }
 
     if (!input) {
-      const { body: { result } } = await fetch(
-        "https://graph.facebook.com/v2.6/me/thread_settings",
-        {
-          method: "delete",
-          json: true,
-          query: { access_token: this._token },
-          body: {
-            setting_type: "call_to_actions",
-            thread_state: "existing_thread"
-          }
-        }
-      );
-
-      return result;
-    }
-
-    const { body: { result } } = await fetch(
-      "https://graph.facebook.com/v2.6/me/thread_settings",
-      {
-        method: "post",
+      const {
+        body: { result }
+      } = await fetch("https://graph.facebook.com/v2.6/me/thread_settings", {
+        method: "delete",
         json: true,
         query: { access_token: this._token },
         body: {
           setting_type: "call_to_actions",
-          thread_state: "existing_thread",
-          call_to_actions: input
+          thread_state: "existing_thread"
         }
+      });
+
+      return result;
+    }
+
+    const {
+      body: { result }
+    } = await fetch("https://graph.facebook.com/v2.6/me/thread_settings", {
+      method: "post",
+      json: true,
+      query: { access_token: this._token },
+      body: {
+        setting_type: "call_to_actions",
+        thread_state: "existing_thread",
+        call_to_actions: input
       }
-    );
+    });
 
     return result;
   }
@@ -141,20 +136,25 @@ class Bot extends EventEmitter {
 
     const action = state ? "typing_on" : "typing_off";
 
-    const { body: { result } } = await fetch(
-      "https://graph.facebook.com/v2.6/me/messages",
-      {
-        method: "post",
-        json: true,
-        query: { access_token: this._token },
-        body: { recipient: { id: to }, sender_action: action }
-      }
-    );
+    const {
+      body: { result }
+    } = await fetch("https://graph.facebook.com/v2.6/me/messages", {
+      method: "post",
+      json: true,
+      query: { access_token: this._token },
+      body: { recipient: { id: to }, sender_action: action }
+    });
 
     return result;
   }
 
-  async send(to, message, notification_type = "REGULAR", pageId) {
+  async send(
+    to,
+    message,
+    notification_type = "REGULAR",
+    pageId,
+    tag = "NON_PROMOTIONAL_SUBSCRIPTION"
+  ) {
     // support multiple tokens with backwards compatibility
     if (pageId && this._tokens) {
       this._token = this._tokens[pageId];
@@ -164,7 +164,8 @@ class Bot extends EventEmitter {
       console.log({
         recipient: { id: to },
         message: message ? message.toJSON() : message,
-        notification_type
+        notification_type,
+        tag
       });
     }
 
@@ -173,7 +174,7 @@ class Bot extends EventEmitter {
         method: "post",
         json: true,
         query: { access_token: this._token },
-        body: { recipient: { id: to }, message, notification_type }
+        body: { recipient: { id: to }, message, notification_type, tag }
       });
     } catch (e) {
       if (e.text) {
