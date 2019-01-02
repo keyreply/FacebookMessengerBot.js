@@ -363,6 +363,7 @@ var Bot = function (_EventEmitter) {
       var _ref12 = (0, _bluebird.coroutine)( /*#__PURE__*/_regenerator2.default.mark(function _callee6(to, message) {
         var notification_type = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : "REGULAR";
         var pageId = arguments[3];
+        var tag = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : "NON_PROMOTIONAL_SUBSCRIPTION";
         var text, err;
         return _regenerator2.default.wrap(function _callee6$(_context6) {
           while (1) {
@@ -377,7 +378,8 @@ var Bot = function (_EventEmitter) {
                   console.log({
                     recipient: { id: to },
                     message: message ? message.toJSON() : message,
-                    notification_type: notification_type
+                    notification_type: notification_type,
+                    tag: tag
                   });
                 }
 
@@ -387,7 +389,7 @@ var Bot = function (_EventEmitter) {
                   method: "post",
                   json: true,
                   query: { access_token: this._token },
-                  body: { recipient: { id: to }, message: message, notification_type: notification_type }
+                  body: { recipient: { id: to }, message: message, notification_type: notification_type, tag: tag }
                 });
 
               case 5:
@@ -494,7 +496,7 @@ var Bot = function (_EventEmitter) {
         }, _callee7, this);
       }));
 
-      function fetchUser(_x15) {
+      function fetchUser(_x16) {
         return _ref13.apply(this, arguments);
       }
 
@@ -526,7 +528,7 @@ var Bot = function (_EventEmitter) {
         }, _callee8, this);
       }));
 
-      function handleStandby(_x18) {
+      function handleStandby(_x19) {
         return _ref15.apply(this, arguments);
       }
 
@@ -576,7 +578,7 @@ var Bot = function (_EventEmitter) {
                     }, _callee9, _this2);
                   }));
 
-                  return function (_x20, _x21) {
+                  return function (_x21, _x22) {
                     return _ref17.apply(this, arguments);
                   };
                 }();
@@ -676,6 +678,12 @@ var Bot = function (_EventEmitter) {
                 attachments = _lodash2.default.groupBy(message.attachments, "type");
 
 
+                if (attachments.file) {
+                  message.files = attachments.file.map(function (a) {
+                    return a.payload.url;
+                  });
+                }
+
                 if (attachments.image) {
                   message.images = attachments.image.map(function (a) {
                     return a.payload.url;
@@ -707,7 +715,7 @@ var Bot = function (_EventEmitter) {
 
                 this.emit("message", message);
 
-              case 37:
+              case 38:
               case "end":
                 return _context10.stop();
             }
@@ -715,7 +723,7 @@ var Bot = function (_EventEmitter) {
         }, _callee10, this);
       }));
 
-      function handleMessage(_x19) {
+      function handleMessage(_x20) {
         return _ref16.apply(this, arguments);
       }
 

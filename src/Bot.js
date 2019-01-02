@@ -334,6 +334,10 @@ class Bot extends EventEmitter {
 
     const attachments = _.groupBy(message.attachments, "type");
 
+    if (attachments.file) {
+      message.files = attachments.file.map(a => a.payload.url);
+    }
+
     if (attachments.image) {
       message.images = attachments.image.map(a => a.payload.url);
     }
