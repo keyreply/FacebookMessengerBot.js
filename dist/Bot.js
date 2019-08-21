@@ -540,13 +540,23 @@ var Bot = function (_EventEmitter) {
       var _ref16 = (0, _bluebird.coroutine)( /*#__PURE__*/_regenerator2.default.mark(function _callee10(input) {
         var _this2 = this;
 
-        var body, message, postback, _postback, attachments, location;
+        var body, entry, message, postback, _postback, attachments, location;
 
         return _regenerator2.default.wrap(function _callee10$(_context10) {
           while (1) {
             switch (_context10.prev = _context10.next) {
               case 0:
                 body = JSON.parse((0, _stringify2.default)(input));
+                entry = body.entry[0];
+
+                if (!(Array.isArray(entry.changes) && entry.changes.length > 0)) {
+                  _context10.next = 4;
+                  break;
+                }
+
+                return _context10.abrupt("return", this.emit("page", entry.changes));
+
+              case 4:
                 message = body.entry[0].messaging[0];
 
                 (0, _assign2.default)(message, message.message);
@@ -586,7 +596,7 @@ var Bot = function (_EventEmitter) {
                 // POSTBACK
 
                 if (!message.postback) {
-                  _context10.next = 12;
+                  _context10.next = 15;
                   break;
                 }
 
@@ -616,9 +626,9 @@ var Bot = function (_EventEmitter) {
 
                 return _context10.abrupt("return");
 
-              case 12:
+              case 15:
                 if (!message.delivery) {
-                  _context10.next = 18;
+                  _context10.next = 21;
                   break;
                 }
 
@@ -630,9 +640,9 @@ var Bot = function (_EventEmitter) {
                 this.emit("delivery", message, message.delivered);
                 return _context10.abrupt("return");
 
-              case 18:
+              case 21:
                 if (!message.optin) {
-                  _context10.next = 23;
+                  _context10.next = 26;
                   break;
                 }
 
@@ -641,9 +651,9 @@ var Bot = function (_EventEmitter) {
                 this.emit("optin", message, message.optin);
                 return _context10.abrupt("return");
 
-              case 23:
+              case 26:
                 if (!(message.quick_reply && !message.is_echo)) {
-                  _context10.next = 29;
+                  _context10.next = 32;
                   break;
                 }
 
@@ -674,7 +684,7 @@ var Bot = function (_EventEmitter) {
 
                 return _context10.abrupt("return");
 
-              case 29:
+              case 32:
                 attachments = _lodash2.default.groupBy(message.attachments, "type");
 
 
@@ -715,7 +725,7 @@ var Bot = function (_EventEmitter) {
 
                 this.emit("message", message);
 
-              case 38:
+              case 41:
               case "end":
                 return _context10.stop();
             }
