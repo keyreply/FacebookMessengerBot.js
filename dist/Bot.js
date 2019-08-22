@@ -360,14 +360,19 @@ var Bot = function (_EventEmitter) {
   }, {
     key: "sendPrivateMessage",
     value: function () {
-      var _ref12 = (0, _bluebird.coroutine)( /*#__PURE__*/_regenerator2.default.mark(function _callee6(id, message) {
+      var _ref12 = (0, _bluebird.coroutine)( /*#__PURE__*/_regenerator2.default.mark(function _callee6(id, message, pageId) {
         var text, err;
         return _regenerator2.default.wrap(function _callee6$(_context6) {
           while (1) {
             switch (_context6.prev = _context6.next) {
               case 0:
                 _context6.prev = 0;
-                _context6.next = 3;
+
+                // support multiple tokens with backwards compatibility
+                if (pageId && this._tokens) {
+                  this._token = this._tokens[pageId];
+                }
+                _context6.next = 4;
                 return (0, _fetch2.default)("https://graph.facebook.com/v4.0/" + id + "/private_replies", {
                   method: "post",
                   json: true,
@@ -375,16 +380,16 @@ var Bot = function (_EventEmitter) {
                   body: { id: id, message: message }
                 });
 
-              case 3:
-                _context6.next = 14;
+              case 4:
+                _context6.next = 15;
                 break;
 
-              case 5:
-                _context6.prev = 5;
+              case 6:
+                _context6.prev = 6;
                 _context6.t0 = _context6["catch"](0);
 
                 if (!_context6.t0.text) {
-                  _context6.next = 13;
+                  _context6.next = 14;
                   break;
                 }
 
@@ -400,18 +405,18 @@ var Bot = function (_EventEmitter) {
 
                 throw Error(text);
 
-              case 13:
+              case 14:
                 throw _context6.t0;
 
-              case 14:
+              case 15:
               case "end":
                 return _context6.stop();
             }
           }
-        }, _callee6, this, [[0, 5]]);
+        }, _callee6, this, [[0, 6]]);
       }));
 
-      function sendPrivateMessage(_x12, _x13) {
+      function sendPrivateMessage(_x12, _x13, _x14) {
         return _ref12.apply(this, arguments);
       }
 
@@ -488,7 +493,7 @@ var Bot = function (_EventEmitter) {
         }, _callee7, this, [[2, 7]]);
       }));
 
-      function send(_x14, _x15) {
+      function send(_x15, _x16) {
         return _ref13.apply(this, arguments);
       }
 
@@ -556,7 +561,7 @@ var Bot = function (_EventEmitter) {
         }, _callee8, this);
       }));
 
-      function fetchUser(_x18) {
+      function fetchUser(_x19) {
         return _ref14.apply(this, arguments);
       }
 
@@ -588,7 +593,7 @@ var Bot = function (_EventEmitter) {
         }, _callee9, this);
       }));
 
-      function handleStandby(_x21) {
+      function handleStandby(_x22) {
         return _ref16.apply(this, arguments);
       }
 
@@ -648,7 +653,7 @@ var Bot = function (_EventEmitter) {
                     }, _callee10, _this2);
                   }));
 
-                  return function (_x23, _x24) {
+                  return function (_x24, _x25) {
                     return _ref18.apply(this, arguments);
                   };
                 }();
@@ -793,7 +798,7 @@ var Bot = function (_EventEmitter) {
         }, _callee11, this);
       }));
 
-      function handleMessage(_x22) {
+      function handleMessage(_x23) {
         return _ref17.apply(this, arguments);
       }
 

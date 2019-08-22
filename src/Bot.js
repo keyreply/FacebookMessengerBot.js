@@ -148,8 +148,12 @@ class Bot extends EventEmitter {
     return result;
   }
 
-  async sendPrivateMessage(id, message) {
+  async sendPrivateMessage(id, message, pageId) {
     try {
+      // support multiple tokens with backwards compatibility
+      if (pageId && this._tokens) {
+        this._token = this._tokens[pageId];
+      }
       await fetch(`https://graph.facebook.com/v4.0/${id}/private_replies`, {
         method: "post",
         json: true,
