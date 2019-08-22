@@ -148,6 +148,31 @@ class Bot extends EventEmitter {
     return result;
   }
 
+  async sendPrivateMessage(id, message) {
+    try {
+      await fetch(`https://graph.facebook.com/v4.0/${id}/private_replies`, {
+        method: "post",
+        json: true,
+        query: { access_token: this._token },
+        body: { id, message }
+      });
+    } catch (e) {
+      if (e.text) {
+        let text = e.text;
+        try {
+          const err = JSON.parse(e.text).error;
+          text = `${err.type || "Unknown"}: ${err.message || "No message"}`;
+        } catch (ee) {
+          // ignore
+        }
+
+        throw Error(text);
+      } else {
+        throw e;
+      }
+    }
+  }
+
   async send(
     to,
     message,
