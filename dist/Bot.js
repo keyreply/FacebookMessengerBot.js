@@ -614,12 +614,12 @@ var Bot = function (_EventEmitter) {
                 body = JSON.parse((0, _stringify2.default)(input));
                 entry = body.entry[0];
 
-                if (!(Array.isArray(entry.changes) && entry.changes.length > 0)) {
+                if (!(body.object === "page" && Array.isArray(entry.changes) && entry.changes.length > 0)) {
                   _context11.next = 4;
                   break;
                 }
 
-                return _context11.abrupt("return", this.emit("page", entry.changes));
+                return _context11.abrupt("return", this.emit("page", entry.changes, entry.id, entry.time));
 
               case 4:
                 message = body.entry[0].messaging[0];

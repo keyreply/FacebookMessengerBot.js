@@ -269,8 +269,8 @@ class Bot extends EventEmitter {
   async handleMessage(input) {
     const body = JSON.parse(JSON.stringify(input));
     const entry = body.entry[0];
-    if (Array.isArray(entry.changes) && entry.changes.length > 0) {
-      return this.emit("page", entry.changes);
+    if (body.object === "page" && Array.isArray(entry.changes) && entry.changes.length > 0) {
+      return this.emit("page", entry.changes, entry.id, entry.time);
     }
     const message = body.entry[0].messaging[0];
     Object.assign(message, message.message);
