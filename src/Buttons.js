@@ -41,7 +41,8 @@ class Buttons {
           url: button.url,
           title: button.text,
           messenger_extensions: button.messenger_extensions,
-          webview_height_ratio: button.webview_height_ratio || "full"
+          webview_height_ratio: button.webview_height_ratio || "full",
+          webview_share_button: button.webview_share_button
         });
       } else if (button.data != null) {
         const payload = JSON.stringify({
