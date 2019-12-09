@@ -7,6 +7,7 @@ class Elements {
     this._quickreplies = null;
     this._listStyle = null;
     this._buttons = null;
+    this._imageAspectRatio = "horizontal";
 
     if (elements != null) {
       if (Array.isArray(elements)) {
@@ -74,6 +75,10 @@ class Elements {
     return this;
   }
 
+  setImageAspectRatio(imageAspectRatio) {
+    this._imageAspectRatio = imageAspectRatio;
+  }
+
   getQuickReplies() {
     return this._quickreplies;
   }
@@ -120,7 +125,8 @@ class Elements {
               type: "template",
               payload: {
                 template_type: "generic",
-                elements
+                elements,
+                image_aspect_ratio: this._imageAspectRatio
               }
             }
           };
@@ -141,7 +147,8 @@ class Elements {
               type: "template",
               payload: {
                 template_type: "generic",
-                elements: [element]
+                elements: [element],
+                image_aspect_ratio: this._imageAspectRatio
               }
             }
           };

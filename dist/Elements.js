@@ -40,6 +40,7 @@ var Elements = function () {
     this._quickreplies = null;
     this._listStyle = null;
     this._buttons = null;
+    this._imageAspectRatio = "horizontal";
 
     if (elements != null) {
       if (Array.isArray(elements)) {
@@ -121,6 +122,11 @@ var Elements = function () {
       return this;
     }
   }, {
+    key: "setImageAspectRatio",
+    value: function setImageAspectRatio(imageAspectRatio) {
+      this._imageAspectRatio = imageAspectRatio;
+    }
+  }, {
     key: "getQuickReplies",
     value: function getQuickReplies() {
       return this._quickreplies;
@@ -187,7 +193,8 @@ var Elements = function () {
                 type: "template",
                 payload: {
                   template_type: "generic",
-                  elements: elements
+                  elements: elements,
+                  image_aspect_ratio: _this2._imageAspectRatio
                 }
               }
             };
@@ -207,7 +214,8 @@ var Elements = function () {
                 type: "template",
                 payload: {
                   template_type: "generic",
-                  elements: [_element]
+                  elements: [_element],
+                  image_aspect_ratio: _this2._imageAspectRatio
                 }
               }
             };
