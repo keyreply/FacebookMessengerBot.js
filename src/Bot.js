@@ -273,6 +273,9 @@ class Bot extends EventEmitter {
       return this.emit("page", entry.changes, entry.id, entry.time);
     }
     const message = body.entry[0].messaging[0];
+
+    console.log('LOGGING FROM SUBMODULE', JSON.stringify({ message }, null, 2));
+
     Object.assign(message, message.message);
     delete message.message;
 
