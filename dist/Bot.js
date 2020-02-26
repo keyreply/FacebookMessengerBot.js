@@ -624,6 +624,9 @@ var Bot = function (_EventEmitter) {
               case 4:
                 message = body.entry[0].messaging[0];
 
+
+                console.log('LOGGING FROM SUBMODULE', (0, _stringify2.default)({ message: message }, null, 2));
+
                 (0, _assign2.default)(message, message.message);
                 delete message.message;
 
@@ -661,7 +664,7 @@ var Bot = function (_EventEmitter) {
                 // POSTBACK
 
                 if (!message.postback) {
-                  _context11.next = 15;
+                  _context11.next = 16;
                   break;
                 }
 
@@ -691,9 +694,9 @@ var Bot = function (_EventEmitter) {
 
                 return _context11.abrupt("return");
 
-              case 15:
+              case 16:
                 if (!message.delivery) {
-                  _context11.next = 21;
+                  _context11.next = 22;
                   break;
                 }
 
@@ -705,9 +708,9 @@ var Bot = function (_EventEmitter) {
                 this.emit("delivery", message, message.delivered);
                 return _context11.abrupt("return");
 
-              case 21:
+              case 22:
                 if (!message.optin) {
-                  _context11.next = 26;
+                  _context11.next = 27;
                   break;
                 }
 
@@ -716,9 +719,9 @@ var Bot = function (_EventEmitter) {
                 this.emit("optin", message, message.optin);
                 return _context11.abrupt("return");
 
-              case 26:
+              case 27:
                 if (!(message.quick_reply && !message.is_echo)) {
-                  _context11.next = 32;
+                  _context11.next = 33;
                   break;
                 }
 
@@ -749,7 +752,7 @@ var Bot = function (_EventEmitter) {
 
                 return _context11.abrupt("return");
 
-              case 32:
+              case 33:
                 attachments = _lodash2.default.groupBy(message.attachments, "type");
 
 
@@ -790,7 +793,7 @@ var Bot = function (_EventEmitter) {
 
                 this.emit("message", message);
 
-              case 41:
+              case 42:
               case "end":
                 return _context11.stop();
             }
