@@ -151,7 +151,7 @@ var Bot = function (_EventEmitter) {
                 }
 
                 _context2.next = 3;
-                return (0, _fetch2.default)("https://graph.facebook.com/v2.6/me/thread_settings", {
+                return (0, _fetch2.default)("https://graph.facebook.com/v6.0/me/thread_settings", {
                   method: "post",
                   json: true,
                   query: { access_token: this._token },
@@ -198,7 +198,7 @@ var Bot = function (_EventEmitter) {
                 }
 
                 _context3.next = 4;
-                return (0, _fetch2.default)("https://graph.facebook.com/v2.6/me/thread_settings", {
+                return (0, _fetch2.default)("https://graph.facebook.com/v6.0/me/thread_settings", {
                   method: "delete",
                   json: true,
                   query: { access_token: this._token },
@@ -216,7 +216,7 @@ var Bot = function (_EventEmitter) {
               case 7:
                 data = input.data, event = input.event;
                 _context3.next = 10;
-                return (0, _fetch2.default)("https://graph.facebook.com/v2.6/me/thread_settings", {
+                return (0, _fetch2.default)("https://graph.facebook.com/v6.0/me/thread_settings", {
                   method: "post",
                   json: true,
                   query: { access_token: this._token },
@@ -267,7 +267,7 @@ var Bot = function (_EventEmitter) {
                 }
 
                 _context4.next = 4;
-                return (0, _fetch2.default)("https://graph.facebook.com/v2.6/me/thread_settings", {
+                return (0, _fetch2.default)("https://graph.facebook.com/v6.0/me/thread_settings", {
                   method: "delete",
                   json: true,
                   query: { access_token: this._token },
@@ -284,7 +284,7 @@ var Bot = function (_EventEmitter) {
 
               case 7:
                 _context4.next = 9;
-                return (0, _fetch2.default)("https://graph.facebook.com/v2.6/me/thread_settings", {
+                return (0, _fetch2.default)("https://graph.facebook.com/v6.0/me/thread_settings", {
                   method: "post",
                   json: true,
                   query: { access_token: this._token },
@@ -331,7 +331,7 @@ var Bot = function (_EventEmitter) {
 
                 action = state ? "typing_on" : "typing_off";
                 _context5.next = 4;
-                return (0, _fetch2.default)("https://graph.facebook.com/v2.6/me/messages", {
+                return (0, _fetch2.default)("https://graph.facebook.com/v6.0/me/messages", {
                   method: "post",
                   json: true,
                   query: { access_token: this._token },
@@ -373,7 +373,7 @@ var Bot = function (_EventEmitter) {
                   this._token = this._tokens[pageId];
                 }
                 _context6.next = 4;
-                return (0, _fetch2.default)("https://graph.facebook.com/v4.0/" + id + "/private_replies", {
+                return (0, _fetch2.default)("https://graph.facebook.com/v6.0/" + id + "/private_replies", {
                   method: "post",
                   json: true,
                   query: { access_token: this._token },
@@ -450,7 +450,7 @@ var Bot = function (_EventEmitter) {
 
                 _context7.prev = 2;
                 _context7.next = 5;
-                return (0, _fetch2.default)("https://graph.facebook.com/v2.6/me/messages", {
+                return (0, _fetch2.default)("https://graph.facebook.com/v6.0/me/messages", {
                   method: "post",
                   json: true,
                   query: { access_token: this._token },
@@ -533,7 +533,7 @@ var Bot = function (_EventEmitter) {
 
               case 8:
                 _context8.next = 10;
-                return (0, _fetch2.default)("https://graph.facebook.com/v2.6/" + id, {
+                return (0, _fetch2.default)("https://graph.facebook.com/v6.0/" + id, {
                   query: { access_token: this._token, fields: fields },
                   json: true
                 });

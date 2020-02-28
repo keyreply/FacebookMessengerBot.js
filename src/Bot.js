@@ -41,7 +41,7 @@ class Bot extends EventEmitter {
 
     const {
       body: { result }
-    } = await fetch("https://graph.facebook.com/v2.6/me/thread_settings", {
+    } = await fetch("https://graph.facebook.com/v6.0/me/thread_settings", {
       method: "post",
       json: true,
       query: { access_token: this._token },
@@ -60,7 +60,7 @@ class Bot extends EventEmitter {
     if (!input) {
       const {
         body: { result }
-      } = await fetch("https://graph.facebook.com/v2.6/me/thread_settings", {
+      } = await fetch("https://graph.facebook.com/v6.0/me/thread_settings", {
         method: "delete",
         json: true,
         query: { access_token: this._token },
@@ -76,7 +76,7 @@ class Bot extends EventEmitter {
     const { data, event } = input;
     const {
       body: { result }
-    } = await fetch("https://graph.facebook.com/v2.6/me/thread_settings", {
+    } = await fetch("https://graph.facebook.com/v6.0/me/thread_settings", {
       method: "post",
       json: true,
       query: { access_token: this._token },
@@ -99,7 +99,7 @@ class Bot extends EventEmitter {
     if (!input) {
       const {
         body: { result }
-      } = await fetch("https://graph.facebook.com/v2.6/me/thread_settings", {
+      } = await fetch("https://graph.facebook.com/v6.0/me/thread_settings", {
         method: "delete",
         json: true,
         query: { access_token: this._token },
@@ -114,7 +114,7 @@ class Bot extends EventEmitter {
 
     const {
       body: { result }
-    } = await fetch("https://graph.facebook.com/v2.6/me/thread_settings", {
+    } = await fetch("https://graph.facebook.com/v6.0/me/thread_settings", {
       method: "post",
       json: true,
       query: { access_token: this._token },
@@ -138,7 +138,7 @@ class Bot extends EventEmitter {
 
     const {
       body: { result }
-    } = await fetch("https://graph.facebook.com/v2.6/me/messages", {
+    } = await fetch("https://graph.facebook.com/v6.0/me/messages", {
       method: "post",
       json: true,
       query: { access_token: this._token },
@@ -154,7 +154,7 @@ class Bot extends EventEmitter {
       if (pageId && this._tokens) {
         this._token = this._tokens[pageId];
       }
-      await fetch(`https://graph.facebook.com/v4.0/${id}/private_replies`, {
+      await fetch(`https://graph.facebook.com/v6.0/${id}/private_replies`, {
         method: "post",
         json: true,
         query: { access_token: this._token },
@@ -199,7 +199,7 @@ class Bot extends EventEmitter {
     }
 
     try {
-      await fetch("https://graph.facebook.com/v2.6/me/messages", {
+      await fetch("https://graph.facebook.com/v6.0/me/messages", {
         method: "post",
         json: true,
         query: { access_token: this._token },
@@ -240,7 +240,7 @@ class Bot extends EventEmitter {
       props = userCache[key];
       props.fromCache = true;
     } else {
-      const { body } = await fetch(`https://graph.facebook.com/v2.6/${id}`, {
+      const { body } = await fetch(`https://graph.facebook.com/v6.0/${id}`, {
         query: { access_token: this._token, fields },
         json: true
       });
