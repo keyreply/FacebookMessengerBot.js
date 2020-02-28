@@ -33,20 +33,44 @@ class Bot extends EventEmitter {
     this._verification = verification;
   }
 
-  async setGreeting(text, pageId) {
-    // support multiple tokens with backwards compatibility
+  async updateProfile(json, pageId) {
     if (pageId && this._tokens) {
       this._token = this._tokens[pageId];
     }
 
     const {
       body: { result }
-    } = await fetch("https://graph.facebook.com/v6.0/me/thread_settings", {
+    } = await fetch("https://graph.facebook.com/v6.0/me/messenger_profile", {
       method: "post",
       json: true,
       query: { access_token: this._token },
-      body: { setting_type: "greeting", greeting: { text } }
+      body: json
     });
+
+    return result;
+  }
+
+  async setGreeting(text, pageId) {
+    // // support multiple tokens with backwards compatibility
+    // if (pageId && this._tokens) {
+    //   this._token = this._tokens[pageId];
+    // }
+
+    // const {
+    //   body: { result }
+    // } = await fetch("https://graph.facebook.com/v6.0/me/thread_settings", {
+    //   method: "post",
+    //   json: true,
+    //   query: { access_token: this._token },
+    //   body: { setting_type: "greeting", greeting: { text } }
+    // });
+
+    const result = await this.updateProfile({
+      greeting: [{
+        locale: 'default',
+        text
+      }]
+    }, pageId);
 
     return result;
   }
@@ -57,37 +81,45 @@ class Bot extends EventEmitter {
       this._token = this._tokens[pageId];
     }
 
-    if (!input) {
-      const {
-        body: { result }
-      } = await fetch("https://graph.facebook.com/v6.0/me/thread_settings", {
-        method: "delete",
-        json: true,
-        query: { access_token: this._token },
-        body: {
-          setting_type: "call_to_actions",
-          thread_state: "new_thread"
-        }
-      });
-
-      return result;
-    }
-
-    const { data, event } = input;
-    const {
-      body: { result }
-    } = await fetch("https://graph.facebook.com/v6.0/me/thread_settings", {
-      method: "post",
-      json: true,
-      query: { access_token: this._token },
-      body: {
-        setting_type: "call_to_actions",
-        thread_state: "new_thread",
-        call_to_actions: [{ payload: JSON.stringify({ data, event }) }]
+    const result = await this.updateProfile({
+      get_started: {
+        payload: input.data || 'GET_STARTED'
       }
-    });
+    }, pageId);
 
     return result;
+
+  //   if (!input) {
+  //     const {
+  //       body: { result }
+  //     } = await fetch("https://graph.facebook.com/v6.0/me/thread_settings", {
+  //       method: "delete",
+  //       json: true,
+  //       query: { access_token: this._token },
+  //       body: {
+  //         setting_type: "call_to_actions",
+  //         thread_state: "new_thread"
+  //       }
+  //     });
+
+  //     return result;
+  //   }
+
+  //   const { data, event } = input;
+  //   const {
+  //     body: { result }
+  //   } = await fetch("https://graph.facebook.com/v6.0/me/thread_settings", {
+  //     method: "post",
+  //     json: true,
+  //     query: { access_token: this._token },
+  //     body: {
+  //       setting_type: "call_to_actions",
+  //       thread_state: "new_thread",
+  //       call_to_actions: [{ payload: JSON.stringify({ data, event }) }]
+  //     }
+  //   });
+
+  //   return result;
   }
 
   async setPersistentMenu(input, pageId) {
