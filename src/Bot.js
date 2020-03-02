@@ -74,6 +74,8 @@ class Bot extends EventEmitter {
     //   body: { setting_type: "greeting", greeting: { text } }
     // });
 
+    // return result;
+
     try {
       const result = await this.updateProfile(text ? {
         greeting: [{
@@ -204,24 +206,59 @@ class Bot extends EventEmitter {
     }
   }
 
-  async setTyping(to, state, pageId) {
+  async messengesApi(json, pageId, method = 'post') {
     // support multiple tokens with backwards compatibility
     if (pageId && this._tokens) {
       this._token = this._tokens[pageId];
     }
 
-    const action = state ? "typing_on" : "typing_off";
+    try {
+      const {
+        body: {result}
+      } = await fetch('https://graph.facebook.com/v6.0/me/messenges', {
+        method,
+        json: true,
+        query: {access_token: this._token},
+        body: json
+      });
 
-    const {
-      body: { result }
-    } = await fetch("https://graph.facebook.com/v6.0/me/messages", {
-      method: "post",
-      json: true,
-      query: { access_token: this._token },
-      body: { recipient: { id: to }, sender_action: action }
-    });
+      return result;
+    } catch (err) {
+      throw err;
+    }
+  }
 
-    return result;
+  async setTyping(to, state, pageId) {
+    // // support multiple tokens with backwards compatibility
+    // if (pageId && this._tokens) {
+    //   this._token = this._tokens[pageId];
+    // }
+
+    // const action = state ? "typing_on" : "typing_off";
+
+    // const {
+    //   body: { result }
+    // } = await fetch("https://graph.facebook.com/v6.0/me/messages", {
+    //   method: "post",
+    //   json: true,
+    //   query: { access_token: this._token },
+    //   body: { recipient: { id: to }, sender_action: action }
+    // });
+
+    // return result;
+
+    try {
+      const result = await this.messengesApi({
+        recipient: {
+          id: to
+        },
+        sender_action: state ? 'typing_on' : 'typing_off'
+      }, pageId);
+
+      return result;
+    } catch (err) {
+      throw err;
+    }
   }
 
   async sendPrivateMessage(id, message, pageId) {
@@ -260,10 +297,10 @@ class Bot extends EventEmitter {
     pageId,
     tag = "NON_PROMOTIONAL_SUBSCRIPTION"
   ) {
-    // support multiple tokens with backwards compatibility
-    if (pageId && this._tokens) {
-      this._token = this._tokens[pageId];
-    }
+    // // support multiple tokens with backwards compatibility
+    // if (pageId && this._tokens) {
+    //   this._token = this._tokens[pageId];
+    // }
 
     if (this._debug) {
       console.log({
@@ -275,18 +312,27 @@ class Bot extends EventEmitter {
     }
 
     try {
-      await fetch("https://graph.facebook.com/v6.0/me/messages", {
-        method: "post",
-        json: true,
-        query: { access_token: this._token },
-        body: { recipient: { id: to }, message, notification_type, tag }
-      });
+      // await fetch("https://graph.facebook.com/v6.0/me/messages", {
+      //   method: "post",
+      //   json: true,
+      //   query: { access_token: this._token },
+      //   body: { recipient: { id: to }, message, notification_type, tag }
+      // });
+
+      await this.messengesApi({
+        recipient: {
+          id: to
+        },
+        message,
+        notification_type,
+        tag
+      }, pageId);
     } catch (e) {
       if (e.text) {
         let text = e.text;
         try {
           const err = JSON.parse(e.text).error;
-          text = `${err.type || "Unknown"}: ${err.message || "No message"}`;
+          text = `${err.type || 'Unknown'}: ${err.message || 'No message'}`;
         } catch (ee) {
           // ignore
         }

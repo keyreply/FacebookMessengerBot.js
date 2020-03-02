@@ -315,10 +315,12 @@ var Bot = function (_EventEmitter) {
       return setPersistentMenu;
     }()
   }, {
-    key: "setTyping",
+    key: "messengesApi",
     value: function () {
-      var _ref7 = (0, _bluebird.coroutine)( /*#__PURE__*/_regenerator2.default.mark(function _callee6(to, state, pageId) {
-        var action, _ref8, result;
+      var _ref7 = (0, _bluebird.coroutine)( /*#__PURE__*/_regenerator2.default.mark(function _callee6(json, pageId) {
+        var method = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'post';
+
+        var _ref8, result;
 
         return _regenerator2.default.wrap(function _callee6$(_context6) {
           while (1) {
@@ -329,13 +331,13 @@ var Bot = function (_EventEmitter) {
                   this._token = this._tokens[pageId];
                 }
 
-                action = state ? "typing_on" : "typing_off";
+                _context6.prev = 1;
                 _context6.next = 4;
-                return (0, _fetch2.default)("https://graph.facebook.com/v6.0/me/messages", {
-                  method: "post",
+                return (0, _fetch2.default)('https://graph.facebook.com/v6.0/me/messenges', {
+                  method: method,
                   json: true,
                   query: { access_token: this._token },
-                  body: { recipient: { id: to }, sender_action: action }
+                  body: json
                 });
 
               case 4:
@@ -343,16 +345,62 @@ var Bot = function (_EventEmitter) {
                 result = _ref8.body.result;
                 return _context6.abrupt("return", result);
 
-              case 7:
+              case 9:
+                _context6.prev = 9;
+                _context6.t0 = _context6["catch"](1);
+                throw _context6.t0;
+
+              case 12:
               case "end":
                 return _context6.stop();
             }
           }
-        }, _callee6, this);
+        }, _callee6, this, [[1, 9]]);
       }));
 
-      function setTyping(_x12, _x13, _x14) {
+      function messengesApi(_x12, _x13) {
         return _ref7.apply(this, arguments);
+      }
+
+      return messengesApi;
+    }()
+  }, {
+    key: "setTyping",
+    value: function () {
+      var _ref9 = (0, _bluebird.coroutine)( /*#__PURE__*/_regenerator2.default.mark(function _callee7(to, state, pageId) {
+        var result;
+        return _regenerator2.default.wrap(function _callee7$(_context7) {
+          while (1) {
+            switch (_context7.prev = _context7.next) {
+              case 0:
+                _context7.prev = 0;
+                _context7.next = 3;
+                return this.messengesApi({
+                  recipient: {
+                    id: to
+                  },
+                  sender_action: state ? 'typing_on' : 'typing_off'
+                }, pageId);
+
+              case 3:
+                result = _context7.sent;
+                return _context7.abrupt("return", result);
+
+              case 7:
+                _context7.prev = 7;
+                _context7.t0 = _context7["catch"](0);
+                throw _context7.t0;
+
+              case 10:
+              case "end":
+                return _context7.stop();
+            }
+          }
+        }, _callee7, this, [[0, 7]]);
+      }));
+
+      function setTyping(_x15, _x16, _x17) {
+        return _ref9.apply(this, arguments);
       }
 
       return setTyping;
@@ -360,19 +408,19 @@ var Bot = function (_EventEmitter) {
   }, {
     key: "sendPrivateMessage",
     value: function () {
-      var _ref9 = (0, _bluebird.coroutine)( /*#__PURE__*/_regenerator2.default.mark(function _callee7(id, message, pageId) {
+      var _ref10 = (0, _bluebird.coroutine)( /*#__PURE__*/_regenerator2.default.mark(function _callee8(id, message, pageId) {
         var text, err;
-        return _regenerator2.default.wrap(function _callee7$(_context7) {
+        return _regenerator2.default.wrap(function _callee8$(_context8) {
           while (1) {
-            switch (_context7.prev = _context7.next) {
+            switch (_context8.prev = _context8.next) {
               case 0:
-                _context7.prev = 0;
+                _context8.prev = 0;
 
                 // support multiple tokens with backwards compatibility
                 if (pageId && this._tokens) {
                   this._token = this._tokens[pageId];
                 }
-                _context7.next = 4;
+                _context8.next = 4;
                 return (0, _fetch2.default)("https://graph.facebook.com/v6.0/" + id + "/private_replies", {
                   method: "post",
                   json: true,
@@ -381,92 +429,15 @@ var Bot = function (_EventEmitter) {
                 });
 
               case 4:
-                _context7.next = 15;
+                _context8.next = 15;
                 break;
 
               case 6:
-                _context7.prev = 6;
-                _context7.t0 = _context7["catch"](0);
-
-                if (!_context7.t0.text) {
-                  _context7.next = 14;
-                  break;
-                }
-
-                text = _context7.t0.text;
-
-                try {
-                  err = JSON.parse(_context7.t0.text).error;
-
-                  text = (err.type || "Unknown") + ": " + (err.message || "No message");
-                } catch (ee) {
-                  // ignore
-                }
-
-                throw Error(text);
-
-              case 14:
-                throw _context7.t0;
-
-              case 15:
-              case "end":
-                return _context7.stop();
-            }
-          }
-        }, _callee7, this, [[0, 6]]);
-      }));
-
-      function sendPrivateMessage(_x15, _x16, _x17) {
-        return _ref9.apply(this, arguments);
-      }
-
-      return sendPrivateMessage;
-    }()
-  }, {
-    key: "send",
-    value: function () {
-      var _ref10 = (0, _bluebird.coroutine)( /*#__PURE__*/_regenerator2.default.mark(function _callee8(to, message) {
-        var notification_type = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : "REGULAR";
-        var pageId = arguments[3];
-        var tag = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : "NON_PROMOTIONAL_SUBSCRIPTION";
-        var text, err;
-        return _regenerator2.default.wrap(function _callee8$(_context8) {
-          while (1) {
-            switch (_context8.prev = _context8.next) {
-              case 0:
-                // support multiple tokens with backwards compatibility
-                if (pageId && this._tokens) {
-                  this._token = this._tokens[pageId];
-                }
-
-                if (this._debug) {
-                  console.log({
-                    recipient: { id: to },
-                    message: message ? message.toJSON() : message,
-                    notification_type: notification_type,
-                    tag: tag
-                  });
-                }
-
-                _context8.prev = 2;
-                _context8.next = 5;
-                return (0, _fetch2.default)("https://graph.facebook.com/v6.0/me/messages", {
-                  method: "post",
-                  json: true,
-                  query: { access_token: this._token },
-                  body: { recipient: { id: to }, message: message, notification_type: notification_type, tag: tag }
-                });
-
-              case 5:
-                _context8.next = 16;
-                break;
-
-              case 7:
-                _context8.prev = 7;
-                _context8.t0 = _context8["catch"](2);
+                _context8.prev = 6;
+                _context8.t0 = _context8["catch"](0);
 
                 if (!_context8.t0.text) {
-                  _context8.next = 15;
+                  _context8.next = 14;
                   break;
                 }
 
@@ -482,19 +453,98 @@ var Bot = function (_EventEmitter) {
 
                 throw Error(text);
 
-              case 15:
+              case 14:
                 throw _context8.t0;
 
-              case 16:
+              case 15:
               case "end":
                 return _context8.stop();
             }
           }
-        }, _callee8, this, [[2, 7]]);
+        }, _callee8, this, [[0, 6]]);
       }));
 
-      function send(_x18, _x19) {
+      function sendPrivateMessage(_x18, _x19, _x20) {
         return _ref10.apply(this, arguments);
+      }
+
+      return sendPrivateMessage;
+    }()
+  }, {
+    key: "send",
+    value: function () {
+      var _ref11 = (0, _bluebird.coroutine)( /*#__PURE__*/_regenerator2.default.mark(function _callee9(to, message) {
+        var notification_type = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : "REGULAR";
+        var pageId = arguments[3];
+        var tag = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : "NON_PROMOTIONAL_SUBSCRIPTION";
+        var text, err;
+        return _regenerator2.default.wrap(function _callee9$(_context9) {
+          while (1) {
+            switch (_context9.prev = _context9.next) {
+              case 0:
+                // // support multiple tokens with backwards compatibility
+                // if (pageId && this._tokens) {
+                //   this._token = this._tokens[pageId];
+                // }
+
+                if (this._debug) {
+                  console.log({
+                    recipient: { id: to },
+                    message: message ? message.toJSON() : message,
+                    notification_type: notification_type,
+                    tag: tag
+                  });
+                }
+
+                _context9.prev = 1;
+                _context9.next = 4;
+                return this.messengesApi({
+                  recipient: {
+                    id: to
+                  },
+                  message: message,
+                  notification_type: notification_type,
+                  tag: tag
+                }, pageId);
+
+              case 4:
+                _context9.next = 15;
+                break;
+
+              case 6:
+                _context9.prev = 6;
+                _context9.t0 = _context9["catch"](1);
+
+                if (!_context9.t0.text) {
+                  _context9.next = 14;
+                  break;
+                }
+
+                text = _context9.t0.text;
+
+                try {
+                  err = JSON.parse(_context9.t0.text).error;
+
+                  text = (err.type || 'Unknown') + ": " + (err.message || 'No message');
+                } catch (ee) {
+                  // ignore
+                }
+
+                throw Error(text);
+
+              case 14:
+                throw _context9.t0;
+
+              case 15:
+              case "end":
+                return _context9.stop();
+            }
+          }
+        }, _callee9, this, [[1, 6]]);
+      }));
+
+      function send(_x21, _x22) {
+        return _ref11.apply(this, arguments);
       }
 
       return send;
@@ -502,16 +552,16 @@ var Bot = function (_EventEmitter) {
   }, {
     key: "fetchUser",
     value: function () {
-      var _ref11 = (0, _bluebird.coroutine)( /*#__PURE__*/_regenerator2.default.mark(function _callee9(id) {
+      var _ref12 = (0, _bluebird.coroutine)( /*#__PURE__*/_regenerator2.default.mark(function _callee10(id) {
         var fields = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "first_name,last_name,profile_pic";
         var cache = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
         var pageId = arguments[3];
 
-        var key, props, _ref12, body;
+        var key, props, _ref13, body;
 
-        return _regenerator2.default.wrap(function _callee9$(_context9) {
+        return _regenerator2.default.wrap(function _callee10$(_context10) {
           while (1) {
-            switch (_context9.prev = _context9.next) {
+            switch (_context10.prev = _context10.next) {
               case 0:
                 // support multiple tokens with backwards compatibility
                 if (pageId && this._tokens) {
@@ -522,25 +572,25 @@ var Bot = function (_EventEmitter) {
                 props = void 0;
 
                 if (!(cache && userCache[key])) {
-                  _context9.next = 8;
+                  _context10.next = 8;
                   break;
                 }
 
                 props = userCache[key];
                 props.fromCache = true;
-                _context9.next = 15;
+                _context10.next = 15;
                 break;
 
               case 8:
-                _context9.next = 10;
+                _context10.next = 10;
                 return (0, _fetch2.default)("https://graph.facebook.com/v6.0/" + id, {
                   query: { access_token: this._token, fields: fields },
                   json: true
                 });
 
               case 10:
-                _ref12 = _context9.sent;
-                body = _ref12.body;
+                _ref13 = _context10.sent;
+                body = _ref13.body;
 
 
                 props = body;
@@ -551,18 +601,18 @@ var Bot = function (_EventEmitter) {
                 }
 
               case 15:
-                return _context9.abrupt("return", props);
+                return _context10.abrupt("return", props);
 
               case 16:
               case "end":
-                return _context9.stop();
+                return _context10.stop();
             }
           }
-        }, _callee9, this);
+        }, _callee10, this);
       }));
 
-      function fetchUser(_x22) {
-        return _ref11.apply(this, arguments);
+      function fetchUser(_x25) {
+        return _ref12.apply(this, arguments);
       }
 
       return fetchUser;
@@ -570,11 +620,11 @@ var Bot = function (_EventEmitter) {
   }, {
     key: "handleStandby",
     value: function () {
-      var _ref13 = (0, _bluebird.coroutine)( /*#__PURE__*/_regenerator2.default.mark(function _callee10(input) {
+      var _ref14 = (0, _bluebird.coroutine)( /*#__PURE__*/_regenerator2.default.mark(function _callee11(input) {
         var body, message;
-        return _regenerator2.default.wrap(function _callee10$(_context10) {
+        return _regenerator2.default.wrap(function _callee11$(_context11) {
           while (1) {
-            switch (_context10.prev = _context10.next) {
+            switch (_context11.prev = _context11.next) {
               case 0:
                 body = JSON.parse((0, _stringify2.default)(input));
                 message = body.entry[0].standby[0];
@@ -587,14 +637,14 @@ var Bot = function (_EventEmitter) {
 
               case 3:
               case "end":
-                return _context10.stop();
+                return _context11.stop();
             }
           }
-        }, _callee10, this);
+        }, _callee11, this);
       }));
 
-      function handleStandby(_x25) {
-        return _ref13.apply(this, arguments);
+      function handleStandby(_x28) {
+        return _ref14.apply(this, arguments);
       }
 
       return handleStandby;
@@ -602,24 +652,24 @@ var Bot = function (_EventEmitter) {
   }, {
     key: "handleMessage",
     value: function () {
-      var _ref14 = (0, _bluebird.coroutine)( /*#__PURE__*/_regenerator2.default.mark(function _callee12(input) {
+      var _ref15 = (0, _bluebird.coroutine)( /*#__PURE__*/_regenerator2.default.mark(function _callee13(input) {
         var _this2 = this;
 
         var body, entry, message, postback, _postback, attachments, location;
 
-        return _regenerator2.default.wrap(function _callee12$(_context12) {
+        return _regenerator2.default.wrap(function _callee13$(_context13) {
           while (1) {
-            switch (_context12.prev = _context12.next) {
+            switch (_context13.prev = _context13.next) {
               case 0:
                 body = JSON.parse((0, _stringify2.default)(input));
                 entry = body.entry[0];
 
                 if (!(body.object === "page" && Array.isArray(entry.changes) && entry.changes.length > 0)) {
-                  _context12.next = 4;
+                  _context13.next = 4;
                   break;
                 }
 
-                return _context12.abrupt("return", this.emit("page", entry.changes, entry.id, entry.time));
+                return _context13.abrupt("return", this.emit("page", entry.changes, entry.id, entry.time));
 
               case 4:
                 message = body.entry[0].messaging[0];
@@ -631,38 +681,38 @@ var Bot = function (_EventEmitter) {
                 message.raw = input;
 
                 message.sender.fetch = function () {
-                  var _ref15 = (0, _bluebird.coroutine)( /*#__PURE__*/_regenerator2.default.mark(function _callee11(fields, cache) {
+                  var _ref16 = (0, _bluebird.coroutine)( /*#__PURE__*/_regenerator2.default.mark(function _callee12(fields, cache) {
                     var props;
-                    return _regenerator2.default.wrap(function _callee11$(_context11) {
+                    return _regenerator2.default.wrap(function _callee12$(_context12) {
                       while (1) {
-                        switch (_context11.prev = _context11.next) {
+                        switch (_context12.prev = _context12.next) {
                           case 0:
-                            _context11.next = 2;
+                            _context12.next = 2;
                             return _this2.fetchUser(message.sender.id, fields, cache, message.recipient.id);
 
                           case 2:
-                            props = _context11.sent;
+                            props = _context12.sent;
 
                             (0, _assign2.default)(message.sender, props);
-                            return _context11.abrupt("return", message.sender);
+                            return _context12.abrupt("return", message.sender);
 
                           case 5:
                           case "end":
-                            return _context11.stop();
+                            return _context12.stop();
                         }
                       }
-                    }, _callee11, _this2);
+                    }, _callee12, _this2);
                   }));
 
-                  return function (_x27, _x28) {
-                    return _ref15.apply(this, arguments);
+                  return function (_x30, _x31) {
+                    return _ref16.apply(this, arguments);
                   };
                 }();
 
                 // POSTBACK
 
                 if (!message.postback) {
-                  _context12.next = 15;
+                  _context13.next = 15;
                   break;
                 }
 
@@ -690,11 +740,11 @@ var Bot = function (_EventEmitter) {
                   this.emit("invalid-postback", message, message.postback);
                 }
 
-                return _context12.abrupt("return");
+                return _context13.abrupt("return");
 
               case 15:
                 if (!message.delivery) {
-                  _context12.next = 21;
+                  _context13.next = 21;
                   break;
                 }
 
@@ -704,22 +754,22 @@ var Bot = function (_EventEmitter) {
                 delete message.delivery;
 
                 this.emit("delivery", message, message.delivered);
-                return _context12.abrupt("return");
+                return _context13.abrupt("return");
 
               case 21:
                 if (!message.optin) {
-                  _context12.next = 26;
+                  _context13.next = 26;
                   break;
                 }
 
                 message.param = message.optin.ref || true;
                 message.optin = message.param;
                 this.emit("optin", message, message.optin);
-                return _context12.abrupt("return");
+                return _context13.abrupt("return");
 
               case 26:
                 if (!(message.quick_reply && !message.is_echo)) {
-                  _context12.next = 32;
+                  _context13.next = 32;
                   break;
                 }
 
@@ -748,7 +798,7 @@ var Bot = function (_EventEmitter) {
                   this.emit("invalid-postback", message, message.postback);
                 }
 
-                return _context12.abrupt("return");
+                return _context13.abrupt("return");
 
               case 32:
                 attachments = _lodash2.default.groupBy(message.attachments, "type");
@@ -793,14 +843,14 @@ var Bot = function (_EventEmitter) {
 
               case 41:
               case "end":
-                return _context12.stop();
+                return _context13.stop();
             }
           }
-        }, _callee12, this);
+        }, _callee13, this);
       }));
 
-      function handleMessage(_x26) {
-        return _ref14.apply(this, arguments);
+      function handleMessage(_x29) {
+        return _ref15.apply(this, arguments);
       }
 
       return handleMessage;
