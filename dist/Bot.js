@@ -149,7 +149,10 @@ var Bot = function (_EventEmitter) {
                   this._token = this._tokens[pageId];
                 }
 
-                _context2.next = 3;
+                console.warn('tokens', this._tokens);
+                console.warn('token', this._token);
+
+                _context2.next = 5;
                 return (0, _fetch2.default)("https://graph.facebook.com/v6.0/me/messenger_profile", {
                   method: "post",
                   json: true,
@@ -157,12 +160,12 @@ var Bot = function (_EventEmitter) {
                   body: json
                 });
 
-              case 3:
+              case 5:
                 _ref3 = _context2.sent;
                 result = _ref3.body.result;
                 return _context2.abrupt("return", result);
 
-              case 6:
+              case 8:
               case "end":
                 return _context2.stop();
             }
