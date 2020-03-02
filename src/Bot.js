@@ -33,21 +33,26 @@ class Bot extends EventEmitter {
     this._verification = verification;
   }
 
-  async updateProfile(json, pageId) {
+  async updateProfile(json, pageId, method = 'post') {
+    // support multiple tokens with backwards compatibility
     if (pageId && this._tokens) {
       this._token = this._tokens[pageId];
     }
 
-    const {
-      body: { result }
-    } = await fetch("https://graph.facebook.com/v6.0/me/messenger_profile", {
-      method: "post",
-      json: true,
-      query: { access_token: this._token },
-      body: json
-    });
+    try {
+      const {
+        body: {result}
+      } = await fetch('https://graph.facebook.com/v6.0/me/messenger_profile', {
+        method,
+        json: true,
+        query: {access_token: this._token},
+        body: json
+      });
 
-    return result;
+      return result;
+    } catch (err) {
+      throw err;
+    }
   }
 
   async setGreeting(text, pageId) {
@@ -56,108 +61,147 @@ class Bot extends EventEmitter {
     //   this._token = this._tokens[pageId];
     // }
 
+    // if (pageId && this._tokens) {
+    //   this._token = this._tokens[pageId];
+    // }
+
     // const {
     //   body: { result }
-    // } = await fetch("https://graph.facebook.com/v6.0/me/thread_settings", {
+    // } = await fetch("https://graph.facebook.com/v2.6/me/thread_settings", {
     //   method: "post",
     //   json: true,
     //   query: { access_token: this._token },
     //   body: { setting_type: "greeting", greeting: { text } }
     // });
 
-    const result = await this.updateProfile({
-      greeting: [{
-        locale: 'default',
-        text
-      }]
-    }, pageId);
+    try {
+      const result = await this.updateProfile(text ? {
+        greeting: [{
+          locale: 'default',
+          text
+        }]
+      } : {
+        fields: [
+          'greeting'
+        ]
+      }, pageId, text ? 'post' : 'delete');
 
-    return result;
+      return result;
+    } catch (err) {
+      throw err;
+    }
   }
 
   async setGetStarted(input, pageId) {
-    // support multiple tokens with backwards compatibility
-    if (pageId && this._tokens) {
-      this._token = this._tokens[pageId];
+    // // support multiple tokens with backwards compatibility
+    // if (pageId && this._tokens) {
+    //   this._token = this._tokens[pageId];
+    // }
+
+    // if (!input) {
+    //   const {
+    //     body: { result }
+    //   } = await fetch("https://graph.facebook.com/v2.6/me/thread_settings", {
+    //     method: "delete",
+    //     json: true,
+    //     query: { access_token: this._token },
+    //     body: {
+    //       setting_type: "call_to_actions",
+    //       thread_state: "new_thread"
+    //     }
+    //   });
+
+    //   return result;
+    // }
+
+    // const { data, event } = input;
+    // const {
+    //   body: { result }
+    // } = await fetch("https://graph.facebook.com/v2.6/me/thread_settings", {
+    //   method: "post",
+    //   json: true,
+    //   query: { access_token: this._token },
+    //   body: {
+    //     setting_type: "call_to_actions",
+    //     thread_state: "new_thread",
+    //     call_to_actions: [{ payload: JSON.stringify({ data, event }) }]
+    //   }
+    // });
+
+    // return result;
+
+    try {
+      const result = await this.updateProfile(input ? {
+        get_started: {
+          payload: input.data.action
+        }
+      } : {
+        fields: [
+          'get_started'
+        ]
+      }, pageId, input ? 'post' : 'delete');
+
+      return result;
+    } catch (err) {
+      throw err;
     }
 
-    const result = await this.updateProfile({
-      get_started: {
-        payload: input.data || 'GET_STARTED'
-      }
-    }, pageId);
-
-    return result;
-
-  //   if (!input) {
-  //     const {
-  //       body: { result }
-  //     } = await fetch("https://graph.facebook.com/v6.0/me/thread_settings", {
-  //       method: "delete",
-  //       json: true,
-  //       query: { access_token: this._token },
-  //       body: {
-  //         setting_type: "call_to_actions",
-  //         thread_state: "new_thread"
-  //       }
-  //     });
-
-  //     return result;
-  //   }
-
-  //   const { data, event } = input;
-  //   const {
-  //     body: { result }
-  //   } = await fetch("https://graph.facebook.com/v6.0/me/thread_settings", {
-  //     method: "post",
-  //     json: true,
-  //     query: { access_token: this._token },
-  //     body: {
-  //       setting_type: "call_to_actions",
-  //       thread_state: "new_thread",
-  //       call_to_actions: [{ payload: JSON.stringify({ data, event }) }]
-  //     }
-  //   });
-
-  //   return result;
   }
 
   async setPersistentMenu(input, pageId) {
-    // support multiple tokens with backwards compatibility
-    if (pageId && this._tokens) {
-      this._token = this._tokens[pageId];
-    }
+    // // support multiple tokens with backwards compatibility
+    // if (pageId && this._tokens) {
+    //   this._token = this._tokens[pageId];
+    // }
 
-    if (!input) {
-      const {
-        body: { result }
-      } = await fetch("https://graph.facebook.com/v6.0/me/thread_settings", {
-        method: "delete",
-        json: true,
-        query: { access_token: this._token },
-        body: {
-          setting_type: "call_to_actions",
-          thread_state: "existing_thread"
-        }
-      });
+    // if (!input) {
+    //   const {
+    //     body: { result }
+    //   } = await fetch("https://graph.facebook.com/v2.6/me/thread_settings", {
+    //     method: "delete",
+    //     json: true,
+    //     query: { access_token: this._token },
+    //     body: {
+    //       setting_type: "call_to_actions",
+    //       thread_state: "existing_thread"
+    //     }
+    //   });
+
+    //   return result;
+    // }
+
+    // const {
+    //   body: { result }
+    // } = await fetch("https://graph.facebook.com/v2.6/me/thread_settings", {
+    //   method: "post",
+    //   json: true,
+    //   query: { access_token: this._token },
+    //   body: {
+    //     setting_type: "call_to_actions",
+    //     thread_state: "existing_thread",
+    //     call_to_actions: input
+    //   }
+    // });
+
+    // return result;
+
+    try {
+      const result = await this.updateProfile(input ? {
+        persistent_menu: [{
+          locale: 'default',
+          composer_input_disabled: false,
+          call_to_actions: input
+        }]
+      } : {
+        fields: [
+          'persistent_menu'
+        ]
+      }, pageId, input ? 'post' : 'delete');
 
       return result;
+    } catch (err) {
+      throw err;
     }
-
-    const {
-      body: { result }
-    } = await fetch("https://graph.facebook.com/v6.0/me/thread_settings", {
-      method: "post",
-      json: true,
-      query: { access_token: this._token },
-      body: {
-        setting_type: "call_to_actions",
-        thread_state: "existing_thread",
-        call_to_actions: input
-      }
-    });
-
-    return result;
   }
 
   async setTyping(to, state, pageId) {

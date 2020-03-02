@@ -139,35 +139,44 @@ var Bot = function (_EventEmitter) {
     key: "updateProfile",
     value: function () {
       var _ref2 = (0, _bluebird.coroutine)( /*#__PURE__*/_regenerator2.default.mark(function _callee2(json, pageId) {
+        var method = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'post';
+
         var _ref3, result;
 
         return _regenerator2.default.wrap(function _callee2$(_context2) {
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
+                // support multiple tokens with backwards compatibility
                 if (pageId && this._tokens) {
                   this._token = this._tokens[pageId];
                 }
 
-                _context2.next = 3;
-                return (0, _fetch2.default)("https://graph.facebook.com/v6.0/me/messenger_profile", {
-                  method: "post",
+                _context2.prev = 1;
+                _context2.next = 4;
+                return (0, _fetch2.default)('https://graph.facebook.com/v6.0/me/messenger_profile', {
+                  method: method,
                   json: true,
                   query: { access_token: this._token },
                   body: json
                 });
 
-              case 3:
+              case 4:
                 _ref3 = _context2.sent;
                 result = _ref3.body.result;
                 return _context2.abrupt("return", result);
 
-              case 6:
+              case 9:
+                _context2.prev = 9;
+                _context2.t0 = _context2["catch"](1);
+                throw _context2.t0;
+
+              case 12:
               case "end":
                 return _context2.stop();
             }
           }
-        }, _callee2, this);
+        }, _callee2, this, [[1, 9]]);
       }));
 
       function updateProfile(_x3, _x4) {
@@ -185,27 +194,35 @@ var Bot = function (_EventEmitter) {
           while (1) {
             switch (_context3.prev = _context3.next) {
               case 0:
-                _context3.next = 2;
-                return this.updateProfile({
+                _context3.prev = 0;
+                _context3.next = 3;
+                return this.updateProfile(text ? {
                   greeting: [{
                     locale: 'default',
                     text: text
                   }]
-                }, pageId);
+                } : {
+                  fields: ['greeting']
+                }, pageId, text ? 'post' : 'delete');
 
-              case 2:
+              case 3:
                 result = _context3.sent;
                 return _context3.abrupt("return", result);
 
-              case 4:
+              case 7:
+                _context3.prev = 7;
+                _context3.t0 = _context3["catch"](0);
+                throw _context3.t0;
+
+              case 10:
               case "end":
                 return _context3.stop();
             }
           }
-        }, _callee3, this);
+        }, _callee3, this, [[0, 7]]);
       }));
 
-      function setGreeting(_x5, _x6) {
+      function setGreeting(_x6, _x7) {
         return _ref4.apply(this, arguments);
       }
 
@@ -220,31 +237,34 @@ var Bot = function (_EventEmitter) {
           while (1) {
             switch (_context4.prev = _context4.next) {
               case 0:
-                // support multiple tokens with backwards compatibility
-                if (pageId && this._tokens) {
-                  this._token = this._tokens[pageId];
-                }
-
+                _context4.prev = 0;
                 _context4.next = 3;
-                return this.updateProfile({
+                return this.updateProfile(input ? {
                   get_started: {
-                    payload: input.data || 'GET_STARTED'
+                    payload: input.data.action
                   }
-                }, pageId);
+                } : {
+                  fields: ['get_started']
+                }, pageId, input ? 'post' : 'delete');
 
               case 3:
                 result = _context4.sent;
                 return _context4.abrupt("return", result);
 
-              case 5:
+              case 7:
+                _context4.prev = 7;
+                _context4.t0 = _context4["catch"](0);
+                throw _context4.t0;
+
+              case 10:
               case "end":
                 return _context4.stop();
             }
           }
-        }, _callee4, this);
+        }, _callee4, this, [[0, 7]]);
       }));
 
-      function setGetStarted(_x7, _x8) {
+      function setGetStarted(_x8, _x9) {
         return _ref5.apply(this, arguments);
       }
 
@@ -254,65 +274,41 @@ var Bot = function (_EventEmitter) {
     key: "setPersistentMenu",
     value: function () {
       var _ref6 = (0, _bluebird.coroutine)( /*#__PURE__*/_regenerator2.default.mark(function _callee5(input, pageId) {
-        var _ref7, _result, _ref8, result;
-
+        var result;
         return _regenerator2.default.wrap(function _callee5$(_context5) {
           while (1) {
             switch (_context5.prev = _context5.next) {
               case 0:
-                // support multiple tokens with backwards compatibility
-                if (pageId && this._tokens) {
-                  this._token = this._tokens[pageId];
-                }
-
-                if (input) {
-                  _context5.next = 7;
-                  break;
-                }
-
-                _context5.next = 4;
-                return (0, _fetch2.default)("https://graph.facebook.com/v6.0/me/thread_settings", {
-                  method: "delete",
-                  json: true,
-                  query: { access_token: this._token },
-                  body: {
-                    setting_type: "call_to_actions",
-                    thread_state: "existing_thread"
-                  }
-                });
-
-              case 4:
-                _ref7 = _context5.sent;
-                _result = _ref7.body.result;
-                return _context5.abrupt("return", _result);
-
-              case 7:
-                _context5.next = 9;
-                return (0, _fetch2.default)("https://graph.facebook.com/v6.0/me/thread_settings", {
-                  method: "post",
-                  json: true,
-                  query: { access_token: this._token },
-                  body: {
-                    setting_type: "call_to_actions",
-                    thread_state: "existing_thread",
+                _context5.prev = 0;
+                _context5.next = 3;
+                return this.updateProfile(input ? {
+                  persistent_menu: [{
+                    locale: 'default',
+                    composer_input_disabled: false,
                     call_to_actions: input
-                  }
-                });
+                  }]
+                } : {
+                  fields: ['persistent_menu']
+                }, pageId, input ? 'post' : 'delete');
 
-              case 9:
-                _ref8 = _context5.sent;
-                result = _ref8.body.result;
+              case 3:
+                result = _context5.sent;
                 return _context5.abrupt("return", result);
 
-              case 12:
+              case 7:
+                _context5.prev = 7;
+                _context5.t0 = _context5["catch"](0);
+                throw _context5.t0;
+
+              case 10:
               case "end":
                 return _context5.stop();
             }
           }
-        }, _callee5, this);
+        }, _callee5, this, [[0, 7]]);
       }));
 
-      function setPersistentMenu(_x9, _x10) {
+      function setPersistentMenu(_x10, _x11) {
         return _ref6.apply(this, arguments);
       }
 
@@ -321,8 +317,8 @@ var Bot = function (_EventEmitter) {
   }, {
     key: "setTyping",
     value: function () {
-      var _ref9 = (0, _bluebird.coroutine)( /*#__PURE__*/_regenerator2.default.mark(function _callee6(to, state, pageId) {
-        var action, _ref10, result;
+      var _ref7 = (0, _bluebird.coroutine)( /*#__PURE__*/_regenerator2.default.mark(function _callee6(to, state, pageId) {
+        var action, _ref8, result;
 
         return _regenerator2.default.wrap(function _callee6$(_context6) {
           while (1) {
@@ -343,8 +339,8 @@ var Bot = function (_EventEmitter) {
                 });
 
               case 4:
-                _ref10 = _context6.sent;
-                result = _ref10.body.result;
+                _ref8 = _context6.sent;
+                result = _ref8.body.result;
                 return _context6.abrupt("return", result);
 
               case 7:
@@ -355,8 +351,8 @@ var Bot = function (_EventEmitter) {
         }, _callee6, this);
       }));
 
-      function setTyping(_x11, _x12, _x13) {
-        return _ref9.apply(this, arguments);
+      function setTyping(_x12, _x13, _x14) {
+        return _ref7.apply(this, arguments);
       }
 
       return setTyping;
@@ -364,7 +360,7 @@ var Bot = function (_EventEmitter) {
   }, {
     key: "sendPrivateMessage",
     value: function () {
-      var _ref11 = (0, _bluebird.coroutine)( /*#__PURE__*/_regenerator2.default.mark(function _callee7(id, message, pageId) {
+      var _ref9 = (0, _bluebird.coroutine)( /*#__PURE__*/_regenerator2.default.mark(function _callee7(id, message, pageId) {
         var text, err;
         return _regenerator2.default.wrap(function _callee7$(_context7) {
           while (1) {
@@ -420,8 +416,8 @@ var Bot = function (_EventEmitter) {
         }, _callee7, this, [[0, 6]]);
       }));
 
-      function sendPrivateMessage(_x14, _x15, _x16) {
-        return _ref11.apply(this, arguments);
+      function sendPrivateMessage(_x15, _x16, _x17) {
+        return _ref9.apply(this, arguments);
       }
 
       return sendPrivateMessage;
@@ -429,7 +425,7 @@ var Bot = function (_EventEmitter) {
   }, {
     key: "send",
     value: function () {
-      var _ref12 = (0, _bluebird.coroutine)( /*#__PURE__*/_regenerator2.default.mark(function _callee8(to, message) {
+      var _ref10 = (0, _bluebird.coroutine)( /*#__PURE__*/_regenerator2.default.mark(function _callee8(to, message) {
         var notification_type = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : "REGULAR";
         var pageId = arguments[3];
         var tag = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : "NON_PROMOTIONAL_SUBSCRIPTION";
@@ -497,8 +493,8 @@ var Bot = function (_EventEmitter) {
         }, _callee8, this, [[2, 7]]);
       }));
 
-      function send(_x17, _x18) {
-        return _ref12.apply(this, arguments);
+      function send(_x18, _x19) {
+        return _ref10.apply(this, arguments);
       }
 
       return send;
@@ -506,12 +502,12 @@ var Bot = function (_EventEmitter) {
   }, {
     key: "fetchUser",
     value: function () {
-      var _ref13 = (0, _bluebird.coroutine)( /*#__PURE__*/_regenerator2.default.mark(function _callee9(id) {
+      var _ref11 = (0, _bluebird.coroutine)( /*#__PURE__*/_regenerator2.default.mark(function _callee9(id) {
         var fields = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "first_name,last_name,profile_pic";
         var cache = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
         var pageId = arguments[3];
 
-        var key, props, _ref14, body;
+        var key, props, _ref12, body;
 
         return _regenerator2.default.wrap(function _callee9$(_context9) {
           while (1) {
@@ -543,8 +539,8 @@ var Bot = function (_EventEmitter) {
                 });
 
               case 10:
-                _ref14 = _context9.sent;
-                body = _ref14.body;
+                _ref12 = _context9.sent;
+                body = _ref12.body;
 
 
                 props = body;
@@ -565,8 +561,8 @@ var Bot = function (_EventEmitter) {
         }, _callee9, this);
       }));
 
-      function fetchUser(_x21) {
-        return _ref13.apply(this, arguments);
+      function fetchUser(_x22) {
+        return _ref11.apply(this, arguments);
       }
 
       return fetchUser;
@@ -574,7 +570,7 @@ var Bot = function (_EventEmitter) {
   }, {
     key: "handleStandby",
     value: function () {
-      var _ref15 = (0, _bluebird.coroutine)( /*#__PURE__*/_regenerator2.default.mark(function _callee10(input) {
+      var _ref13 = (0, _bluebird.coroutine)( /*#__PURE__*/_regenerator2.default.mark(function _callee10(input) {
         var body, message;
         return _regenerator2.default.wrap(function _callee10$(_context10) {
           while (1) {
@@ -597,8 +593,8 @@ var Bot = function (_EventEmitter) {
         }, _callee10, this);
       }));
 
-      function handleStandby(_x24) {
-        return _ref15.apply(this, arguments);
+      function handleStandby(_x25) {
+        return _ref13.apply(this, arguments);
       }
 
       return handleStandby;
@@ -606,7 +602,7 @@ var Bot = function (_EventEmitter) {
   }, {
     key: "handleMessage",
     value: function () {
-      var _ref16 = (0, _bluebird.coroutine)( /*#__PURE__*/_regenerator2.default.mark(function _callee12(input) {
+      var _ref14 = (0, _bluebird.coroutine)( /*#__PURE__*/_regenerator2.default.mark(function _callee12(input) {
         var _this2 = this;
 
         var body, entry, message, postback, _postback, attachments, location;
@@ -635,7 +631,7 @@ var Bot = function (_EventEmitter) {
                 message.raw = input;
 
                 message.sender.fetch = function () {
-                  var _ref17 = (0, _bluebird.coroutine)( /*#__PURE__*/_regenerator2.default.mark(function _callee11(fields, cache) {
+                  var _ref15 = (0, _bluebird.coroutine)( /*#__PURE__*/_regenerator2.default.mark(function _callee11(fields, cache) {
                     var props;
                     return _regenerator2.default.wrap(function _callee11$(_context11) {
                       while (1) {
@@ -658,8 +654,8 @@ var Bot = function (_EventEmitter) {
                     }, _callee11, _this2);
                   }));
 
-                  return function (_x26, _x27) {
-                    return _ref17.apply(this, arguments);
+                  return function (_x27, _x28) {
+                    return _ref15.apply(this, arguments);
                   };
                 }();
 
@@ -803,8 +799,8 @@ var Bot = function (_EventEmitter) {
         }, _callee12, this);
       }));
 
-      function handleMessage(_x25) {
-        return _ref16.apply(this, arguments);
+      function handleMessage(_x26) {
+        return _ref14.apply(this, arguments);
       }
 
       return handleMessage;
