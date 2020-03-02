@@ -206,7 +206,7 @@ class Bot extends EventEmitter {
     }
   }
 
-  async messengesApi(json, pageId, method = 'post') {
+  async messagesApi(json, pageId, method = 'post') {
     // support multiple tokens with backwards compatibility
     if (pageId && this._tokens) {
       this._token = this._tokens[pageId];
@@ -215,7 +215,7 @@ class Bot extends EventEmitter {
     try {
       const {
         body: {result}
-      } = await fetch('https://graph.facebook.com/v6.0/me/messenges', {
+      } = await fetch('https://graph.facebook.com/v6.0/me/messages', {
         method,
         json: true,
         query: {access_token: this._token},
@@ -248,7 +248,7 @@ class Bot extends EventEmitter {
     // return result;
 
     try {
-      const result = await this.messengesApi({
+      const result = await this.messagesApi({
         recipient: {
           id: to
         },
@@ -319,7 +319,7 @@ class Bot extends EventEmitter {
       //   body: { recipient: { id: to }, message, notification_type, tag }
       // });
 
-      await this.messengesApi({
+      await this.messagesApi({
         recipient: {
           id: to
         },

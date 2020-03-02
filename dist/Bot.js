@@ -315,7 +315,7 @@ var Bot = function (_EventEmitter) {
       return setPersistentMenu;
     }()
   }, {
-    key: "messengesApi",
+    key: "messagesApi",
     value: function () {
       var _ref7 = (0, _bluebird.coroutine)( /*#__PURE__*/_regenerator2.default.mark(function _callee6(json, pageId) {
         var method = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'post';
@@ -333,7 +333,7 @@ var Bot = function (_EventEmitter) {
 
                 _context6.prev = 1;
                 _context6.next = 4;
-                return (0, _fetch2.default)('https://graph.facebook.com/v6.0/me/messenges', {
+                return (0, _fetch2.default)('https://graph.facebook.com/v6.0/me/messages', {
                   method: method,
                   json: true,
                   query: { access_token: this._token },
@@ -358,11 +358,11 @@ var Bot = function (_EventEmitter) {
         }, _callee6, this, [[1, 9]]);
       }));
 
-      function messengesApi(_x12, _x13) {
+      function messagesApi(_x12, _x13) {
         return _ref7.apply(this, arguments);
       }
 
-      return messengesApi;
+      return messagesApi;
     }()
   }, {
     key: "setTyping",
@@ -375,7 +375,7 @@ var Bot = function (_EventEmitter) {
               case 0:
                 _context7.prev = 0;
                 _context7.next = 3;
-                return this.messengesApi({
+                return this.messagesApi({
                   recipient: {
                     id: to
                   },
@@ -498,7 +498,7 @@ var Bot = function (_EventEmitter) {
 
                 _context9.prev = 1;
                 _context9.next = 4;
-                return this.messengesApi({
+                return this.messagesApi({
                   recipient: {
                     id: to
                   },
