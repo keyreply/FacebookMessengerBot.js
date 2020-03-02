@@ -38,9 +38,6 @@ class Bot extends EventEmitter {
       this._token = this._tokens[pageId];
     }
 
-    console.warn('tokens', this._tokens)
-    console.warn('token', this._token)
-
     const {
       body: { result }
     } = await fetch("https://graph.facebook.com/v6.0/me/messenger_profile", {
