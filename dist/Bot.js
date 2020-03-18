@@ -482,11 +482,6 @@ var Bot = function (_EventEmitter) {
           while (1) {
             switch (_context9.prev = _context9.next) {
               case 0:
-                // // support multiple tokens with backwards compatibility
-                // if (pageId && this._tokens) {
-                //   this._token = this._tokens[pageId];
-                // }
-
                 if (this._debug) {
                   console.log({
                     recipient: { id: to },

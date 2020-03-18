@@ -56,26 +56,6 @@ class Bot extends EventEmitter {
   }
 
   async setGreeting(text, pageId) {
-    // // support multiple tokens with backwards compatibility
-    // if (pageId && this._tokens) {
-    //   this._token = this._tokens[pageId];
-    // }
-
-    // if (pageId && this._tokens) {
-    //   this._token = this._tokens[pageId];
-    // }
-
-    // const {
-    //   body: { result }
-    // } = await fetch("https://graph.facebook.com/v2.6/me/thread_settings", {
-    //   method: "post",
-    //   json: true,
-    //   query: { access_token: this._token },
-    //   body: { setting_type: "greeting", greeting: { text } }
-    // });
-
-    // return result;
-
     try {
       const result = await this.updateProfile(text ? {
         greeting: [{
@@ -95,43 +75,6 @@ class Bot extends EventEmitter {
   }
 
   async setGetStarted(input, pageId) {
-    // // support multiple tokens with backwards compatibility
-    // if (pageId && this._tokens) {
-    //   this._token = this._tokens[pageId];
-    // }
-
-    // if (!input) {
-    //   const {
-    //     body: { result }
-    //   } = await fetch("https://graph.facebook.com/v2.6/me/thread_settings", {
-    //     method: "delete",
-    //     json: true,
-    //     query: { access_token: this._token },
-    //     body: {
-    //       setting_type: "call_to_actions",
-    //       thread_state: "new_thread"
-    //     }
-    //   });
-
-    //   return result;
-    // }
-
-    // const { data, event } = input;
-    // const {
-    //   body: { result }
-    // } = await fetch("https://graph.facebook.com/v2.6/me/thread_settings", {
-    //   method: "post",
-    //   json: true,
-    //   query: { access_token: this._token },
-    //   body: {
-    //     setting_type: "call_to_actions",
-    //     thread_state: "new_thread",
-    //     call_to_actions: [{ payload: JSON.stringify({ data, event }) }]
-    //   }
-    // });
-
-    // return result;
-
     try {
       const result = await this.updateProfile(input ? {
         get_started: {
@@ -147,46 +90,9 @@ class Bot extends EventEmitter {
     } catch (err) {
       throw err;
     }
-
   }
 
   async setPersistentMenu(input, pageId) {
-    // // support multiple tokens with backwards compatibility
-    // if (pageId && this._tokens) {
-    //   this._token = this._tokens[pageId];
-    // }
-
-    // if (!input) {
-    //   const {
-    //     body: { result }
-    //   } = await fetch("https://graph.facebook.com/v2.6/me/thread_settings", {
-    //     method: "delete",
-    //     json: true,
-    //     query: { access_token: this._token },
-    //     body: {
-    //       setting_type: "call_to_actions",
-    //       thread_state: "existing_thread"
-    //     }
-    //   });
-
-    //   return result;
-    // }
-
-    // const {
-    //   body: { result }
-    // } = await fetch("https://graph.facebook.com/v2.6/me/thread_settings", {
-    //   method: "post",
-    //   json: true,
-    //   query: { access_token: this._token },
-    //   body: {
-    //     setting_type: "call_to_actions",
-    //     thread_state: "existing_thread",
-    //     call_to_actions: input
-    //   }
-    // });
-
-    // return result;
-
     try {
       const result = await this.updateProfile(input ? {
         persistent_menu: [{
@@ -229,24 +135,6 @@ class Bot extends EventEmitter {
   }
 
   async setTyping(to, state, pageId) {
-    // // support multiple tokens with backwards compatibility
-    // if (pageId && this._tokens) {
-    //   this._token = this._tokens[pageId];
-    // }
-
-    // const action = state ? "typing_on" : "typing_off";
-
-    // const {
-    //   body: { result }
-    // } = await fetch("https://graph.facebook.com/v6.0/me/messages", {
-    //   method: "post",
-    //   json: true,
-    //   query: { access_token: this._token },
-    //   body: { recipient: { id: to }, sender_action: action }
-    // });
-
-    // return result;
-
     try {
       const result = await this.messagesApi({
         recipient: {
@@ -297,11 +185,6 @@ class Bot extends EventEmitter {
     pageId,
     tag = "NON_PROMOTIONAL_SUBSCRIPTION"
   ) {
-    // // support multiple tokens with backwards compatibility
-    // if (pageId && this._tokens) {
-    //   this._token = this._tokens[pageId];
-    // }
-
     if (this._debug) {
       console.log({
         recipient: { id: to },
@@ -312,13 +195,6 @@ class Bot extends EventEmitter {
     }
 
     try {
-      // await fetch("https://graph.facebook.com/v6.0/me/messages", {
-      //   method: "post",
-      //   json: true,
-      //   query: { access_token: this._token },
-      //   body: { recipient: { id: to }, message, notification_type, tag }
-      // });
-
       await this.messagesApi({
         recipient: {
           id: to
