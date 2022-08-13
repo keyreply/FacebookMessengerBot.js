@@ -253,6 +253,15 @@ var Elements = function () {
                 }
               }
             };
+          } else if (_e.url) {
+            return {
+              attachment: {
+                type: "file",
+                payload: {
+                  url: _e.url
+                }
+              }
+            };
           }
         }
 

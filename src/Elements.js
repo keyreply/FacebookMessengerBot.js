@@ -187,6 +187,15 @@ class Elements {
               }
             }
           };
+        } else if (e.url) {
+          return {
+            attachment: {
+              type: "file",
+              payload: {
+                url: e.url
+              }
+            }
+          };
         }
       }
 
