@@ -9,13 +9,13 @@ var _extends2 = require("babel-runtime/helpers/extends");
 
 var _extends3 = _interopRequireDefault(_extends2);
 
-var _assign = require("babel-runtime/core-js/object/assign");
-
-var _assign2 = _interopRequireDefault(_assign);
-
 var _stringify = require("babel-runtime/core-js/json/stringify");
 
 var _stringify2 = _interopRequireDefault(_stringify);
+
+var _assign = require("babel-runtime/core-js/object/assign");
+
+var _assign2 = _interopRequireDefault(_assign);
 
 var _typeof2 = require("babel-runtime/helpers/typeof");
 
@@ -154,7 +154,7 @@ var Bot = function (_EventEmitter) {
 
                 _context2.prev = 1;
                 _context2.next = 4;
-                return (0, _fetch2.default)('https://graph.facebook.com/v6.0/me/messenger_profile', {
+                return (0, _fetch2.default)('https://graph.facebook.com/v8.0/me/messenger_profile', {
                   method: method,
                   json: true,
                   query: { access_token: this._token },
@@ -333,7 +333,7 @@ var Bot = function (_EventEmitter) {
 
                 _context6.prev = 1;
                 _context6.next = 4;
-                return (0, _fetch2.default)('https://graph.facebook.com/v6.0/me/messages', {
+                return (0, _fetch2.default)('https://graph.facebook.com/v8.0/me/messages', {
                   method: method,
                   json: true,
                   query: { access_token: this._token },
@@ -408,60 +408,61 @@ var Bot = function (_EventEmitter) {
   }, {
     key: "sendPrivateMessage",
     value: function () {
-      var _ref10 = (0, _bluebird.coroutine)( /*#__PURE__*/_regenerator2.default.mark(function _callee8(id, message, pageId) {
-        var text, err;
+      var _ref10 = (0, _bluebird.coroutine)( /*#__PURE__*/_regenerator2.default.mark(function _callee8(post_id, comment_id, message) {
+        var recipient, result;
         return _regenerator2.default.wrap(function _callee8$(_context8) {
           while (1) {
             switch (_context8.prev = _context8.next) {
               case 0:
-                _context8.prev = 0;
+                // https://developers.facebook.com/docs/messenger-platform/discovery/private-replies
 
-                // support multiple tokens with backwards compatibility
-                if (pageId && this._tokens) {
-                  this._token = this._tokens[pageId];
-                }
-                _context8.next = 4;
-                return (0, _fetch2.default)("https://graph.facebook.com/v6.0/" + id + "/private_replies", {
-                  method: "post",
-                  json: true,
-                  query: { access_token: this._token },
-                  body: { id: id, message: message }
-                });
+                recipient = {};
 
-              case 4:
-                _context8.next = 15;
-                break;
-
-              case 6:
-                _context8.prev = 6;
-                _context8.t0 = _context8["catch"](0);
-
-                if (!_context8.t0.text) {
-                  _context8.next = 14;
+                if (!post_id) {
+                  _context8.next = 5;
                   break;
                 }
 
-                text = _context8.t0.text;
+                (0, _assign2.default)(recipient, { post_id: post_id });
+                _context8.next = 10;
+                break;
 
-                try {
-                  err = JSON.parse(_context8.t0.text).error;
-
-                  text = (err.type || "Unknown") + ": " + (err.message || "No message");
-                } catch (ee) {
-                  // ignore
+              case 5:
+                if (!comment_id) {
+                  _context8.next = 9;
+                  break;
                 }
 
-                throw Error(text);
+                (0, _assign2.default)(recipient, { comment_id: comment_id });
+                _context8.next = 10;
+                break;
 
-              case 14:
+              case 9:
+                throw "Please enter comment or post id";
+
+              case 10:
+                _context8.prev = 10;
+                _context8.next = 13;
+                return this.messagesApi({
+                  recipient: recipient,
+                  message: message
+                }, pageId);
+
+              case 13:
+                result = _context8.sent;
+                return _context8.abrupt("return", result);
+
+              case 17:
+                _context8.prev = 17;
+                _context8.t0 = _context8["catch"](10);
                 throw _context8.t0;
 
-              case 15:
+              case 20:
               case "end":
                 return _context8.stop();
             }
           }
-        }, _callee8, this, [[0, 6]]);
+        }, _callee8, this, [[10, 17]]);
       }));
 
       function sendPrivateMessage(_x18, _x19, _x20) {
@@ -583,7 +584,7 @@ var Bot = function (_EventEmitter) {
 
               case 8:
                 _context10.next = 10;
-                return (0, _fetch2.default)("https://graph.facebook.com/v6.0/" + id, {
+                return (0, _fetch2.default)("https://graph.facebook.com/v8.0/" + id, {
                   query: { access_token: this._token, fields: fields },
                   json: true
                 });

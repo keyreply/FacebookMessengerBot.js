@@ -42,7 +42,7 @@ class Bot extends EventEmitter {
     try {
       const {
         body: {result}
-      } = await fetch('https://graph.facebook.com/v6.0/me/messenger_profile', {
+      } = await fetch('https://graph.facebook.com/v8.0/me/messenger_profile', {
         method,
         json: true,
         query: {access_token: this._token},
@@ -215,7 +215,7 @@ class Bot extends EventEmitter {
     try {
       const {
         body: {result}
-      } = await fetch('https://graph.facebook.com/v6.0/me/messages', {
+      } = await fetch('https://graph.facebook.com/v8.0/me/messages', {
         method,
         json: true,
         query: {access_token: this._token},
@@ -261,32 +261,27 @@ class Bot extends EventEmitter {
     }
   }
 
-  async sendPrivateMessage(id, message, pageId) {
-    try {
-      // support multiple tokens with backwards compatibility
-      if (pageId && this._tokens) {
-        this._token = this._tokens[pageId];
-      }
-      await fetch(`https://graph.facebook.com/v6.0/${id}/private_replies`, {
-        method: "post",
-        json: true,
-        query: { access_token: this._token },
-        body: { id, message }
-      });
-    } catch (e) {
-      if (e.text) {
-        let text = e.text;
-        try {
-          const err = JSON.parse(e.text).error;
-          text = `${err.type || "Unknown"}: ${err.message || "No message"}`;
-        } catch (ee) {
-          // ignore
-        }
+  async sendPrivateMessage(post_id, comment_id, message) {
+    // https://developers.facebook.com/docs/messenger-platform/discovery/private-replies
 
-        throw Error(text);
-      } else {
-        throw e;
-      }
+    let recipient = {}
+    if(post_id){
+      Object.assign(recipient, {post_id})
+    }else if(comment_id){
+      Object.assign(recipient, {comment_id})
+    }else{
+      throw "Please enter comment or post id"
+    }
+    
+    try {
+      const result = await this.messagesApi({
+        recipient,
+        message
+      }, pageId);
+
+      return result;
+    } catch (err) {
+      throw err;
     }
   }
 
@@ -362,7 +357,7 @@ class Bot extends EventEmitter {
       props = userCache[key];
       props.fromCache = true;
     } else {
-      const { body } = await fetch(`https://graph.facebook.com/v6.0/${id}`, {
+      const { body } = await fetch(`https://graph.facebook.com/v8.0/${id}`, {
         query: { access_token: this._token, fields },
         json: true
       });
