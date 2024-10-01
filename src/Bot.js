@@ -42,7 +42,7 @@ class Bot extends EventEmitter {
     try {
       const {
         body: {result}
-      } = await fetch('https://graph.facebook.com/v8.0/me/messenger_profile', {
+      } = await fetch('https://graph.facebook.com/v20.0/me/messenger_profile', {
         method,
         json: true,
         query: {access_token: this._token},
@@ -133,7 +133,7 @@ class Bot extends EventEmitter {
     // return result;
 
     try {
-      const result = await this.updateProfile(input ? {
+      const result = await this.updateProfile(input.data ? {
         get_started: {
           payload: input.data.action
         }
@@ -141,7 +141,7 @@ class Bot extends EventEmitter {
         fields: [
           'get_started'
         ]
-      }, pageId, input ? 'post' : 'delete');
+      }, pageId, input.data ? 'post' : 'delete');
 
       return result;
     } catch (err) {
@@ -215,7 +215,7 @@ class Bot extends EventEmitter {
     try {
       const {
         body: {result}
-      } = await fetch('https://graph.facebook.com/v8.0/me/messages', {
+      } = await fetch('https://graph.facebook.com/v20.0/me/messages', {
         method,
         json: true,
         query: {access_token: this._token},
@@ -357,7 +357,7 @@ class Bot extends EventEmitter {
       props = userCache[key];
       props.fromCache = true;
     } else {
-      const { body } = await fetch(`https://graph.facebook.com/v8.0/${id}`, {
+      const { body } = await fetch(`https://graph.facebook.com/v20.0/${id}`, {
         query: { access_token: this._token, fields },
         json: true
       });

@@ -154,7 +154,7 @@ var Bot = function (_EventEmitter) {
 
                 _context2.prev = 1;
                 _context2.next = 4;
-                return (0, _fetch2.default)('https://graph.facebook.com/v8.0/me/messenger_profile', {
+                return (0, _fetch2.default)('https://graph.facebook.com/v20.0/me/messenger_profile', {
                   method: method,
                   json: true,
                   query: { access_token: this._token },
@@ -239,13 +239,13 @@ var Bot = function (_EventEmitter) {
               case 0:
                 _context4.prev = 0;
                 _context4.next = 3;
-                return this.updateProfile(input ? {
+                return this.updateProfile(input.data ? {
                   get_started: {
                     payload: input.data.action
                   }
                 } : {
                   fields: ['get_started']
-                }, pageId, input ? 'post' : 'delete');
+                }, pageId, input.data ? 'post' : 'delete');
 
               case 3:
                 result = _context4.sent;
@@ -333,7 +333,7 @@ var Bot = function (_EventEmitter) {
 
                 _context6.prev = 1;
                 _context6.next = 4;
-                return (0, _fetch2.default)('https://graph.facebook.com/v8.0/me/messages', {
+                return (0, _fetch2.default)('https://graph.facebook.com/v20.0/me/messages', {
                   method: method,
                   json: true,
                   query: { access_token: this._token },
@@ -584,7 +584,7 @@ var Bot = function (_EventEmitter) {
 
               case 8:
                 _context10.next = 10;
-                return (0, _fetch2.default)("https://graph.facebook.com/v8.0/" + id, {
+                return (0, _fetch2.default)("https://graph.facebook.com/v20.0/" + id, {
                   query: { access_token: this._token, fields: fields },
                   json: true
                 });
